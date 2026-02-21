@@ -256,20 +256,49 @@ The client is actively working on a **UI redesign in Google Stitch**. This means
 
 ---
 
-### Phase 6: Admin Panel & Operations 🛠️
-**Goal**: Give the client tools to manage the platform
+### Phase 6: Admin Dashboard 🛠️
+**Goal**: Centralized admin panel where the client can manage all users and operations from one place
+
+> **Client requirement (2026-02-21)**: "I just wanted an admin dashboard that I could see all information about my users in 1 place where I could add or change their time from there I can see all their information I can see how much they paid"
 
 **Tasks**:
-1. Admin dashboard (`/admin`)
-   - View all enrollments, filter by status
-   - Review submitted reflections (approve/flag)
-   - Search participants
-   - View payment history
-2. Manual certificate verification (admin side)
-3. Contact form submissions management
-4. Basic analytics (enrollments/day, revenue, completion rates)
+1. Admin dashboard (`/admin`) — protected, role-based access
+2. **User Management** (`/admin/users`)
+   - Searchable/filterable table of ALL participants
+   - Each row shows: name, email, phone, enrollment status, hours completed/required, amount paid, registration date
+   - Click to open **user detail view** with full profile
+3. **User Detail View** (`/admin/users/[id]`)
+   - Full profile info (name, email, phone, address, probation officer, court ID)
+   - Enrollment history with payment amounts + Stripe IDs
+   - **Edit hours**: admin can manually add, subtract, or override completed hours
+   - **Edit time logs**: view and modify daily hour entries
+   - Certificate status + download links
+   - Reflection submissions + review controls
+   - Activity timeline (registration, payments, completions)
+4. **Enrollment Management** (`/admin/enrollments`)
+   - All enrollments, filter by status (active/completed/suspended)
+   - Bulk actions (suspend, complete, export CSV)
+5. **Payment Overview** (`/admin/payments`)
+   - All payments with Stripe links
+   - Revenue totals (daily, weekly, monthly)
+   - Filter by date range, amount, status
+6. **Reflection Review** (`/admin/reflections`)
+   - Queue of pending reflections to approve/flag
+   - Linked to user profile
+7. **Contact Submissions** (`/admin/messages`)
+   - Inbox of contact form submissions
+   - Mark as replied/closed
+8. **Dashboard Home** (`/admin`)
+   - Overview stats: total users, active enrollments, revenue this month, pending reflections
+   - Recent activity feed
+   - Quick-action shortcuts
 
-**Deliverable**: Operational admin panel for day-to-day management
+**Admin Access Control**:
+- Admin role stored in `profiles.role` column
+- Middleware check: only `role = 'admin'` can access `/admin/*` routes
+- RLS policies allow admins to read/write all tables
+
+**Deliverable**: Full admin panel where client can see all user data, edit hours, view payments, and manage operations from one place
 
 ---
 

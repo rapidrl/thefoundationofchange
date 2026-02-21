@@ -1,0 +1,19 @@
+.pageHeader {
+    background: linear-gradient(135deg, var(--color-navy-dark) 0%, var(--color-navy) 100%);
+    color: var(--color-white);
+    padding: var(--space-16) 0;
+    text-align: center;
+}
+
+.pageHeader h1 {
+    color: var(--color-white);
+    font-size: var(--text-4xl);
+    margin-bottom: var(--space-3);
+}
+
+.pageHeader p {
+    color: var(--color-gray-300);
+    font-size: var(--text-lg);
+    max-width: 600px;
+    margin: 0 auto;
+}

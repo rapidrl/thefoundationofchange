@@ -1,0 +1,114 @@
+.badges {
+    display: flex;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: var(--space-12);
+}
+
+.badgeItem {
+    background: var(--color-white);
+    border: 1px solid var(--color-gray-200);
+    border-radius: var(--radius-lg);
+    padding: var(--space-3) var(--space-5);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-semibold);
+    color: var(--color-navy);
+}
+
+.section {
+    padding: var(--space-16) 0;
+}
+
+.sectionAlt {
+    padding: var(--space-16) 0;
+    background-color: var(--color-gray-50);
+}
+
+.sectionContent {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.sectionContent h2 {
+    margin-bottom: var(--space-4);
+}
+
+.sectionContent p {
+    color: var(--color-gray-600);
+    font-size: var(--text-lg);
+    line-height: var(--leading-relaxed);
+    margin-bottom: var(--space-4);
+}
+
+.audienceGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-6);
+    margin-top: var(--space-8);
+}
+
+.audienceCard {
+    background: var(--color-white);
+    border: 1px solid var(--color-gray-200);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+    text-align: center;
+}
+
+.audienceCard h3 {
+    font-size: var(--text-xl);
+    margin-bottom: var(--space-3);
+}
+
+.audienceCard p {
+    font-size: var(--text-sm);
+    color: var(--color-gray-500);
+}
+
+.featureGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-6);
+    margin-top: var(--space-8);
+}
+
+.featureItem {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+}
+
+.featureIcon {
+    font-size: var(--text-xl);
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.featureItem h4 {
+    font-size: var(--text-base);
+    margin-bottom: var(--space-1);
+}
+
+.featureItem p {
+    font-size: var(--text-sm);
+    color: var(--color-gray-500);
+    margin-bottom: 0;
+}
+
+.ctaRow {
+    display: flex;
+    gap: var(--space-4);
+    margin-top: var(--space-8);
+    justify-content: center;
+}
+
+@media (max-width: 768px) {
+    .audienceGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .featureGrid {
+        grid-template-columns: 1fr;
+    }
+}

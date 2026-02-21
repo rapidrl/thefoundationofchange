@@ -1,0 +1,65 @@
+.content {
+    padding: var(--space-16) 0;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.note {
+    background-color: var(--color-gray-50);
+    border: 1px solid var(--color-gray-200);
+    border-radius: var(--radius-lg);
+    padding: var(--space-4) var(--space-5);
+    margin-bottom: var(--space-8);
+    text-align: center;
+}
+
+.note a {
+    font-weight: var(--weight-semibold);
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.field label {
+    font-weight: var(--weight-semibold);
+    color: var(--color-navy);
+    font-size: var(--text-sm);
+}
+
+.field input,
+.field textarea {
+    padding: var(--space-3) var(--space-4);
+    border: 1px solid var(--color-gray-300);
+    border-radius: var(--radius-md);
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    transition: border-color var(--transition-fast);
+    outline: none;
+}
+
+.field input:focus,
+.field textarea:focus {
+    border-color: var(--color-blue);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.field textarea {
+    min-height: 150px;
+    resize: vertical;
+}
+
+.submitBtn {
+    composes: btn-cta from global;
+    border: none;
+    width: 100%;
+    margin-top: var(--space-2);
+}

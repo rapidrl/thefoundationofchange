@@ -1,67 +1,87 @@
-import Link from 'next/link';
-import PageHeader from '@/components/ui/PageHeader';
-import type { Metadata } from 'next';
+'use client';
 
-export const metadata: Metadata = {
-    title: 'Start Now',
-    description: 'Choose your community service program and start today. Programs start at $28.99.',
-};
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import PageHeader from '@/components/ui/PageHeader';
+import styles from './page.module.css';
 
 const tiers = [
-    { hours: '1–10 Hours', price: '$28.99', popular: false },
-    { hours: '11–25 Hours', price: '$44.99', popular: false },
-    { hours: '26–50 Hours', price: '$59.99', popular: true },
-    { hours: '51–100 Hours', price: '$79.99', popular: false },
-    { hours: '101–250 Hours', price: '$119.99', popular: false },
-    { hours: '251–500 Hours', price: '$169.99', popular: false },
-    { hours: '501–1000 Hours', price: '$229.99', popular: false },
+    { id: 'tier_1_10', hours: '1–10 Hours', price: '$28.99', popular: false },
+    { id: 'tier_11_25', hours: '11–25 Hours', price: '$44.99', popular: false },
+    { id: 'tier_26_50', hours: '26–50 Hours', price: '$59.99', popular: true },
+    { id: 'tier_51_100', hours: '51–100 Hours', price: '$79.99', popular: false },
+    { id: 'tier_101_250', hours: '101–250 Hours', price: '$119.99', popular: false },
+    { id: 'tier_251_500', hours: '251–500 Hours', price: '$169.99', popular: false },
+    { id: 'tier_501_1000', hours: '501–1000 Hours', price: '$229.99', popular: false },
 ];
 
 export default function StartNowPage() {
+    const [loading, setLoading] = useState<string | null>(null);
+    const [error, setError] = useState('');
+    const router = useRouter();
+
+    const handleEnroll = async (tierId: string) => {
+        setError('');
+        setLoading(tierId);
+
+        try {
+            const res = await fetch('/api/checkout', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ tierId }),
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                if (res.status === 401) {
+                    router.push(`/login?redirect=/start-now`);
+                    return;
+                }
+                setError(data.error || 'Something went wrong');
+                setLoading(null);
+                return;
+            }
+
+            // Redirect to Stripe Checkout
+            window.location.href = data.url;
+        } catch {
+            setError('Failed to connect to payment service. Please try again.');
+            setLoading(null);
+        }
+    };
+
     return (
         <>
             <PageHeader
                 title="Choose Your Program"
                 subtitle="Select the number of community service hours you need. One-time fee — no hidden costs."
             />
-            <section style={{ padding: 'var(--space-16) 0' }}>
+            <section className={styles.section}>
                 <div className="container">
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 'var(--space-5)', maxWidth: '900px', margin: '0 auto' }}>
+                    {error && <div className={styles.error}>{error}</div>}
+                    <div className={styles.grid}>
                         {tiers.map((tier) => (
-                            <div key={tier.hours} style={{
-                                background: tier.popular ? 'var(--color-navy)' : 'var(--color-white)',
-                                color: tier.popular ? '#fff' : 'inherit',
-                                border: tier.popular ? '2px solid var(--color-navy)' : '1px solid var(--color-gray-200)',
-                                borderRadius: 'var(--radius-lg)', padding: 'var(--space-6)', textAlign: 'center',
-                                position: 'relative' as const,
-                            }}>
-                                {tier.popular && (
-                                    <span style={{
-                                        position: 'absolute' as const, top: -12, left: '50%', transform: 'translateX(-50%)',
-                                        background: 'var(--color-blue)', color: '#fff', padding: '2px 12px',
-                                        borderRadius: 'var(--radius-full)', fontSize: 'var(--text-xs)', fontWeight: 600
-                                    }}>Most Popular</span>
-                                )}
-                                <h3 style={{
-                                    fontSize: 'var(--text-lg)', marginBottom: 'var(--space-2)',
-                                    color: tier.popular ? '#fff' : 'var(--color-navy)'
-                                }}>{tier.hours}</h3>
-                                <p style={{
-                                    fontSize: 'var(--text-2xl)', fontWeight: 700, marginBottom: 'var(--space-4)',
-                                    color: tier.popular ? '#fff' : 'var(--color-navy)'
-                                }}>{tier.price}</p>
-                                <Link
-                                    href="/how-to-register"
-                                    className={tier.popular ? 'btn btn-cta' : 'btn btn-secondary'}
-                                    style={{ width: '100%', fontSize: 'var(--text-sm)' }}
+                            <div
+                                key={tier.id}
+                                className={`${styles.card} ${tier.popular ? styles.popular : ''}`}
+                            >
+                                {tier.popular && <span className={styles.badge}>Most Popular</span>}
+                                <h3 className={styles.cardTitle}>{tier.hours}</h3>
+                                <p className={styles.cardPrice}>{tier.price}</p>
+                                <button
+                                    onClick={() => handleEnroll(tier.id)}
+                                    disabled={loading !== null}
+                                    className={`btn ${tier.popular ? 'btn-cta' : 'btn-secondary'} ${styles.enrollBtn}`}
                                 >
-                                    Enroll
-                                </Link>
+                                    {loading === tier.id ? 'Processing...' : 'Enroll'}
+                                </button>
                             </div>
                         ))}
                     </div>
-                    <p style={{ textAlign: 'center', marginTop: 'var(--space-8)', color: 'var(--color-gray-500)', fontSize: 'var(--text-sm)' }}>
-                        All programs include: educational coursework, time tracking, reflection prompts, certificate of completion, and verification portal access.
+                    <p className={styles.footnote}>
+                        All programs include: educational coursework, time tracking, reflection prompts,
+                        certificate of completion, and verification portal access.
                     </p>
                 </div>
             </section>

@@ -1,0 +1,90 @@
+.section {
+    padding: var(--space-16) 0;
+}
+
+.error {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #dc2626;
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-md);
+    font-size: var(--text-sm);
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto var(--space-8);
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--space-5);
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.card {
+    background: var(--color-white);
+    border: 1px solid var(--color-gray-200);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+    text-align: center;
+    position: relative;
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.popular {
+    background: var(--color-navy);
+    color: #fff;
+    border: 2px solid var(--color-navy);
+}
+
+.badge {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--color-blue);
+    color: #fff;
+    padding: 2px 12px;
+    border-radius: var(--radius-full);
+    font-size: var(--text-xs);
+    font-weight: var(--weight-semibold);
+    white-space: nowrap;
+}
+
+.cardTitle {
+    font-size: var(--text-lg);
+    margin-bottom: var(--space-2);
+}
+
+.popular .cardTitle {
+    color: #fff;
+}
+
+.cardPrice {
+    font-size: var(--text-2xl);
+    font-weight: var(--weight-bold);
+    margin-bottom: var(--space-4);
+    color: var(--color-navy);
+}
+
+.popular .cardPrice {
+    color: #fff;
+}
+
+.enrollBtn {
+    width: 100%;
+    font-size: var(--text-sm);
+}
+
+.footnote {
+    text-align: center;
+    margin-top: var(--space-8);
+    color: var(--color-gray-500);
+    font-size: var(--text-sm);
+}

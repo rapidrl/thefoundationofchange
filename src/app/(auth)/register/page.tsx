@@ -34,13 +34,14 @@ export default function RegisterPage() {
         setLoading(true);
 
         const supabase = createClient();
-        const { error } = await supabase.auth.signUp({
+        const { data, error } = await supabase.auth.signUp({
             email,
             password,
             options: {
                 data: {
                     full_name: fullName,
                 },
+                emailRedirectTo: `${window.location.origin}/auth/callback`,
             },
         });
 
@@ -50,6 +51,13 @@ export default function RegisterPage() {
             return;
         }
 
+        // If session exists, email confirmation is disabled — go straight to dashboard
+        if (data.session) {
+            router.push('/dashboard');
+            return;
+        }
+
+        // Otherwise email confirmation is required
         setSuccess('Account created! Check your email to confirm, then sign in.');
         setLoading(false);
     };

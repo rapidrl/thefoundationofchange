@@ -1,6 +1,24 @@
 import Link from "next/link";
 import styles from "./page.module.css";
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "The Foundation of Change",
+  url: "https://thefoundationofchange.org",
+  logo: "https://thefoundationofchange.org/logo.png",
+  description: "501(c)(3) nonprofit providing court-recognized online community service programs. Complete self-paced coursework from home and earn verified certificates.",
+  email: "info@thefoundationofchange.org",
+  telephone: "+1-734-834-6934",
+  taxID: "33-5003265",
+  nonprofitStatus: "501(c)(3)",
+  sameAs: [],
+  address: {
+    "@type": "PostalAddress",
+    addressCountry: "US",
+  },
+};
+
 export default function Home() {
   return (
     <>
@@ -146,6 +164,69 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Quick Navigation — Internal Links */}
+      <section style={{ padding: 'var(--space-12) 0', background: 'var(--color-gray-50)' }}>
+        <div className="container">
+          <h2 style={{ textAlign: 'center', fontSize: 'var(--text-2xl)', marginBottom: 'var(--space-2)' }}>Explore Our Programs</h2>
+          <p style={{ textAlign: 'center', color: 'var(--color-gray-500)', marginBottom: 'var(--space-8)', maxWidth: '600px', margin: '0 auto var(--space-8)' }}>
+            Everything you need to complete your community service requirements.
+          </p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 'var(--space-4)' }}>
+            {[
+              { href: '/community', label: 'Community Service Program', desc: 'Our flagship online program' },
+              { href: '/how-it-works', label: 'How It Works', desc: 'Step-by-step guide' },
+              { href: '/start-now', label: 'Enroll & Pricing', desc: 'Programs from $28.99' },
+              { href: '/faq', label: 'FAQ', desc: 'Common questions answered' },
+              { href: '/certificate-verification', label: 'Verify a Certificate', desc: 'Employer & court verification' },
+              { href: '/letter-of-introductions', label: 'Court Acceptance', desc: 'Enrollment letters & proof' },
+              { href: '/about-us', label: 'About Us', desc: 'Our mission & values' },
+              { href: '/states', label: 'State Programs', desc: 'Available in all 50 states' },
+            ].map((item) => (
+              <Link key={item.href} href={item.href} style={{
+                display: 'block', padding: 'var(--space-5)', background: '#fff',
+                borderRadius: 'var(--radius-lg)', border: '1px solid var(--color-gray-200)',
+                textDecoration: 'none', transition: 'all 0.2s',
+              }}>
+                <div style={{ fontWeight: 600, color: 'var(--color-navy)', marginBottom: 'var(--space-1)' }}>{item.label}</div>
+                <div style={{ fontSize: 'var(--text-sm)', color: 'var(--color-gray-500)' }}>{item.desc}</div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Available Nationwide — State Links */}
+      <section style={{ padding: 'var(--space-12) 0' }}>
+        <div className="container">
+          <h2 style={{ textAlign: 'center', fontSize: 'var(--text-2xl)', marginBottom: 'var(--space-2)' }}>Available in All 50 States</h2>
+          <p style={{ textAlign: 'center', color: 'var(--color-gray-500)', marginBottom: 'var(--space-6)', maxWidth: '600px', margin: '0 auto var(--space-6)' }}>
+            Our community service programs are accepted by courts and probation offices across the country.
+          </p>
+          <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 'var(--space-2)' }}>
+            {[
+              'california', 'texas', 'florida', 'new-york', 'illinois', 'pennsylvania',
+              'ohio', 'georgia', 'michigan', 'north-carolina', 'new-jersey', 'virginia',
+              'washington', 'arizona', 'massachusetts', 'colorado', 'tennessee', 'indiana',
+              'missouri', 'maryland',
+            ].map((slug) => (
+              <Link key={slug} href={`/states/${slug}`} style={{
+                padding: 'var(--space-2) var(--space-4)', background: 'var(--color-gray-50)',
+                borderRadius: 'var(--radius-full)', border: '1px solid var(--color-gray-200)',
+                fontSize: 'var(--text-sm)', fontWeight: 500, color: 'var(--color-navy)',
+                textDecoration: 'none', textTransform: 'capitalize',
+              }}>
+                {slug.replace(/-/g, ' ')}
+              </Link>
+            ))}
+          </div>
+          <div style={{ textAlign: 'center', marginTop: 'var(--space-4)' }}>
+            <Link href="/states" style={{ color: 'var(--color-blue)', fontWeight: 600, fontSize: 'var(--text-sm)' }}>
+              View all 50 states →
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* Final CTA */}
       <section className={styles.ctaSection}>
         <div className="container">
@@ -159,6 +240,12 @@ export default function Home() {
           </Link>
         </div>
       </section>
+
+      {/* JSON-LD Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
     </>
   );
 }

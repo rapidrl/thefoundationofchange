@@ -83,6 +83,22 @@
     flex-shrink: 0;
 }
 
+.navLinkAccent {
+    padding: var(--space-1) var(--space-2);
+    color: var(--color-blue);
+    font-size: 0.8125rem;
+    font-weight: var(--weight-semibold);
+    border-radius: var(--radius-md);
+    transition: all var(--transition-fast);
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.navLinkAccent:hover {
+    color: var(--color-navy);
+    background-color: rgba(37, 99, 235, 0.08);
+}
+
 /* Mobile hamburger */
 .mobileToggle {
     display: none;

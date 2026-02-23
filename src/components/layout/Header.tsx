@@ -1,7 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { createClient } from '@/lib/supabase/client';
 import styles from './Header.module.css';
 
 const navLinks = [
@@ -9,12 +10,27 @@ const navLinks = [
     { href: '/states', label: 'State Programs' },
     { href: '/faq', label: 'FAQ' },
     { href: '/how-it-works', label: 'How It Works' },
-    { href: '/additional-services', label: 'Other Services' },
     { href: '/contact-us', label: 'Contact Us' },
 ];
 
 export default function Header() {
     const [mobileOpen, setMobileOpen] = useState(false);
+    const [user, setUser] = useState<{ email?: string } | null>(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const supabase = createClient();
+        supabase.auth.getUser().then(({ data }) => {
+            setUser(data.user);
+            setLoading(false);
+        });
+
+        const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+            setUser(session?.user ?? null);
+        });
+
+        return () => subscription.unsubscribe();
+    }, []);
 
     return (
         <header className={styles.header}>
@@ -33,9 +49,26 @@ export default function Header() {
                             {link.label}
                         </Link>
                     ))}
-                    <Link href="/how-to-register" className={styles.ctaButton}>
-                        Get Started
-                    </Link>
+
+                    {!loading && user ? (
+                        <>
+                            <Link href="/dashboard" className={styles.navLink} style={{ fontWeight: 600 }}>
+                                Dashboard
+                            </Link>
+                            <Link href="/coursework" className={styles.ctaButton}>
+                                My Coursework
+                            </Link>
+                        </>
+                    ) : (
+                        <>
+                            <Link href="/login" className={styles.navLinkAccent}>
+                                Log In
+                            </Link>
+                            <Link href="/how-to-register" className={styles.ctaButton}>
+                                Get Started
+                            </Link>
+                        </>
+                    )}
                 </nav>
 
                 {/* Mobile toggle */}
@@ -65,13 +98,44 @@ export default function Header() {
                         {link.label}
                     </Link>
                 ))}
-                <Link
-                    href="/how-to-register"
-                    className={styles.mobileCta}
-                    onClick={() => setMobileOpen(false)}
-                >
-                    Get Started
-                </Link>
+
+                {!loading && user ? (
+                    <>
+                        <Link
+                            href="/dashboard"
+                            className={styles.mobileNavLink}
+                            onClick={() => setMobileOpen(false)}
+                            style={{ fontWeight: 700, color: 'var(--color-navy)' }}
+                        >
+                            📊 Dashboard
+                        </Link>
+                        <Link
+                            href="/coursework"
+                            className={styles.mobileCta}
+                            onClick={() => setMobileOpen(false)}
+                        >
+                            My Coursework
+                        </Link>
+                    </>
+                ) : (
+                    <>
+                        <Link
+                            href="/login"
+                            className={styles.mobileNavLink}
+                            onClick={() => setMobileOpen(false)}
+                            style={{ fontWeight: 700, color: 'var(--color-blue)' }}
+                        >
+                            Log In
+                        </Link>
+                        <Link
+                            href="/how-to-register"
+                            className={styles.mobileCta}
+                            onClick={() => setMobileOpen(false)}
+                        >
+                            Get Started
+                        </Link>
+                    </>
+                )}
             </nav>
         </header>
     );

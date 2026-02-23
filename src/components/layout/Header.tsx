@@ -5,11 +5,11 @@ import { useState } from 'react';
 import styles from './Header.module.css';
 
 const navLinks = [
-    { href: '/community', label: 'Community Service Program' },
+    { href: '/community', label: 'Community Service' },
     { href: '/states', label: 'State Programs' },
     { href: '/faq', label: 'FAQ' },
     { href: '/how-it-works', label: 'How It Works' },
-    { href: '/additional-services', label: 'Additional Services' },
+    { href: '/additional-services', label: 'Other Services' },
     { href: '/contact-us', label: 'Contact Us' },
 ];
 

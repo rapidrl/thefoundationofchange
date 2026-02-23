@@ -15,6 +15,8 @@ interface ProfileData {
     probation_officer: string;
     court_id: string;
     date_of_birth: string;
+    gender: string;
+    reason_for_service: string;
 }
 
 export default function EditProfilePage() {
@@ -51,6 +53,8 @@ export default function EditProfilePage() {
                     probation_officer: data.probation_officer || '',
                     court_id: data.court_id || '',
                     date_of_birth: data.date_of_birth || '',
+                    gender: data.gender || '',
+                    reason_for_service: data.reason_for_service || '',
                 });
             }
             setLoading(false);
@@ -85,6 +89,8 @@ export default function EditProfilePage() {
                 probation_officer: profile.probation_officer,
                 court_id: profile.court_id,
                 date_of_birth: profile.date_of_birth,
+                gender: profile.gender || null,
+                reason_for_service: profile.reason_for_service || null,
             })
             .eq('id', user.id);
 
@@ -161,6 +167,27 @@ export default function EditProfilePage() {
                         <div>
                             <label style={labelStyle}>Date of Birth</label>
                             <input type="date" value={profile.date_of_birth} onChange={(e) => handleChange('date_of_birth', e.target.value)} style={inputStyle} />
+                        </div>
+                        <div>
+                            <label style={labelStyle}>Gender</label>
+                            <select value={profile.gender} onChange={(e) => handleChange('gender', e.target.value)} style={inputStyle}>
+                                <option value="">Select...</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="non-binary">Non-binary</option>
+                                <option value="prefer-not-to-say">Prefer not to say</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label style={labelStyle}>Reason for Community Service</label>
+                            <select value={profile.reason_for_service} onChange={(e) => handleChange('reason_for_service', e.target.value)} style={inputStyle}>
+                                <option value="">Select...</option>
+                                <option value="court-ordered">Court Ordered</option>
+                                <option value="probation">Probation</option>
+                                <option value="school">School Requirement</option>
+                                <option value="personal">Personal Choice</option>
+                                <option value="other">Other</option>
+                            </select>
                         </div>
                         <div style={{ gridColumn: '1 / -1' }}>
                             <label style={labelStyle}>Address</label>

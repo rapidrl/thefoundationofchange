@@ -94,6 +94,13 @@ export default function RegisterPage() {
                 .eq('id', signUpData.user.id);
         }
 
+        // If user was auto-confirmed (session exists), redirect to payment
+        if (signUpData?.session) {
+            router.push('/start-now');
+            return;
+        }
+
+        // Otherwise, email confirmation is required — show success message
         setSuccess('Account created! Check your email to confirm, then sign in.');
         setLoading(false);
     };

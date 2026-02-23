@@ -2,11 +2,12 @@ import { requireAdmin } from '@/lib/admin';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import styles from '../../admin.module.css';
+import AdminUserEditor from './AdminUserEditor';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
     title: 'User Detail — Admin',
-    description: 'View detailed user information.',
+    description: 'View and edit user information.',
 };
 
 interface PageProps {
@@ -57,11 +58,6 @@ export default async function AdminUserDetailPage({ params }: PageProps) {
             .order('issued_at', { ascending: false }),
     ]);
 
-    const activeEnrollment = enrollments?.find((e) => e.status === 'active') || enrollments?.[0];
-    const totalHoursPaid = enrollments?.reduce((sum, e) => sum + (Number(e.hours_required) || 0), 0) ?? 0;
-    const totalHoursCompleted = enrollments?.reduce((sum, e) => sum + (Number(e.hours_completed) || 0), 0) ?? 0;
-    const totalPaid = enrollments?.reduce((sum, e) => sum + (Number(e.amount_paid) || 0), 0) ?? 0;
-
     return (
         <>
             {/* Back Link */}
@@ -73,90 +69,34 @@ export default async function AdminUserDetailPage({ params }: PageProps) {
             <h1 className={styles.pageTitle}>{profile.full_name}</h1>
             <p className={styles.pageSubtitle}>{profile.email} • Member since {new Date(profile.created_at).toLocaleDateString()}</p>
 
-            {/* Profile + Enrollment Cards */}
+            {/* Editable Profile + Enrollments */}
             <div className={styles.detailGrid}>
-                {/* Profile Info */}
-                <div className={styles.detailCard}>
-                    <h3>👤 Profile Information</h3>
-                    <div className={styles.detailRow}>
-                        <span className={styles.detailLabel}>Full Name</span>
-                        <span className={styles.detailValue}>{profile.full_name}</span>
-                    </div>
-                    <div className={styles.detailRow}>
-                        <span className={styles.detailLabel}>Email</span>
-                        <span className={styles.detailValue}>{profile.email}</span>
-                    </div>
-                    <div className={styles.detailRow}>
-                        <span className={styles.detailLabel}>Date of Birth</span>
-                        <span className={styles.detailValue}>{profile.date_of_birth || '—'}</span>
-                    </div>
-                    <div className={styles.detailRow}>
-                        <span className={styles.detailLabel}>Phone</span>
-                        <span className={styles.detailValue}>{profile.phone || '—'}</span>
-                    </div>
-                    <div className={styles.detailRow}>
-                        <span className={styles.detailLabel}>Address</span>
-                        <span className={styles.detailValue}>
-                            {[profile.address, profile.city, profile.state, profile.zip_code].filter(Boolean).join(', ') || '—'}
-                        </span>
-                    </div>
-                    <div className={styles.detailRow}>
-                        <span className={styles.detailLabel}>Probation Officer</span>
-                        <span className={styles.detailValue}>{profile.probation_officer || '—'}</span>
-                    </div>
-                    <div className={styles.detailRow}>
-                        <span className={styles.detailLabel}>Court ID</span>
-                        <span className={styles.detailValue}>{profile.court_id || '—'}</span>
-                    </div>
-                </div>
-
-                {/* Enrollment Summary */}
-                <div className={styles.detailCard}>
-                    <h3>📋 Enrollment Summary</h3>
-                    <div className={styles.detailRow}>
-                        <span className={styles.detailLabel}>Total Hours Purchased</span>
-                        <span className={styles.detailValue}>{totalHoursPaid}h</span>
-                    </div>
-                    <div className={styles.detailRow}>
-                        <span className={styles.detailLabel}>Total Hours Completed</span>
-                        <span className={styles.detailValue}>{totalHoursCompleted}h</span>
-                    </div>
-                    <div className={styles.detailRow}>
-                        <span className={styles.detailLabel}>Hours Remaining</span>
-                        <span className={styles.detailValue}>{Math.max(0, totalHoursPaid - totalHoursCompleted)}h</span>
-                    </div>
-                    <div className={styles.detailRow}>
-                        <span className={styles.detailLabel}>Total Amount Paid</span>
-                        <span className={styles.detailValue}>${totalPaid.toFixed(2)}</span>
-                    </div>
-                    <div className={styles.detailRow}>
-                        <span className={styles.detailLabel}>Current Status</span>
-                        <span className={styles.detailValue}>
-                            {activeEnrollment ? (
-                                <span className={`${styles.badge} ${activeEnrollment.status === 'active' ? styles.badgeActive
-                                        : activeEnrollment.status === 'completed' ? styles.badgeCompleted
-                                            : styles.badgeSuspended
-                                    }`}>
-                                    {activeEnrollment.status}
-                                </span>
-                            ) : 'No enrollment'}
-                        </span>
-                    </div>
-                    <div className={styles.detailRow}>
-                        <span className={styles.detailLabel}>Start Date</span>
-                        <span className={styles.detailValue}>
-                            {activeEnrollment ? new Date(activeEnrollment.start_date).toLocaleDateString() : '—'}
-                        </span>
-                    </div>
-                    <div className={styles.detailRow}>
-                        <span className={styles.detailLabel}>Articles Read</span>
-                        <span className={styles.detailValue}>{reflections?.length ?? 0}</span>
-                    </div>
-                    <div className={styles.detailRow}>
-                        <span className={styles.detailLabel}>Reflections Answered</span>
-                        <span className={styles.detailValue}>{reflections?.length ?? 0}</span>
-                    </div>
-                </div>
+                <AdminUserEditor
+                    profile={{
+                        id: profile.id,
+                        full_name: profile.full_name || '',
+                        email: profile.email || '',
+                        phone: profile.phone || '',
+                        date_of_birth: profile.date_of_birth || '',
+                        gender: profile.gender || '',
+                        address: profile.address || '',
+                        city: profile.city || '',
+                        state: profile.state || '',
+                        zip_code: profile.zip_code || '',
+                        probation_officer: profile.probation_officer || '',
+                        court_id: profile.court_id || '',
+                        reason_for_service: profile.reason_for_service || '',
+                        role: profile.role || 'participant',
+                    }}
+                    enrollments={(enrollments || []).map(e => ({
+                        id: e.id,
+                        hours_required: Number(e.hours_required) || 0,
+                        hours_completed: Number(e.hours_completed) || 0,
+                        status: e.status,
+                        amount_paid: Number(e.amount_paid) || 0,
+                        start_date: e.start_date,
+                    }))}
+                />
             </div>
 
             {/* Hour Log Table */}

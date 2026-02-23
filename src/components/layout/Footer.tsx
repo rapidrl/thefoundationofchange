@@ -9,10 +9,12 @@ export default function Footer() {
                 <div className={styles.footerColumn}>
                     <h3>About the Program</h3>
                     <ul>
+                        <li><Link href="/community">Community Service Program</Link></li>
                         <li><Link href="/how-it-works">How It Works</Link></li>
                         <li><Link href="/faq">Frequently Asked Questions</Link></li>
                         <li><Link href="/letter-of-introductions">Court Acceptance</Link></li>
                         <li><Link href="/our-guarantee">Program Details</Link></li>
+                        <li><Link href="/states">State Programs</Link></li>
                     </ul>
                 </div>
 

@@ -1,66 +1,116 @@
+/* ——— HERO ——— */
 .hero {
-    background: linear-gradient(135deg, var(--color-navy-dark) 0%, var(--color-navy) 50%, var(--color-navy-light) 100%);
-    color: var(--color-white);
-    padding: var(--space-24) 0;
     position: relative;
+    background: linear-gradient(135deg, var(--color-navy-dark) 0%, #0c1b3a 40%, #162d5a 100%);
+    color: var(--color-white);
+    padding: var(--space-20) 0 var(--space-16);
     overflow: hidden;
+    text-align: center;
 }
 
 .hero::before {
     content: '';
     position: absolute;
-    top: -50%;
-    right: -20%;
-    width: 600px;
-    height: 600px;
-    background: radial-gradient(circle, rgba(37, 99, 235, 0.15) 0%, transparent 70%);
-    border-radius: 50%;
+    inset: 0;
+    background:
+        radial-gradient(ellipse 80% 50% at 50% 0%, rgba(37, 99, 235, 0.15) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 80% 100%, rgba(212, 168, 83, 0.08) 0%, transparent 50%);
+    pointer-events: none;
 }
 
 .heroContent {
     position: relative;
     z-index: 1;
-    max-width: 720px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.heroBadges {
+    display: flex;
+    gap: var(--space-3);
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: var(--space-8);
+}
+
+.badge {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: var(--radius-full);
+    padding: var(--space-2) var(--space-5);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-semibold);
+    color: rgba(255, 255, 255, 0.9);
+    letter-spacing: 0.02em;
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.badgeIcon {
+    font-size: var(--text-sm);
 }
 
 .heroContent h1 {
     color: var(--color-white);
-    font-size: var(--text-5xl);
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    line-height: 1.15;
     margin-bottom: var(--space-6);
-    line-height: 1.1;
+    letter-spacing: -0.02em;
+}
+
+.heroAccent {
+    color: var(--color-gold-light);
+    display: block;
 }
 
 .heroContent p {
-    font-size: var(--text-xl);
-    color: var(--color-gray-300);
+    font-size: var(--text-lg);
+    color: rgba(255, 255, 255, 0.7);
     margin-bottom: var(--space-8);
     line-height: var(--leading-relaxed);
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .heroButtons {
     display: flex;
     gap: var(--space-4);
     flex-wrap: wrap;
+    justify-content: center;
 }
 
-.heroBadges {
-    display: flex;
-    gap: var(--space-6);
-    margin-top: var(--space-12);
-    flex-wrap: wrap;
+/* Stats Bar */
+.statsBar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-4);
+    max-width: 800px;
+    margin: var(--space-12) auto 0;
+    padding-top: var(--space-8);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.badge {
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
-    color: var(--color-gray-300);
-    font-size: var(--text-sm);
-    font-weight: var(--weight-medium);
+.statItem {
+    text-align: center;
 }
 
-.badgeIcon {
-    font-size: var(--text-lg);
+.statNumber {
+    display: block;
+    font-size: var(--text-2xl);
+    font-weight: var(--weight-bold);
+    color: var(--color-gold-light);
+    margin-bottom: var(--space-1);
+}
+
+.statLabel {
+    font-size: var(--text-xs);
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
 }
 
 /* Transparency Section */
@@ -244,21 +294,26 @@
 /* Responsive */
 @media (max-width: 768px) {
     .heroContent h1 {
-        font-size: var(--text-3xl);
+        font-size: clamp(1.5rem, 6vw, 2.25rem);
     }
 
-    .heroContent p {
-        font-size: var(--text-lg);
+    .statsBar {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-3);
+    }
+
+    .heroBadges {
+        gap: var(--space-2);
+    }
+
+    .badge {
+        font-size: var(--text-xs);
+        padding: var(--space-1) var(--space-3);
     }
 
     .transparencyGrid,
     .certificatePreviewInner {
         grid-template-columns: 1fr;
-    }
-
-    .heroBadges {
-        flex-direction: column;
-        gap: var(--space-3);
     }
 
     .certificateFields {

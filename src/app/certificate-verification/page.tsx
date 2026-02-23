@@ -3,47 +3,63 @@
 import { useState } from 'react';
 import PageHeader from '@/components/ui/PageHeader';
 
-interface CertificateResult {
-    verification_code: string;
-    hours_verified: number;
-    issued_at: string;
-    profiles: { full_name: string };
-    enrollments: {
-        hours_required: number;
-        hours_completed: number;
-        start_date: string;
-        completed_at: string;
-    };
+interface VerificationResult {
+    participantName: string;
+    location: string;
+    verificationCode: string;
+    hoursCompleted: number;
+    hoursRequired: number;
+    status: string;
+    issuedDate: string;
+    completedDate: string | null;
+    startDate: string | null;
+    certificateUrl: string | null;
+    hourLogUrl: string | null;
 }
 
 export default function CertificateVerificationPage() {
-    const [code, setCode] = useState('');
-    const [result, setResult] = useState<CertificateResult | null>(null);
-    const [error, setError] = useState('');
+    const [enrolleeName, setEnrolleeName] = useState('');
+    const [location, setLocation] = useState('');
+    const [verificationCode, setVerificationCode] = useState('');
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
+    const [result, setResult] = useState<VerificationResult | null>(null);
 
-    const handleVerify = async (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!code.trim()) return;
-
-        setLoading(true);
         setError('');
         setResult(null);
+        setLoading(true);
 
         try {
-            const res = await fetch(`/api/certificates/${encodeURIComponent(code.trim())}`);
+            const res = await fetch('/api/verify', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ enrolleeName, location, verificationCode }),
+            });
+
             const data = await res.json();
 
             if (!res.ok) {
-                setError(data.error || 'Certificate not found. Please check the code and try again.');
+                setError(data.error || 'Verification failed.');
             } else {
-                setResult(data.certificate);
+                setResult(data.data);
             }
         } catch {
-            setError('Network error. Please try again.');
+            setError('An error occurred. Please try again.');
         } finally {
             setLoading(false);
         }
+    };
+
+    const inputStyle: React.CSSProperties = {
+        padding: 'var(--space-3) var(--space-4)',
+        border: '1px solid var(--color-gray-300)',
+        borderRadius: 'var(--radius-md)',
+        fontSize: 'var(--text-base)',
+        outline: 'none',
+        transition: 'border-color var(--transition-fast)',
+        fontFamily: 'var(--font-body)',
     };
 
     return (
@@ -53,7 +69,8 @@ export default function CertificateVerificationPage() {
                 subtitle="For court and probation officers, employers, and agencies to verify completion of community-service hours."
             />
             <section style={{ padding: 'var(--space-16) 0' }}>
-                <div className="container" style={{ maxWidth: '600px', margin: '0 auto' }}>
+                <div className="container" style={{ maxWidth: '640px', margin: '0 auto' }}>
+                    {/* Icons */}
                     <div style={{ display: 'flex', gap: 'var(--space-6)', marginBottom: 'var(--space-10)', justifyContent: 'center' }}>
                         <div style={{ textAlign: 'center' }}>
                             <span style={{ fontSize: '2rem' }}>👁️</span>
@@ -67,109 +84,127 @@ export default function CertificateVerificationPage() {
                         </div>
                     </div>
 
-                    <form onSubmit={handleVerify} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-5)' }}>
+                    {/* Form */}
+                    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-5)' }}>
                         <p style={{ fontSize: 'var(--text-sm)', color: 'var(--color-gray-500)', textAlign: 'center' }}>
-                            Enter the verification code from the participant&apos;s certificate.
+                            All fields are required. Type the information exactly as it appears on the enrollee&apos;s documentation.
                         </p>
+
+                        {error && (
+                            <div style={{
+                                padding: 'var(--space-4)', background: '#fef2f2',
+                                border: '1px solid #fecaca', borderRadius: 'var(--radius-md)',
+                                color: '#dc2626', fontSize: 'var(--text-sm)', textAlign: 'center'
+                            }}>
+                                {error}
+                            </div>
+                        )}
+
                         <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
-                            <label htmlFor="verificationCode" style={{ fontWeight: 600, color: 'var(--color-navy)', fontSize: 'var(--text-sm)' }}>
-                                Verification Code *
-                            </label>
+                            <label htmlFor="enrollee" style={{ fontWeight: 600, color: 'var(--color-navy)', fontSize: 'var(--text-sm)' }}>Enrollee Name *</label>
                             <input
-                                type="text"
-                                id="verificationCode"
-                                value={code}
-                                onChange={(e) => setCode(e.target.value)}
-                                placeholder="TFOC-XXXXXXXXXX"
-                                required
-                                style={{
-                                    padding: 'var(--space-3) var(--space-4)',
-                                    border: '1px solid var(--color-gray-300)',
-                                    borderRadius: 'var(--radius-md)',
-                                    fontSize: 'var(--text-base)',
-                                    outline: 'none',
-                                    fontFamily: 'monospace',
-                                    letterSpacing: '0.05em',
-                                }}
+                                type="text" id="enrollee" required
+                                value={enrolleeName}
+                                onChange={(e) => setEnrolleeName(e.target.value)}
+                                style={inputStyle}
                             />
                         </div>
-                        <button type="submit" className="btn btn-cta" disabled={loading} style={{ border: 'none', width: '100%' }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
+                            <label htmlFor="location" style={{ fontWeight: 600, color: 'var(--color-navy)', fontSize: 'var(--text-sm)' }}>Location *</label>
+                            <input
+                                type="text" id="location" required
+                                value={location}
+                                onChange={(e) => setLocation(e.target.value)}
+                                style={inputStyle}
+                            />
+                        </div>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
+                            <label htmlFor="verificationCode" style={{ fontWeight: 600, color: 'var(--color-navy)', fontSize: 'var(--text-sm)' }}>Verification Code *</label>
+                            <input
+                                type="text" id="verificationCode" required
+                                value={verificationCode}
+                                onChange={(e) => setVerificationCode(e.target.value)}
+                                style={inputStyle}
+                            />
+                        </div>
+                        <button
+                            type="submit" className="btn btn-cta"
+                            style={{ border: 'none', width: '100%' }}
+                            disabled={loading}
+                        >
                             {loading ? 'Verifying...' : 'Verify Certificate'}
                         </button>
                     </form>
 
-                    {error && (
-                        <div style={{
-                            marginTop: 'var(--space-6)',
-                            padding: 'var(--space-4)',
-                            background: '#fef2f2',
-                            border: '1px solid #fecaca',
-                            borderRadius: 'var(--radius-md)',
-                            color: '#dc2626',
-                            textAlign: 'center',
-                        }}>
-                            {error}
-                        </div>
-                    )}
-
+                    {/* Results */}
                     {result && (
                         <div style={{
-                            marginTop: 'var(--space-6)',
-                            padding: 'var(--space-6)',
-                            background: '#f0fdf4',
-                            border: '2px solid #22c55e',
-                            borderRadius: 'var(--radius-lg)',
+                            marginTop: 'var(--space-8)', padding: 'var(--space-6)',
+                            background: '#ecfdf5', borderRadius: 'var(--radius-lg)',
+                            border: '1px solid #a7f3d0'
                         }}>
-                            <div style={{ textAlign: 'center', marginBottom: 'var(--space-4)' }}>
-                                <span style={{ fontSize: '3rem' }}>✅</span>
-                                <h3 style={{ color: '#16a34a', margin: 'var(--space-2) 0' }}>Certificate Verified</h3>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)', marginBottom: 'var(--space-5)' }}>
+                                <span style={{ fontSize: '1.5rem' }}>✅</span>
+                                <h3 style={{ fontSize: 'var(--text-lg)', color: '#059669', margin: 0 }}>Certificate Verified</h3>
                             </div>
-                            <table style={{ width: '100%', fontSize: 'var(--text-sm)' }}>
-                                <tbody>
-                                    <tr>
-                                        <td style={{ padding: 'var(--space-2) 0', fontWeight: 600, color: 'var(--color-navy)' }}>Participant</td>
-                                        <td style={{ padding: 'var(--space-2) 0' }}>{result.profiles?.full_name}</td>
-                                    </tr>
-                                    <tr>
-                                        <td style={{ padding: 'var(--space-2) 0', fontWeight: 600, color: 'var(--color-navy)' }}>Verification Code</td>
-                                        <td style={{ padding: 'var(--space-2) 0', fontFamily: 'monospace' }}>{result.verification_code}</td>
-                                    </tr>
-                                    <tr>
-                                        <td style={{ padding: 'var(--space-2) 0', fontWeight: 600, color: 'var(--color-navy)' }}>Hours Verified</td>
-                                        <td style={{ padding: 'var(--space-2) 0' }}>{result.hours_verified} hours</td>
-                                    </tr>
-                                    <tr>
-                                        <td style={{ padding: 'var(--space-2) 0', fontWeight: 600, color: 'var(--color-navy)' }}>Program Dates</td>
-                                        <td style={{ padding: 'var(--space-2) 0' }}>
-                                            {new Date(result.enrollments?.start_date).toLocaleDateString()} –{' '}
-                                            {new Date(result.enrollments?.completed_at).toLocaleDateString()}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style={{ padding: 'var(--space-2) 0', fontWeight: 600, color: 'var(--color-navy)' }}>Issued</td>
-                                        <td style={{ padding: 'var(--space-2) 0' }}>
-                                            {new Date(result.issued_at).toLocaleDateString()}
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <p style={{
-                                marginTop: 'var(--space-4)',
-                                fontSize: 'var(--text-xs)',
-                                color: 'var(--color-gray-500)',
-                                textAlign: 'center',
-                            }}>
-                                Issued by The Foundation of Change — 501(c)(3) Nonprofit — EIN: 33-5003265
-                            </p>
+
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-4)' }}>
+                                <div>
+                                    <p style={{ fontSize: 'var(--text-xs)', color: 'var(--color-gray-500)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 'var(--space-1)' }}>Participant</p>
+                                    <p style={{ fontWeight: 600, color: 'var(--color-navy)' }}>{result.participantName}</p>
+                                </div>
+                                <div>
+                                    <p style={{ fontSize: 'var(--text-xs)', color: 'var(--color-gray-500)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 'var(--space-1)' }}>Location</p>
+                                    <p style={{ fontWeight: 600, color: 'var(--color-navy)' }}>{result.location}</p>
+                                </div>
+                                <div>
+                                    <p style={{ fontSize: 'var(--text-xs)', color: 'var(--color-gray-500)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 'var(--space-1)' }}>Hours Completed</p>
+                                    <p style={{ fontWeight: 600, color: 'var(--color-navy)' }}>{result.hoursCompleted} of {result.hoursRequired} hours</p>
+                                </div>
+                                <div>
+                                    <p style={{ fontSize: 'var(--text-xs)', color: 'var(--color-gray-500)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 'var(--space-1)' }}>Verification Code</p>
+                                    <p style={{ fontWeight: 600, color: 'var(--color-navy)', fontFamily: 'var(--font-mono)' }}>{result.verificationCode}</p>
+                                </div>
+                                <div>
+                                    <p style={{ fontSize: 'var(--text-xs)', color: 'var(--color-gray-500)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 'var(--space-1)' }}>Status</p>
+                                    <span style={{
+                                        display: 'inline-block', padding: '2px 10px', borderRadius: '9999px',
+                                        fontSize: 'var(--text-xs)', fontWeight: 600, textTransform: 'capitalize',
+                                        background: result.status === 'completed' ? '#eff6ff' : '#ecfdf5',
+                                        color: result.status === 'completed' ? '#2563eb' : '#059669'
+                                    }}>
+                                        {result.status}
+                                    </span>
+                                </div>
+                                <div>
+                                    <p style={{ fontSize: 'var(--text-xs)', color: 'var(--color-gray-500)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 'var(--space-1)' }}>Issued Date</p>
+                                    <p style={{ fontWeight: 600, color: 'var(--color-navy)' }}>{new Date(result.issuedDate).toLocaleDateString()}</p>
+                                </div>
+                            </div>
+
+                            {/* Download links */}
+                            {(result.certificateUrl || result.hourLogUrl) && (
+                                <div style={{ marginTop: 'var(--space-5)', paddingTop: 'var(--space-4)', borderTop: '1px solid #a7f3d0', display: 'flex', gap: 'var(--space-3)' }}>
+                                    {result.certificateUrl && (
+                                        <a href={result.certificateUrl} target="_blank" className="btn btn-primary" style={{ fontSize: 'var(--text-sm)' }}>
+                                            📄 Download Certificate
+                                        </a>
+                                    )}
+                                    {result.hourLogUrl && (
+                                        <a href={result.hourLogUrl} target="_blank" className="btn btn-secondary" style={{ fontSize: 'var(--text-sm)' }}>
+                                            📋 Download Hour Log
+                                        </a>
+                                    )}
+                                </div>
+                            )}
                         </div>
                     )}
 
+                    {/* Manual fallback */}
                     <div style={{
-                        marginTop: 'var(--space-10)',
-                        padding: 'var(--space-6)',
-                        background: 'var(--color-gray-50)',
-                        borderRadius: 'var(--radius-lg)',
-                        border: '1px solid var(--color-gray-200)',
+                        marginTop: 'var(--space-10)', padding: 'var(--space-6)',
+                        background: 'var(--color-gray-50)', borderRadius: 'var(--radius-lg)',
+                        border: '1px solid var(--color-gray-200)'
                     }}>
                         <h3 style={{ fontSize: 'var(--text-lg)', marginBottom: 'var(--space-3)' }}>Manual Verification (Fallback)</h3>
                         <p style={{ color: 'var(--color-gray-600)', fontSize: 'var(--text-sm)', lineHeight: 'var(--leading-relaxed)' }}>

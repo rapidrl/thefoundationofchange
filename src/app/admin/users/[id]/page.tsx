@@ -1,213 +1,231 @@
-import { redirect } from 'next/navigation';
-import { createClient } from '@/lib/supabase/server';
+import { requireAdmin } from '@/lib/admin';
 import Link from 'next/link';
-import EditHoursForm from './EditHoursForm';
-import styles from '../../page.module.css';
+import { notFound } from 'next/navigation';
+import styles from '../../admin.module.css';
+import AdminUserEditor from './AdminUserEditor';
+import type { Metadata } from 'next';
 
-export const metadata = {
-    title: 'User Detail | Admin',
+export const metadata: Metadata = {
+    title: 'User Detail — Admin',
+    description: 'View and edit user information.',
 };
 
-export default async function AdminUserDetailPage({
-    params,
-}: {
+interface PageProps {
     params: Promise<{ id: string }>;
-}) {
+}
+
+export default async function AdminUserDetailPage({ params }: PageProps) {
     const { id } = await params;
-    const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) redirect('/login');
+    const { supabase } = await requireAdmin();
 
-    const { data: adminProfile } = await supabase
-        .from('profiles')
-        .select('role')
-        .eq('id', user.id)
-        .single();
-
-    if (adminProfile?.role !== 'admin') redirect('/dashboard');
-
-    // Get target user
+    // Fetch user profile
     const { data: profile } = await supabase
         .from('profiles')
         .select('*')
         .eq('id', id)
         .single();
 
-    if (!profile) redirect('/admin/users');
+    if (!profile) {
+        notFound();
+    }
 
-    // Get enrollments
-    const { data: enrollments } = await supabase
-        .from('enrollments')
-        .select('*')
-        .eq('user_id', id)
-        .order('created_at', { ascending: false });
-
-    // Get hour logs
-    const { data: hourLogs } = await supabase
-        .from('hour_logs')
-        .select('*')
-        .eq('user_id', id)
-        .order('log_date', { ascending: false })
-        .limit(30);
-
-    // Get certificates
-    const { data: certificates } = await supabase
-        .from('certificates')
-        .select('*')
-        .eq('user_id', id);
-
-    // Get reflections
-    const { data: reflections } = await supabase
-        .from('reflections')
-        .select('*, articles:article_id (title)')
-        .eq('user_id', id)
-        .order('submitted_at', { ascending: false });
+    // Fetch all related data in parallel
+    const [
+        { data: enrollments },
+        { data: hourLogs },
+        { data: reflections },
+        { data: certificates },
+    ] = await Promise.all([
+        supabase
+            .from('enrollments')
+            .select('*')
+            .eq('user_id', id)
+            .order('created_at', { ascending: false }),
+        supabase
+            .from('hour_logs')
+            .select('*')
+            .eq('user_id', id)
+            .order('log_date', { ascending: true }),
+        supabase
+            .from('reflections')
+            .select('*')
+            .eq('user_id', id)
+            .order('submitted_at', { ascending: false }),
+        supabase
+            .from('certificates')
+            .select('*')
+            .eq('user_id', id)
+            .order('issued_at', { ascending: false }),
+    ]);
 
     return (
-        <div className={styles.layout}>
-            <aside className={styles.sidebar}>
-                <h2 className={styles.sidebarTitle}>Admin</h2>
-                <nav className={styles.nav}>
-                    <Link href="/admin" className={styles.navItem}>📊 Dashboard</Link>
-                    <Link href="/admin/users" className={`${styles.navItem} ${styles.navActive}`}>👥 Users</Link>
-                    <Link href="/admin/enrollments" className={styles.navItem}>📋 Enrollments</Link>
-                    <Link href="/admin/reflections" className={styles.navItem}>📝 Reflections</Link>
-                </nav>
-            </aside>
+        <>
+            {/* Back Link */}
+            <Link href="/admin/users" className={styles.backLink}>
+                ← Back to Users
+            </Link>
 
-            <main className={styles.main}>
-                <Link href="/admin/users" style={{ fontSize: 'var(--text-sm)', color: 'var(--color-blue)', marginBottom: 'var(--space-4)', display: 'inline-block' }}>
-                    ← Back to Users
-                </Link>
+            {/* Page Header */}
+            <h1 className={styles.pageTitle}>{profile.full_name}</h1>
+            <p className={styles.pageSubtitle}>{profile.email} • Member since {new Date(profile.created_at).toLocaleDateString()}</p>
 
-                <h1 className={styles.pageTitle}>{profile.full_name}</h1>
+            {/* Editable Profile + Enrollments */}
+            <div className={styles.detailGrid}>
+                <AdminUserEditor
+                    profile={{
+                        id: profile.id,
+                        full_name: profile.full_name || '',
+                        email: profile.email || '',
+                        phone: profile.phone || '',
+                        date_of_birth: profile.date_of_birth || '',
+                        gender: profile.gender || '',
+                        address: profile.address || '',
+                        city: profile.city || '',
+                        state: profile.state || '',
+                        zip_code: profile.zip_code || '',
+                        probation_officer: profile.probation_officer || '',
+                        court_id: profile.court_id || '',
+                        reason_for_service: profile.reason_for_service || '',
+                        role: profile.role || 'participant',
+                    }}
+                    enrollments={(enrollments || []).map(e => ({
+                        id: e.id,
+                        hours_required: Number(e.hours_required) || 0,
+                        hours_completed: Number(e.hours_completed) || 0,
+                        status: e.status,
+                        amount_paid: Number(e.amount_paid) || 0,
+                        start_date: e.start_date,
+                    }))}
+                />
+            </div>
 
-                {/* Profile Info */}
-                <section className={styles.section}>
-                    <h2 className={styles.sectionTitle}>Profile Information</h2>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 'var(--space-4)' }}>
-                        <div><strong>Email:</strong> {profile.email}</div>
-                        <div><strong>Phone:</strong> {profile.phone || '—'}</div>
-                        <div><strong>Address:</strong> {profile.address || '—'}</div>
-                        <div><strong>City:</strong> {profile.city || '—'}</div>
-                        <div><strong>State:</strong> {profile.state || '—'}</div>
-                        <div><strong>Zip:</strong> {profile.zip_code || '—'}</div>
-                        <div><strong>Probation Officer:</strong> {profile.probation_officer || '—'}</div>
-                        <div><strong>Court ID:</strong> {profile.court_id || '—'}</div>
-                        <div><strong>Role:</strong> <span className={`${styles.badge} ${profile.role === 'admin' ? styles.badge_completed : styles.badge_active}`}>{profile.role}</span></div>
-                        <div><strong>Joined:</strong> {new Date(profile.created_at).toLocaleDateString()}</div>
-                    </div>
-                </section>
-
-                {/* Enrollments */}
-                <section className={styles.section}>
-                    <h2 className={styles.sectionTitle}>Enrollments ({(enrollments || []).length})</h2>
-                    {(enrollments || []).map((e) => (
-                        <div key={e.id} style={{
-                            border: '1px solid var(--color-gray-200)',
-                            borderRadius: 'var(--radius-lg)',
-                            padding: 'var(--space-4)',
-                            marginBottom: 'var(--space-3)',
-                            background: 'var(--color-white)',
-                        }}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--space-3)' }}>
-                                <div>
-                                    <span className={`${styles.badge} ${styles[`badge_${e.status}`]}`}>{e.status}</span>
-                                    <span style={{ marginLeft: 'var(--space-3)', fontSize: 'var(--text-sm)', color: 'var(--color-gray-500)' }}>
-                                        {new Date(e.created_at).toLocaleDateString()}
-                                    </span>
-                                </div>
-                                <div style={{ fontWeight: 600 }}>${parseFloat(e.amount_paid || 0).toFixed(2)}</div>
-                            </div>
-
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                <div>
-                                    <strong>{e.hours_completed}</strong> / {e.hours_required} hours
-                                    {e.stripe_payment_id && (
-                                        <span style={{ marginLeft: 'var(--space-3)', fontSize: 'var(--text-xs)', color: 'var(--color-gray-400)', fontFamily: 'monospace' }}>
-                                            {e.stripe_payment_id}
-                                        </span>
-                                    )}
-                                </div>
-                                <div className={styles.progressMini} style={{ width: '120px' }}>
-                                    <div className={styles.progressFill} style={{ width: `${Math.min((e.hours_completed / e.hours_required) * 100, 100)}%` }} />
-                                </div>
-                            </div>
-
-                            {/* Edit hours form */}
-                            <EditHoursForm enrollmentId={e.id} currentHours={e.hours_completed} />
-                        </div>
-                    ))}
-                </section>
-
-                {/* Recent Hour Logs */}
-                <section className={styles.section}>
-                    <h2 className={styles.sectionTitle}>Recent Hour Logs</h2>
-                    <div className={styles.tableWrap}>
+            {/* Hour Log Table */}
+            <div className={styles.detailGrid} style={{ marginBottom: 0 }}>
+                <div className={`${styles.detailCard} ${styles.detailCardFull}`}>
+                    <h3>⏱️ Daily Hour Log</h3>
+                    {hourLogs && hourLogs.length > 0 ? (
                         <table className={styles.table}>
                             <thead>
                                 <tr>
                                     <th>Date</th>
                                     <th>Hours</th>
+                                    <th>Minutes</th>
+                                    <th>Total</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {(hourLogs || []).map((log) => (
-                                    <tr key={log.id}>
-                                        <td>{new Date(log.log_date).toLocaleDateString()}</td>
-                                        <td>{parseFloat(log.hours).toFixed(2)}</td>
-                                    </tr>
-                                ))}
-                                {(!hourLogs || hourLogs.length === 0) && (
-                                    <tr><td colSpan={2} style={{ textAlign: 'center', color: 'var(--color-gray-400)' }}>No logs</td></tr>
-                                )}
+                                {(() => {
+                                    let runningTotal = 0;
+                                    return hourLogs.map((log) => {
+                                        const h = Number(log.hours) || 0;
+                                        const m = Number(log.minutes) || 0;
+                                        runningTotal += h + m / 60;
+                                        return (
+                                            <tr key={log.id}>
+                                                <td>{new Date(log.log_date + 'T00:00:00').toLocaleDateString()}</td>
+                                                <td>{h}h</td>
+                                                <td>{m}m</td>
+                                                <td><strong>{runningTotal.toFixed(1)}h</strong></td>
+                                            </tr>
+                                        );
+                                    });
+                                })()}
                             </tbody>
                         </table>
-                    </div>
-                </section>
-
-                {/* Certificates */}
-                <section className={styles.section}>
-                    <h2 className={styles.sectionTitle}>Certificates ({(certificates || []).length})</h2>
-                    {(certificates || []).map((cert) => (
-                        <div key={cert.id} style={{
-                            border: '1px solid var(--color-gray-200)',
-                            borderRadius: 'var(--radius-md)',
-                            padding: 'var(--space-3)',
-                            marginBottom: 'var(--space-2)',
-                            fontSize: 'var(--text-sm)',
-                        }}>
-                            <strong>{cert.verification_code}</strong> — {cert.hours_verified} hours — Issued {new Date(cert.issued_at).toLocaleDateString()}
-                        </div>
-                    ))}
-                    {(!certificates || certificates.length === 0) && (
-                        <p style={{ color: 'var(--color-gray-400)', fontSize: 'var(--text-sm)' }}>No certificates issued</p>
+                    ) : (
+                        <div className={styles.emptyState}>No hour logs recorded</div>
                     )}
-                </section>
+                </div>
+            </div>
 
-                {/* Reflections */}
-                <section className={styles.section}>
-                    <h2 className={styles.sectionTitle}>Reflections ({(reflections || []).length})</h2>
-                    {(reflections || []).map((r) => (
-                        <div key={r.id} style={{
-                            border: '1px solid var(--color-gray-200)',
-                            borderRadius: 'var(--radius-md)',
-                            padding: 'var(--space-4)',
-                            marginBottom: 'var(--space-3)',
-                        }}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 'var(--space-2)' }}>
-                                <strong style={{ fontSize: 'var(--text-sm)' }}>
-                                    {(r.articles as { title: string })?.title || 'Article'}
-                                </strong>
-                                <span className={`${styles.badge} ${styles[`badge_${r.status}`]}`}>{r.status}</span>
-                            </div>
-                            <p style={{ fontSize: 'var(--text-sm)', color: 'var(--color-gray-600)', lineHeight: 1.6 }}>
-                                {r.response_text.substring(0, 200)}{r.response_text.length > 200 ? '...' : ''}
-                            </p>
-                        </div>
-                    ))}
-                </section>
-            </main>
-        </div>
+            {/* Reflections */}
+            <div className={styles.detailGrid} style={{ marginTop: 'var(--space-6)' }}>
+                <div className={`${styles.detailCard} ${styles.detailCardFull}`}>
+                    <h3>💬 Reflections ({reflections?.length ?? 0})</h3>
+                    {reflections && reflections.length > 0 ? (
+                        <table className={styles.table}>
+                            <thead>
+                                <tr>
+                                    <th>Article</th>
+                                    <th>Response</th>
+                                    <th>Status</th>
+                                    <th>Submitted</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {reflections.map((ref) => {
+                                    const statusClass = ref.status === 'approved' ? styles.badgeApproved
+                                        : ref.status === 'flagged' ? styles.badgeFlagged
+                                            : styles.badgePending;
+                                    return (
+                                        <tr key={ref.id}>
+                                            <td><strong>{ref.article_title}</strong></td>
+                                            <td style={{ maxWidth: '400px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                                {ref.response_text}
+                                            </td>
+                                            <td>
+                                                <span className={`${styles.badge} ${statusClass}`}>
+                                                    {ref.status}
+                                                </span>
+                                            </td>
+                                            <td>{new Date(ref.submitted_at).toLocaleDateString()}</td>
+                                        </tr>
+                                    );
+                                })}
+                            </tbody>
+                        </table>
+                    ) : (
+                        <div className={styles.emptyState}>No reflections submitted</div>
+                    )}
+                </div>
+            </div>
+
+            {/* Certificates */}
+            <div className={styles.detailGrid} style={{ marginTop: 'var(--space-6)' }}>
+                <div className={`${styles.detailCard} ${styles.detailCardFull}`}>
+                    <h3>🎓 Certificates ({certificates?.length ?? 0})</h3>
+                    {certificates && certificates.length > 0 ? (
+                        <table className={styles.table}>
+                            <thead>
+                                <tr>
+                                    <th>Verification Code</th>
+                                    <th>Issued Date</th>
+                                    <th>Certificate</th>
+                                    <th>Hour Log</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {certificates.map((cert) => (
+                                    <tr key={cert.id}>
+                                        <td><strong>{cert.verification_code}</strong></td>
+                                        <td>{new Date(cert.issued_at).toLocaleDateString()}</td>
+                                        <td>
+                                            {cert.certificate_url ? (
+                                                <a href={cert.certificate_url} target="_blank" className={styles.downloadBtn}>
+                                                    📄 Download
+                                                </a>
+                                            ) : (
+                                                <span style={{ color: 'var(--color-gray-400)', fontSize: 'var(--text-xs)' }}>Not available</span>
+                                            )}
+                                        </td>
+                                        <td>
+                                            {cert.hour_log_url ? (
+                                                <a href={cert.hour_log_url} target="_blank" className={styles.downloadBtn}>
+                                                    📋 Download
+                                                </a>
+                                            ) : (
+                                                <span style={{ color: 'var(--color-gray-400)', fontSize: 'var(--text-xs)' }}>Not available</span>
+                                            )}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    ) : (
+                        <div className={styles.emptyState}>No certificates issued</div>
+                    )}
+                </div>
+            </div>
+        </>
     );
 }

@@ -1,26 +1,41 @@
 import Stripe from 'stripe';
 
-if (!process.env.STRIPE_SECRET_KEY) {
-    throw new Error('Missing STRIPE_SECRET_KEY environment variable');
+let _stripe: Stripe | null = null;
+
+export function getStripe(): Stripe {
+    if (!_stripe) {
+        const key = process.env.STRIPE_SECRET_KEY;
+        if (!key) {
+            throw new Error('STRIPE_SECRET_KEY is not set. Add it to .env.local');
+        }
+        _stripe = new Stripe(key, {
+            apiVersion: '2026-01-28.clover',
+            typescript: true,
+        });
+    }
+    return _stripe;
 }
 
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-    typescript: true,
-});
-
-// Program tiers matching the pricing page
-export const PROGRAM_TIERS = [
-    { id: 'tier_1_10', hours: '1–10', maxHours: 10, price: 2899, label: '1–10 Hours' },
-    { id: 'tier_11_25', hours: '11–25', maxHours: 25, price: 4499, label: '11–25 Hours' },
-    { id: 'tier_26_50', hours: '26–50', maxHours: 50, price: 5999, label: '26–50 Hours' },
-    { id: 'tier_51_100', hours: '51–100', maxHours: 100, price: 7999, label: '51–100 Hours' },
-    { id: 'tier_101_250', hours: '101–250', maxHours: 250, price: 11999, label: '101–250 Hours' },
-    { id: 'tier_251_500', hours: '251–500', maxHours: 500, price: 16999, label: '251–500 Hours' },
-    { id: 'tier_501_1000', hours: '501–1000', maxHours: 1000, price: 22999, label: '501–1000 Hours' },
+/**
+ * Pricing tiers — exact pricing from thefoundationofchange.org
+ * Each tier defines a range; the user picks exact hours and the system
+ * finds the matching tier automatically.
+ */
+export const PRICING_TIERS = [
+    { id: 'tier-1-5', minHours: 1, maxHours: 5, priceInCents: 2899, price: '$28.99' },
+    { id: 'tier-6-10', minHours: 6, maxHours: 10, priceInCents: 7899, price: '$78.99' },
+    { id: 'tier-11-25', minHours: 11, maxHours: 25, priceInCents: 10599, price: '$105.99' },
+    { id: 'tier-26-50', minHours: 26, maxHours: 50, priceInCents: 13499, price: '$134.99' },
+    { id: 'tier-51-75', minHours: 51, maxHours: 75, priceInCents: 15499, price: '$154.99' },
+    { id: 'tier-76-250', minHours: 76, maxHours: 250, priceInCents: 17499, price: '$174.99' },
+    { id: 'tier-251-500', minHours: 251, maxHours: 500, priceInCents: 19499, price: '$194.99' },
+    { id: 'tier-501-1000', minHours: 501, maxHours: 1000, priceInCents: 21499, price: '$214.99' },
 ] as const;
 
-export type ProgramTier = typeof PROGRAM_TIERS[number];
-
-export function getTierById(id: string): ProgramTier | undefined {
-    return PROGRAM_TIERS.find((t) => t.id === id);
+/**
+ * Find the pricing tier for a given number of hours.
+ * Returns the tier or null if hours is out of range.
+ */
+export function getTierForHours(hours: number) {
+    return PRICING_TIERS.find((t) => hours >= t.minHours && hours <= t.maxHours) || null;
 }

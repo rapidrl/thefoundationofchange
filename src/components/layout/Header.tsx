@@ -6,6 +6,7 @@ import styles from './Header.module.css';
 
 const navLinks = [
     { href: '/community', label: 'Community Service Program' },
+    { href: '/states', label: 'State Programs' },
     { href: '/faq', label: 'FAQ' },
     { href: '/how-it-works', label: 'How It Works' },
     { href: '/additional-services', label: 'Additional Services' },

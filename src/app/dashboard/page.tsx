@@ -38,7 +38,17 @@ export default async function DashboardPage() {
         .select('*')
         .eq('user_id', user.id);
 
+    // Fetch hour logs for active enrollment
     const activeEnrollment = enrollments?.find((e) => e.status === 'active');
+    let hourLogs: Array<{ id: string; log_date: string; hours: number; minutes: number }> | null = null;
+    if (activeEnrollment) {
+        const { data } = await supabase
+            .from('hour_logs')
+            .select('*')
+            .eq('enrollment_id', activeEnrollment.id)
+            .order('log_date', { ascending: true });
+        hourLogs = data;
+    }
     const totalHoursCompleted = activeEnrollment?.hours_completed ?? 0;
     const totalHoursRequired = activeEnrollment?.hours_required ?? 0;
     const progressPercent = totalHoursRequired > 0
@@ -50,8 +60,11 @@ export default async function DashboardPage() {
             <div className="container">
                 {/* Greeting */}
                 <div className={styles.greeting}>
-                    <h1>Welcome, {profile?.full_name || user.email}</h1>
-                    <p>{user.email}</p>
+                    <div>
+                        <h1>Welcome, {profile?.full_name || user.email}</h1>
+                        <p>{user.email}</p>
+                    </div>
+                    <Link href="/dashboard/profile" style={{ fontSize: 'var(--text-sm)', color: 'var(--color-blue)', fontWeight: 500 }}>✏️ Edit Profile</Link>
                 </div>
 
                 {/* Stats */}
@@ -120,6 +133,47 @@ export default async function DashboardPage() {
                         ))}
                     </div>
                 )}
+
+                {/* Hour Log Detail */}
+                <div className={styles.section}>
+                    <h2>Your Hour Log</h2>
+                    {hourLogs && hourLogs.length > 0 ? (
+                        <div className={styles.hourLogTable}>
+                            <table className={styles.table}>
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Hours</th>
+                                        <th>Minutes</th>
+                                        <th>Running Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {(() => {
+                                        let runningTotal = 0;
+                                        return hourLogs.map((log) => {
+                                            const h = Number(log.hours) || 0;
+                                            const m = Number(log.minutes) || 0;
+                                            runningTotal += h + m / 60;
+                                            return (
+                                                <tr key={log.id}>
+                                                    <td>{new Date(log.log_date + 'T00:00:00').toLocaleDateString()}</td>
+                                                    <td>{h}h</td>
+                                                    <td>{m}m</td>
+                                                    <td><strong>{runningTotal.toFixed(1)}h</strong></td>
+                                                </tr>
+                                            );
+                                        });
+                                    })()}
+                                </tbody>
+                            </table>
+                        </div>
+                    ) : (
+                        <div className={styles.emptyState}>
+                            <p>No hours logged yet. Start your coursework to begin tracking time.</p>
+                        </div>
+                    )}
+                </div>
 
                 {/* Logout */}
                 <LogoutButton />

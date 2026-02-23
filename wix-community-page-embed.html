@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Service Program - The Foundation of Change</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ============================================
+           DESIGN TOKENS & RESETS
+           ============================================ */
+        :root {
+            --color-navy: #1a2744;
+            --color-navy-light: #2a3a5c;
+            --color-navy-dark: #0f1a2e;
+            --color-blue: #2563eb;
+            --color-blue-light: #3b82f6;
+            --color-blue-dark: #1d4ed8;
+            --color-gold: #d4a853;
+            --color-gold-light: #e2c07a;
+            --color-white: #ffffff;
+            --color-gray-50: #f9fafb;
+            --color-gray-100: #f3f4f6;
+            --color-gray-200: #e5e7eb;
+            --color-gray-300: #d1d5db;
+            --color-gray-400: #9ca3af;
+            --color-gray-500: #6b7280;
+            --color-gray-600: #4b5563;
+            --color-gray-700: #374151;
+            --color-gray-800: #1f2937;
+            --color-gray-900: #111827;
+
+            --font-heading: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+            --text-xs: 0.75rem;
+            --text-sm: 0.875rem;
+            --text-base: 1rem;
+            --text-lg: 1.125rem;
+            --text-xl: 1.25rem;
+            --text-2xl: 1.5rem;
+            --text-3xl: 1.875rem;
+            --text-4xl: 2.25rem;
+
+            --leading-relaxed: 1.625;
+
+            --weight-normal: 400;
+            --weight-medium: 500;
+            --weight-semibold: 600;
+            --weight-bold: 700;
+
+            --space-1: 0.25rem;
+            --space-2: 0.5rem;
+            --space-3: 0.75rem;
+            --space-4: 1rem;
+            --space-5: 1.25rem;
+            --space-6: 1.5rem;
+            --space-8: 2rem;
+            --space-10: 2.5rem;
+            --space-12: 3rem;
+            --space-16: 4rem;
+            --space-20: 5rem;
+            --space-24: 6rem;
+
+            --max-width: 1200px;
+
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+            --radius-full: 9999px;
+
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+
+            --transition-fast: 150ms ease;
+            --transition-normal: 250ms ease;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--color-white);
+            color: var(--color-gray-800);
+            line-height: var(--leading-relaxed);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            width: 100%;
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 var(--space-6);
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: var(--font-heading);
+            font-weight: var(--weight-bold);
+            color: var(--color-navy);
+            line-height: 1.2;
+            margin-bottom: var(--space-3);
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* ============================================
+           SECTIONS
+           ============================================ */
+        .section {
+            padding: var(--space-20) 0;
+        }
+
+        .sectionAlt {
+            padding: var(--space-20) 0;
+            background: var(--color-gray-50);
+        }
+
+        .sectionDark {
+            padding: var(--space-20) 0;
+            background: linear-gradient(135deg, var(--color-navy-dark) 0%, var(--color-navy) 100%);
+        }
+
+        .sectionTitle {
+            text-align: center;
+            font-size: var(--text-3xl);
+            margin-bottom: var(--space-3);
+        }
+
+        .sectionSubtitle {
+            text-align: center;
+            color: var(--color-gray-500);
+            font-size: var(--text-lg);
+            max-width: 550px;
+            margin: 0 auto var(--space-12);
+        }
+
+        .sectionTitleLight {
+            text-align: center;
+            font-size: var(--text-3xl);
+            color: var(--color-white);
+            margin-bottom: var(--space-3);
+        }
+
+        .sectionSubtitleLight {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: var(--text-lg);
+            max-width: 550px;
+            margin: 0 auto var(--space-12);
+        }
+
+        /* HERO */
+        .hero {
+            position: relative;
+            background: linear-gradient(135deg, var(--color-navy-dark) 0%, #0c1b3a 40%, #162d5a 100%);
+            padding: var(--space-24) 0 var(--space-20);
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .heroOverlay {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 80% 50% at 50% 0%, rgba(37, 99, 235, 0.15) 0%, transparent 60%), radial-gradient(ellipse 60% 40% at 80% 100%, rgba(212, 168, 83, 0.08) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .heroContent {
+            position: relative;
+            z-index: 1;
+        }
+
+        .heroBadges {
+            display: flex;
+            gap: var(--space-3);
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: var(--space-8);
+        }
+
+        .heroBadge {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: var(--radius-full);
+            padding: var(--space-2) var(--space-5);
+            font-size: var(--text-sm);
+            font-weight: var(--weight-semibold);
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .heroTitle {
+            color: var(--color-white);
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            max-width: 800px;
+            margin: 0 auto var(--space-6);
+        }
+
+        .heroAccent {
+            color: var(--color-gold-light);
+            display: block;
+        }
+
+        .heroSubtitle {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: var(--text-lg);
+            max-width: 620px;
+            margin: 0 auto var(--space-10);
+        }
+
+        .heroCta {
+            display: flex;
+            gap: var(--space-4);
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* CTA BUTTONS */
+        .ctaPrimary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-4) var(--space-8);
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            color: var(--color-white) !important;
+            font-size: var(--text-lg);
+            font-weight: var(--weight-bold);
+            border-radius: var(--radius-lg);
+            transition: all var(--transition-normal);
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+        }
+
+        .ctaPrimary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.5);
+        }
+
+        .ctaSecondary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-4) var(--space-8);
+            background: transparent;
+            color: rgba(255, 255, 255, 0.85) !important;
+            font-size: var(--text-base);
+            font-weight: var(--weight-semibold);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: var(--radius-lg);
+            transition: all var(--transition-normal);
+        }
+
+        .ctaSecondary:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--color-white) !important;
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-1px);
+        }
+
+        /* STATS BAR */
+        .statsBar {
+            background: var(--color-white);
+            border-bottom: 3px solid var(--color-gold);
+            padding: var(--space-10) 0;
+        }
+
+        .statsInner {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: var(--space-6);
+            text-align: center;
+        }
+
+        .statItem {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-1);
+        }
+
+        .statValue {
+            font-size: var(--text-3xl);
+            font-weight: var(--weight-bold);
+            color: var(--color-navy);
+        }
+
+        .statLabel {
+            font-size: var(--text-sm);
+            color: var(--color-gray-500);
+            font-weight: var(--weight-medium);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        /* STEPS */
+        .stepsGrid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--space-8);
+            position: relative;
+        }
+
+        .stepsGrid::before {
+            content: '';
+            position: absolute;
+            top: 44px;
+            left: calc(16.67% + 20px);
+            right: calc(16.67% + 20px);
+            height: 2px;
+            background: linear-gradient(90deg, var(--color-gold) 0%, var(--color-blue-light) 50%, var(--color-gold) 100%);
+            z-index: 0;
+        }
+
+        .stepCard {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            padding: var(--space-6);
+            background: var(--color-white);
+            border-radius: var(--radius-xl);
+            border: 1px solid var(--color-gray-200);
+            transition: all var(--transition-normal);
+        }
+
+        .stepCard:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--color-blue-light);
+        }
+
+        .stepNumber {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--color-blue) 0%, var(--color-blue-dark) 100%);
+            color: var(--color-white);
+            font-size: var(--text-xl);
+            font-weight: var(--weight-bold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto var(--space-4);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+        .stepIcon {
+            font-size: 2rem;
+            display: block;
+            margin-bottom: var(--space-3);
+        }
+
+        .stepCard h3 {
+            font-size: var(--text-xl);
+            margin-bottom: var(--space-2);
+            color: var(--color-navy);
+        }
+
+        .stepCard p {
+            font-size: var(--text-sm);
+            color: var(--color-gray-500);
+        }
+
+        /* AUDIENCE */
+        .audienceGrid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--space-6);
+        }
+
+        .audienceCard {
+            background: var(--color-white);
+            border-radius: var(--radius-xl);
+            padding: var(--space-8);
+            border: 1px solid var(--color-gray-200);
+            transition: all var(--transition-normal);
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .audienceCard:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+            border-color: var(--color-blue-light);
+        }
+
+        .audienceIcon {
+            font-size: 2.5rem;
+            margin-bottom: var(--space-4);
+        }
+
+        .audienceCard h3 {
+            font-size: var(--text-xl);
+            color: var(--color-navy);
+            margin-bottom: var(--space-3);
+        }
+
+        .audienceCard p {
+            font-size: var(--text-base);
+            color: var(--color-gray-600);
+            margin-bottom: var(--space-6);
+            flex: 1;
+        }
+
+        .audienceCta {
+            font-weight: var(--weight-semibold);
+            color: var(--color-blue) !important;
+            font-size: var(--text-base);
+            transition: transform var(--transition-fast);
+        }
+
+        .audienceCta:hover {
+            color: var(--color-blue-dark) !important;
+            transform: translateX(4px);
+            display: inline-block;
+        }
+
+        /* TRUST GRID */
+        .trustGrid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--space-6);
+        }
+
+        .trustCard {
+            padding: var(--space-6);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--color-gray-200);
+            background: var(--color-white);
+            transition: all var(--transition-normal);
+            text-align: center;
+        }
+
+        .trustCard:hover {
+            border-color: var(--color-gold);
+            box-shadow: 0 4px 20px rgba(212, 168, 83, 0.12);
+        }
+
+        .trustIcon {
+            font-size: 2rem;
+            display: block;
+            margin-bottom: var(--space-3);
+        }
+
+        .trustCard h4 {
+            font-size: var(--text-base);
+            color: var(--color-navy);
+            margin-bottom: var(--space-2);
+        }
+
+        .trustCard p {
+            font-size: var(--text-sm);
+            color: var(--color-gray-500);
+        }
+
+        /* TESTIMONIALS */
+        .testimonialsGrid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--space-6);
+        }
+
+        .testimonialCard {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-xl);
+            padding: var(--space-8);
+            transition: all var(--transition-normal);
+        }
+
+        .testimonialCard:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .testimonialStars {
+            color: var(--color-gold);
+            font-size: var(--text-lg);
+            letter-spacing: 2px;
+            margin-bottom: var(--space-4);
+        }
+
+        .testimonialText {
+            color: rgba(255, 255, 255, 0.85);
+            font-size: var(--text-base);
+            margin-bottom: var(--space-6);
+            font-style: italic;
+        }
+
+        .testimonialAuthor {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+        }
+
+        .testimonialAvatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--color-blue) 0%, var(--color-blue-dark) 100%);
+            color: var(--color-white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: var(--weight-bold);
+            font-size: var(--text-lg);
+            flex-shrink: 0;
+        }
+
+        .testimonialAuthor strong {
+            display: block;
+            color: var(--color-white);
+            font-size: var(--text-sm);
+        }
+
+        .testimonialAuthor span {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: var(--text-xs);
+        }
+
+        /* FAQ ACCORDION */
+        .faqList {
+            max-width: 760px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-3);
+        }
+
+        .faqItem {
+            border: 1px solid var(--color-gray-200);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            background: var(--color-white);
+            transition: all var(--transition-normal);
+        }
+
+        .faqItem.faqOpen {
+            border-color: var(--color-blue-light);
+            box-shadow: 0 2px 12px rgba(37, 99, 235, 0.08);
+        }
+
+        .faqQuestion {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--space-5) var(--space-6);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: var(--font-body);
+            font-size: var(--text-base);
+            font-weight: var(--weight-semibold);
+            color: var(--color-navy);
+            text-align: left;
+        }
+
+        .faqChevron {
+            font-size: var(--text-xl);
+            color: var(--color-gray-400);
+        }
+
+        .faqAnswer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s ease, padding 0.35s ease;
+            padding: 0 var(--space-6);
+        }
+
+        .faqItem.faqOpen .faqAnswer {
+            max-height: 300px;
+            padding: 0 var(--space-6) var(--space-5);
+        }
+
+        .faqAnswer p {
+            color: var(--color-gray-600);
+            font-size: var(--text-base);
+        }
+
+        /* FINAL CTA */
+        .finalCta {
+            position: relative;
+            background: linear-gradient(135deg, var(--color-navy-dark) 0%, #0c1b3a 100%);
+            padding: var(--space-20) 0;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .finalCtaGlow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.15) 0%, transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+
+        .finalCtaContent {
+            position: relative;
+            z-index: 1;
+        }
+
+        .finalCtaContent h2 {
+            color: var(--color-white);
+            font-size: clamp(1.75rem, 4vw, var(--text-4xl));
+            margin-bottom: var(--space-4);
+        }
+
+        .finalCtaContent p {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: var(--text-lg);
+            max-width: 550px;
+            margin: 0 auto var(--space-8);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1024px) {
+            .stepsGrid::before {
+                display: none;
+            }
+
+            .trustGrid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                padding: var(--space-16) 0 var(--space-12);
+            }
+
+            .statsInner {
+                grid-template-columns: repeat(2, 1fr);
+                gap: var(--space-8);
+            }
+
+            .stepsGrid {
+                grid-template-columns: 1fr;
+                max-width: 400px;
+                margin: 0 auto;
+            }
+
+            .audienceGrid,
+            .trustGrid,
+            .testimonialsGrid {
+                grid-template-columns: 1fr;
+            }
+
+            .heroCta {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .ctaPrimary,
+            .ctaSecondary {
+                width: 100%;
+                max-width: 340px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .statsInner {
+                grid-template-columns: repeat(2, 1fr);
+                gap: var(--space-6);
+            }
+
+            .statValue {
+                font-size: var(--text-2xl);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="heroOverlay"></div>
+        <div class="container heroContent">
+            <div class="heroBadges">
+                <span class="heroBadge">✓ Court-Approved</span>
+                <span class="heroBadge">✓ Probation-Compliant</span>
+                <span class="heroBadge">✓ Nationwide</span>
+            </div>
+            <h1 class="heroTitle">
+                Complete Your Community Service Hours
+                <span class="heroAccent"> — 100% Online</span>
+            </h1>
+            <p class="heroSubtitle">
+                A verified, structured nonprofit program accepted by courts, probation officers,
+                and schools across the United States. Start from home — finish on your schedule.
+            </p>
+            <div class="heroCta">
+                <!-- Replace href with Wix links -->
+                <a href="https://www.thefoundationofchange.org/register" class="ctaPrimary">Enroll Now — Get Started
+                    Today</a>
+                <a href="https://www.thefoundationofchange.org/contact-us" class="ctaSecondary">Have Questions? Contact
+                    Us</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- STATS BAR -->
+    <section class="statsBar">
+        <div class="container statsInner">
+            <div class="statItem">
+                <span class="statValue">10,000+</span>
+                <span class="statLabel">Hours Completed</span>
+            </div>
+            <div class="statItem">
+                <span class="statValue">50</span>
+                <span class="statLabel">States Covered</span>
+            </div>
+            <div class="statItem">
+                <span class="statValue">4.9★</span>
+                <span class="statLabel">Satisfaction Rating</span>
+            </div>
+            <div class="statItem">
+                <span class="statValue">501(c)(3)</span>
+                <span class="statLabel">Verified Nonprofit</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="section">
+        <div class="container">
+            <h2 class="sectionTitle">How It Works</h2>
+            <p class="sectionSubtitle">Three simple steps to complete your community service requirement.</p>
+            <div class="stepsGrid">
+                <div class="stepCard">
+                    <div class="stepNumber">1</div>
+                    <span class="stepIcon">📋</span>
+                    <h3>Choose Your Hours</h3>
+                    <p>Select the number of community service hours you need to complete.</p>
+                </div>
+                <div class="stepCard">
+                    <div class="stepNumber">2</div>
+                    <span class="stepIcon">💻</span>
+                    <h3>Complete Coursework</h3>
+                    <p>Work through meaningful, self-paced educational modules from home.</p>
+                </div>
+                <div class="stepCard">
+                    <div class="stepNumber">3</div>
+                    <span class="stepIcon">📜</span>
+                    <h3>Download Certificate</h3>
+                    <p>Instantly receive your verified certificate of completion.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- WHO IS THIS FOR -->
+    <section class="sectionAlt">
+        <div class="container">
+            <h2 class="sectionTitle">Is This Program Right For You?</h2>
+            <p class="sectionSubtitle">Whatever your situation, we're here to help you move forward.</p>
+            <div class="audienceGrid">
+                <div class="audienceCard">
+                    <span class="audienceIcon">⚖️</span>
+                    <h3>Court-Ordered Hours?</h3>
+                    <p>Fulfill your court or probation requirements online with a verified, audit-ready program accepted
+                        nationwide.</p>
+                    <a href="https://www.thefoundationofchange.org/register" class="audienceCta">Start Your Hours →</a>
+                </div>
+                <div class="audienceCard">
+                    <span class="audienceIcon">🎓</span>
+                    <h3>Graduating Soon?</h3>
+                    <p>Earn community service credit for graduation or service learning — on your own schedule.</p>
+                    <a href="https://www.thefoundationofchange.org/register" class="audienceCta">Earn Your Credit →</a>
+                </div>
+                <div class="audienceCard">
+                    <span class="audienceIcon">🤝</span>
+                    <h3>Probation Requirement?</h3>
+                    <p>Complete your probation-mandated community service from the comfort of home, accepted by
+                        probation departments.</p>
+                    <a href="https://www.thefoundationofchange.org/register" class="audienceCta">Get Compliant →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TRUST & CREDIBILITY -->
+    <section class="section">
+        <div class="container">
+            <h2 class="sectionTitle">Why Choose The Foundation of Change</h2>
+            <p class="sectionSubtitle">Built for accountability. Designed for trust.</p>
+            <div class="trustGrid">
+                <div class="trustCard">
+                    <span class="trustIcon">🏛️</span>
+                    <h4>Court Compliant</h4>
+                    <p>Accepted by courts and probation departments across all 50 states.</p>
+                </div>
+                <div class="trustCard">
+                    <span class="trustIcon">🔒</span>
+                    <h4>Audit Ready</h4>
+                    <p>Tamper-proof time tracking with verification logs for every session.</p>
+                </div>
+                <div class="trustCard">
+                    <span class="trustIcon">📄</span>
+                    <h4>501(c)(3) Nonprofit</h4>
+                    <p>A registered nonprofit — your hours are backed by a legitimate organization.</p>
+                </div>
+                <div class="trustCard">
+                    <span class="trustIcon">💡</span>
+                    <h4>Accountability Focused</h4>
+                    <p>CBT-informed coursework that promotes real personal growth and reflection.</p>
+                </div>
+                <div class="trustCard">
+                    <span class="trustIcon">⏰</span>
+                    <h4>Self-Paced</h4>
+                    <p>No deadlines. Complete your hours at your own pace, anytime, anywhere.</p>
+                </div>
+                <div class="trustCard">
+                    <span class="trustIcon">♿</span>
+                    <h4>Fully Accessible</h4>
+                    <p>Designed for all learners. Work from any device, save progress automatically.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section class="sectionDark">
+        <div class="container">
+            <h2 class="sectionTitleLight">What Participants Are Saying</h2>
+            <p class="sectionSubtitleLight">Real stories from real people who completed our program.</p>
+            <div class="testimonialsGrid">
+                <div class="testimonialCard">
+                    <div class="testimonialStars">★★★★★</div>
+                    <p class="testimonialText">“I was nervous about online community service, but this program made it
+                        simple. My probation officer accepted the certificate with no issues.”</p>
+                    <div class="testimonialAuthor">
+                        <div class="testimonialAvatar">M</div>
+                        <div>
+                            <strong>Marcus T.</strong>
+                            <span>Court-Ordered Participant</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonialCard">
+                    <div class="testimonialStars">★★★★★</div>
+                    <p class="testimonialText">“I needed hours for graduation and this was so much more convenient than
+                        finding a local organization. The coursework was actually meaningful.”</p>
+                    <div class="testimonialAuthor">
+                        <div class="testimonialAvatar">S</div>
+                        <div>
+                            <strong>Sarah L.</strong>
+                            <span>High School Senior</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonialCard">
+                    <div class="testimonialStars">★★★★★</div>
+                    <p class="testimonialText">“Completed all my hours in one weekend. The certificate looked
+                        professional and was accepted right away. Highly recommend.”</p>
+                    <div class="testimonialAuthor">
+                        <div class="testimonialAvatar">J</div>
+                        <div>
+                            <strong>James R.</strong>
+                            <span>Probation Requirement</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section" id="faq">
+        <div class="container">
+            <h2 class="sectionTitle">Frequently Asked Questions</h2>
+            <p class="sectionSubtitle">Everything you need to know before enrolling.</p>
+            <div class="faqList" id="faqContainer">
+                <!-- FAQ Items -->
+                <div class="faqItem">
+                    <button class="faqQuestion">
+                        <span>How does the program work?</span>
+                        <span class="faqChevron">+</span>
+                    </button>
+                    <div class="faqAnswer">
+                        <p>Select your required hours, complete educational coursework focused on anger management,
+                            accountability, emotional regulation, and decision-making. A built-in timer tracks your
+                            learning time. Once your hours are fulfilled, download your certificate instantly.</p>
+                    </div>
+                </div>
+                <div class="faqItem">
+                    <button class="faqQuestion">
+                        <span>Will my certificate be accepted by the court?</span>
+                        <span class="faqChevron">+</span>
+                    </button>
+                    <div class="faqAnswer">
+                        <p>We provide a verified certificate of completion from a 501(c)(3) nonprofit. Acceptance is at
+                            the discretion of your referring agency. We recommend confirming with your court or
+                            probation officer before enrolling.</p>
+                    </div>
+                </div>
+                <div class="faqItem">
+                    <button class="faqQuestion">
+                        <span>How long do I have to complete my hours?</span>
+                        <span class="faqChevron">+</span>
+                    </button>
+                    <div class="faqAnswer">
+                        <p>There is no deadline. Complete your hours at your own pace. Your progress is automatically
+                            saved so you can log in and continue anytime.</p>
+                    </div>
+                </div>
+                <div class="faqItem">
+                    <button class="faqQuestion">
+                        <span>Is there a limit to how many hours I can do per day?</span>
+                        <span class="faqChevron">+</span>
+                    </button>
+                    <div class="faqAnswer">
+                        <p>Yes, a maximum of 8 hours per day can be completed toward your service hours to ensure
+                            meaningful engagement with the material.</p>
+                    </div>
+                </div>
+                <div class="faqItem">
+                    <button class="faqQuestion">
+                        <span>How do I get my certificate?</span>
+                        <span class="faqChevron">+</span>
+                    </button>
+                    <div class="faqAnswer">
+                        <p>Once your hours are completed, you can instantly download your certificate from your
+                            dashboard. No waiting, no mail — it's immediate.</p>
+                    </div>
+                </div>
+                <div class="faqItem">
+                    <button class="faqQuestion">
+                        <span>Can I get a refund if my hours are not accepted?</span>
+                        <span class="faqChevron">+</span>
+                    </button>
+                    <div class="faqAnswer">
+                        <p>Access to materials is immediate upon enrollment. We cannot offer refunds once coursework
+                            access is granted. Please confirm acceptance with your referring agency before enrolling.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FINAL CTA -->
+    <section class="finalCta">
+        <div class="finalCtaGlow"></div>
+        <div class="container finalCtaContent">
+            <h2>Don't Wait. Get Started Today.</h2>
+            <p>Join thousands who have completed their community service hours online through our verified nonprofit
+                program.</p>
+            <a href="https://www.thefoundationofchange.org/register" class="ctaPrimary">Enroll Now</a>
+        </div>
+    </section>
+
+    <!-- FAQ Accordion Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const faqItems = document.querySelectorAll('.faqItem');
+
+            faqItems.forEach(item => {
+                const questionBtn = item.querySelector('.faqQuestion');
+
+                questionBtn.addEventListener('click', () => {
+                    // Close other items
+                    faqItems.forEach(otherItem => {
+                        if (otherItem !== item && otherItem.classList.contains('faqOpen')) {
+                            otherItem.classList.remove('faqOpen');
+                            otherItem.querySelector('.faqChevron').textContent = '+';
+                        }
+                    });
+
+                    // Toggle current item
+                    const isOpen = item.classList.contains('faqOpen');
+                    if (isOpen) {
+                        item.classList.remove('faqOpen');
+                        item.querySelector('.faqChevron').textContent = '+';
+                    } else {
+                        item.classList.add('faqOpen');
+                        item.querySelector('.faqChevron').textContent = '−';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

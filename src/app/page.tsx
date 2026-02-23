@@ -25,20 +25,6 @@ export default function Home() {
       {/* Hero Section */}
       <section className={styles.hero}>
         <div className={`container ${styles.heroContent}`}>
-          <h1>Helping Individuals Complete Verified Community Service Online</h1>
-          <p>
-            We provide accessible, trackable online service hours for participants
-            nationwide. Every course is time‑tracked, verified, and court‑friendly —
-            helping individuals meet requirements with integrity and accountability.
-          </p>
-          <div className={styles.heroButtons}>
-            <Link href="/how-to-register" className="btn btn-cta">
-              Start Now
-            </Link>
-            <Link href="/certificate-verification" className="btn btn-secondary" style={{ borderColor: 'rgba(255,255,255,0.3)', color: '#fff' }}>
-              How Verification Works
-            </Link>
-          </div>
           <div className={styles.heroBadges}>
             <div className={styles.badge}>
               <span className={styles.badgeIcon}>✓</span>
@@ -50,11 +36,42 @@ export default function Home() {
             </div>
             <div className={styles.badge}>
               <span className={styles.badgeIcon}>✓</span>
-              School Recognized
-            </div>
-            <div className={styles.badge}>
-              <span className={styles.badgeIcon}>✓</span>
               501(c)(3) Nonprofit
+            </div>
+          </div>
+          <h1>
+            Court-Accepted Community Service
+            <span className={styles.heroAccent}>You Can Complete 100% Online</span>
+          </h1>
+          <p>
+            The Foundation of Change provides verified, trackable online community service
+            hours accepted by courts, probation offices, and schools in all 50 states.
+            Self-paced. Time-verified. Certificate upon completion.
+          </p>
+          <div className={styles.heroButtons}>
+            <Link href="/start-now" className="btn btn-cta">
+              Enroll Now — Get Started Today
+            </Link>
+            <Link href="/how-it-works" className="btn btn-secondary" style={{ borderColor: 'rgba(255,255,255,0.3)', color: '#fff' }}>
+              See How It Works
+            </Link>
+          </div>
+          <div className={styles.statsBar}>
+            <div className={styles.statItem}>
+              <span className={styles.statNumber}>50</span>
+              <span className={styles.statLabel}>States Served</span>
+            </div>
+            <div className={styles.statItem}>
+              <span className={styles.statNumber}>501(c)(3)</span>
+              <span className={styles.statLabel}>Nonprofit Status</span>
+            </div>
+            <div className={styles.statItem}>
+              <span className={styles.statNumber}>$28.99</span>
+              <span className={styles.statLabel}>Starting Price</span>
+            </div>
+            <div className={styles.statItem}>
+              <span className={styles.statNumber}>100%</span>
+              <span className={styles.statLabel}>Online</span>
             </div>
           </div>
         </div>

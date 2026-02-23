@@ -9,6 +9,23 @@ export interface StateData {
     neighbors: string[];
 }
 
+// State flag-inspired colors for the index page cards
+export const stateColors: Record<string, string> = {
+    'alabama': '#9B1B30', 'alaska': '#003F87', 'arizona': '#BD5B04', 'arkansas': '#C41E3A',
+    'california': '#003DA5', 'colorado': '#CF0A2C', 'connecticut': '#004B87', 'delaware': '#003DA5',
+    'florida': '#E25C27', 'georgia': '#BA0C2F', 'hawaii': '#003DA5', 'idaho': '#003DA5',
+    'illinois': '#003DA5', 'indiana': '#003DA5', 'iowa': '#C41E3A', 'kansas': '#003DA5',
+    'kentucky': '#003DA5', 'louisiana': '#002366', 'maine': '#003DA5', 'maryland': '#C41E3A',
+    'massachusetts': '#003DA5', 'michigan': '#003F87', 'minnesota': '#003DA5', 'mississippi': '#BF0A30',
+    'missouri': '#C41E3A', 'montana': '#003DA5', 'nebraska': '#003DA5', 'nevada': '#003DA5',
+    'new-hampshire': '#003DA5', 'new-jersey': '#E1A95F', 'new-mexico': '#E1523D', 'new-york': '#003DA5',
+    'north-carolina': '#CC0000', 'north-dakota': '#003DA5', 'ohio': '#CC0000', 'oklahoma': '#007A33',
+    'oregon': '#002855', 'pennsylvania': '#003DA5', 'rhode-island': '#003DA5', 'south-carolina': '#003DA5',
+    'south-dakota': '#003DA5', 'tennessee': '#C8102E', 'texas': '#BF0A30', 'utah': '#003DA5',
+    'vermont': '#006341', 'virginia': '#002F6C', 'washington': '#046A38', 'west-virginia': '#003DA5',
+    'wisconsin': '#003DA5', 'wyoming': '#C8102E',
+};
+
 export const states: StateData[] = [
     { slug: 'alabama', name: 'Alabama', abbr: 'AL', cities: ['Birmingham', 'Huntsville', 'Mobile', 'Montgomery', 'Tuscaloosa'], counties: 67, courtInfo: 'circuit courts, district courts, and municipal courts', geoContext: 'From the Gulf Coast to the Appalachian foothills, Alabama residents benefit from the flexibility of completing community service online. Many rural communities have limited access to traditional service organizations.', neighbors: ['florida', 'georgia', 'mississippi', 'tennessee'] },
     { slug: 'alaska', name: 'Alaska', abbr: 'AK', cities: ['Anchorage', 'Fairbanks', 'Juneau', 'Sitka', 'Ketchikan'], counties: 30, courtInfo: 'superior courts, district courts, and magistrate courts', geoContext: 'With vast distances between communities and extreme weather conditions, Alaska residents face unique challenges accessing traditional community service. Our online program eliminates geographic barriers entirely.', neighbors: ['washington'] },

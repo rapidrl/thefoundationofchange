@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { states } from './stateData';
+import { states, stateColors } from './stateData';
 import styles from './page.module.css';
 
 export default function StatesIndexPage() {
@@ -50,17 +50,25 @@ export default function StatesIndexPage() {
                     </div>
 
                     <div className={styles.statesGrid}>
-                        {filtered.map((state) => (
-                            <Link
-                                key={state.slug}
-                                href={`/states/${state.slug}`}
-                                className={styles.stateCard}
-                            >
-                                <span className={styles.stateAbbr}>{state.abbr}</span>
-                                <span className={styles.stateName}>{state.name}</span>
-                                <span className={styles.stateArrow}>→</span>
-                            </Link>
-                        ))}
+                        {filtered.map((state) => {
+                            const color = stateColors[state.slug] || '#0a1e3d';
+                            return (
+                                <Link
+                                    key={state.slug}
+                                    href={`/states/${state.slug}`}
+                                    className={styles.stateCard}
+                                >
+                                    <span
+                                        className={styles.stateAbbr}
+                                        style={{ background: `linear-gradient(135deg, ${color} 0%, ${color}cc 100%)` }}
+                                    >
+                                        {state.abbr}
+                                    </span>
+                                    <span className={styles.stateName}>{state.name}</span>
+                                    <span className={styles.stateArrow}>→</span>
+                                </Link>
+                            );
+                        })}
                     </div>
 
                     {filtered.length === 0 && (

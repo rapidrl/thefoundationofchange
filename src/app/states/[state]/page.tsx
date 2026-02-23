@@ -177,6 +177,15 @@ export default function StatePage({ params }: Props) {
                         <h3>Why {name} Residents Choose Online Community Service</h3>
                         <p>{geoContext}</p>
 
+                        <h3>{name} County Coverage</h3>
+                        <p>
+                            Our program is available in all {counties} {name} counties. Whether you are in a major
+                            metropolitan area like {cities[0]} or a rural county, you can start and complete your hours online.
+                            {name}&apos;s {courtInfo} all recognize 501(c)(3) nonprofit community service certificates.
+                            No in-person visits to service sites are needed — everything is completed from home using any
+                            device with internet access.
+                        </p>
+
                         <h3>Verification and Acceptance</h3>
                         <p>
                             Every certificate includes a unique verification code that {name} courts and probation officers
@@ -194,6 +203,29 @@ export default function StatePage({ params }: Props) {
                                 Start your {name} community service hours now
                             </Link>.
                         </p>
+                    </div>
+                </div>
+            </section>
+
+            {/* ======= LOCAL CITIES ======= */}
+            <section className={styles.sectionAlt}>
+                <div className="container">
+                    <h2 className={styles.sectionTitle}>Serving Communities Across {name}</h2>
+                    <p className={styles.sectionSubtitle}>
+                        Our online community service program is available to residents in every {name} city and county.
+                    </p>
+                    <div className={styles.stepsGrid}>
+                        {cities.map((city) => (
+                            <div key={city} className={styles.stepCard}>
+                                <span className={styles.stepIcon}>📍</span>
+                                <h3>Community Service in {city}, {abbr}</h3>
+                                <p>
+                                    Residents of {city}, {name} can complete court-ordered, probation-required, or school-mandated
+                                    community service hours entirely online. Our program is accepted by {city} area courts
+                                    and provides verified certificates with hour logs.
+                                </p>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </section>

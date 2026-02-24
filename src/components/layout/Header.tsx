@@ -5,14 +5,12 @@ import { useState, useEffect } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import styles from './Header.module.css';
 
-const WP = 'https://thefoundationofchange.org';
-
 const navLinks = [
-    { href: `${WP}/community-service`, label: 'Community Service', external: true },
-    { href: `${WP}/community-service-by-state`, label: 'State Programs', external: true },
-    { href: `${WP}/faq`, label: 'FAQ', external: true },
-    { href: `${WP}/how-it-works`, label: 'How It Works', external: true },
-    { href: `${WP}/contact-us`, label: 'Contact Us', external: true },
+    { href: '/community', label: 'Community Service' },
+    { href: '/states', label: 'State Programs' },
+    { href: '/faq', label: 'FAQ' },
+    { href: '/how-it-works', label: 'How It Works' },
+    { href: '/contact-us', label: 'Contact Us' },
 ];
 
 export default function Header() {
@@ -37,7 +35,7 @@ export default function Header() {
     return (
         <header className={styles.header}>
             <div className={styles.headerInner}>
-                <Link href={`${WP}`} className={styles.logo}>
+                <Link href="/" className={styles.logo}>
                     <div className={styles.logoIcon}>
                         <span>TFC</span>
                     </div>
@@ -47,9 +45,9 @@ export default function Header() {
                 {/* Desktop nav */}
                 <nav className={styles.nav}>
                     {navLinks.map((link) => (
-                        <a key={link.href} href={link.href} className={styles.navLink}>
+                        <Link key={link.href} href={link.href} className={styles.navLink}>
                             {link.label}
-                        </a>
+                        </Link>
                     ))}
 
                     {!loading && user ? (
@@ -91,14 +89,14 @@ export default function Header() {
             {/* Mobile menu */}
             <nav className={`${styles.mobileMenu} ${mobileOpen ? styles.open : ''}`}>
                 {navLinks.map((link) => (
-                    <a
+                    <Link
                         key={link.href}
                         href={link.href}
                         className={styles.mobileNavLink}
                         onClick={() => setMobileOpen(false)}
                     >
                         {link.label}
-                    </a>
+                    </Link>
                 ))}
 
                 {!loading && user ? (

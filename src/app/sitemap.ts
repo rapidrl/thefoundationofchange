@@ -1,9 +1,10 @@
 import type { MetadataRoute } from 'next';
 import { states } from './states/stateData';
+import { getAllPostSlugs } from '@/lib/wordpress';
 
 const BASE_URL = 'https://thefoundationofchange.org';
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const now = new Date().toISOString();
 
     // Core pages
@@ -20,6 +21,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         { url: `${BASE_URL}/letter-of-introductions`, lastModified: now, changeFrequency: 'monthly', priority: 0.6 },
         { url: `${BASE_URL}/additional-services`, lastModified: now, changeFrequency: 'monthly', priority: 0.5 },
         { url: `${BASE_URL}/our-guarantee`, lastModified: now, changeFrequency: 'monthly', priority: 0.6 },
+        { url: `${BASE_URL}/blog`, lastModified: now, changeFrequency: 'weekly', priority: 0.8 },
         { url: `${BASE_URL}/terms-of-service`, lastModified: now, changeFrequency: 'yearly', priority: 0.3 },
         { url: `${BASE_URL}/privacy-policy`, lastModified: now, changeFrequency: 'yearly', priority: 0.3 },
         { url: `${BASE_URL}/refund-policy`, lastModified: now, changeFrequency: 'yearly', priority: 0.3 },
@@ -38,5 +40,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
         priority: 0.7,
     }));
 
-    return [...corePages, ...stateIndex, ...statePages];
+    // Blog posts from WordPress
+    let blogPages: MetadataRoute.Sitemap = [];
+    try {
+        const slugs = await getAllPostSlugs();
+        blogPages = slugs.map((slug) => ({
+            url: `${BASE_URL}/blog/${slug}`,
+            lastModified: now,
+            changeFrequency: 'monthly' as const,
+            priority: 0.6,
+        }));
+    } catch {
+        // WordPress API may be unavailable during build
+    }
+
+    return [...corePages, ...stateIndex, ...statePages, ...blogPages];
 }

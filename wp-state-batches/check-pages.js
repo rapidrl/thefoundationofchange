@@ -1,0 +1,65 @@
+(async function(){
+var nonce=wpApiSettings.nonce;
+var headers={'Content-Type':'application/json','X-WP-Nonce':nonce};
+var r=await fetch('/wp-json/wp/v2/pages?per_page=100&_fields=id,slug',{headers:headers});
+var all=await r.json();
+var results=[];
+var pages={};
+pages['alabama']={title:'Online Community Service Hours in Alabama'};
+pages['alaska']={title:'Online Community Service Hours in Alaska'};
+pages['arizona']={title:'Online Community Service Hours in Arizona'};
+pages['arkansas']={title:'Online Community Service Hours in Arkansas'};
+pages['california']={title:'Online Community Service Hours in California'};
+pages['colorado']={title:'Online Community Service Hours in Colorado'};
+pages['connecticut']={title:'Online Community Service Hours in Connecticut'};
+pages['delaware']={title:'Online Community Service Hours in Delaware'};
+pages['florida']={title:'Online Community Service Hours in Florida'};
+pages['georgia']={title:'Online Community Service Hours in Georgia'};
+pages['hawaii']={title:'Online Community Service Hours in Hawaii'};
+pages['idaho']={title:'Online Community Service Hours in Idaho'};
+pages['illinois']={title:'Online Community Service Hours in Illinois'};
+pages['indiana']={title:'Online Community Service Hours in Indiana'};
+pages['iowa']={title:'Online Community Service Hours in Iowa'};
+pages['kansas']={title:'Online Community Service Hours in Kansas'};
+pages['kentucky']={title:'Online Community Service Hours in Kentucky'};
+pages['louisiana']={title:'Online Community Service Hours in Louisiana'};
+pages['maine']={title:'Online Community Service Hours in Maine'};
+pages['maryland']={title:'Online Community Service Hours in Maryland'};
+pages['massachusetts']={title:'Online Community Service Hours in Massachusetts'};
+pages['michigan']={title:'Online Community Service Hours in Michigan'};
+pages['minnesota']={title:'Online Community Service Hours in Minnesota'};
+pages['mississippi']={title:'Online Community Service Hours in Mississippi'};
+pages['missouri']={title:'Online Community Service Hours in Missouri'};
+pages['montana']={title:'Online Community Service Hours in Montana'};
+pages['nebraska']={title:'Online Community Service Hours in Nebraska'};
+pages['nevada']={title:'Online Community Service Hours in Nevada'};
+pages['new-hampshire']={title:'Online Community Service Hours in New Hampshire'};
+pages['new-jersey']={title:'Online Community Service Hours in New Jersey'};
+pages['new-mexico']={title:'Online Community Service Hours in New Mexico'};
+pages['new-york']={title:'Online Community Service Hours in New York'};
+pages['north-carolina']={title:'Online Community Service Hours in North Carolina'};
+pages['north-dakota']={title:'Online Community Service Hours in North Dakota'};
+pages['ohio']={title:'Online Community Service Hours in Ohio'};
+pages['oklahoma']={title:'Online Community Service Hours in Oklahoma'};
+pages['oregon']={title:'Online Community Service Hours in Oregon'};
+pages['pennsylvania']={title:'Online Community Service Hours in Pennsylvania'};
+pages['rhode-island']={title:'Online Community Service Hours in Rhode Island'};
+pages['south-carolina']={title:'Online Community Service Hours in South Carolina'};
+pages['south-dakota']={title:'Online Community Service Hours in South Dakota'};
+pages['tennessee']={title:'Online Community Service Hours in Tennessee'};
+pages['texas']={title:'Online Community Service Hours in Texas'};
+pages['utah']={title:'Online Community Service Hours in Utah'};
+pages['vermont']={title:'Online Community Service Hours in Vermont'};
+pages['virginia']={title:'Online Community Service Hours in Virginia'};
+pages['washington']={title:'Online Community Service Hours in Washington'};
+pages['west-virginia']={title:'Online Community Service Hours in West Virginia'};
+pages['wisconsin']={title:'Online Community Service Hours in Wisconsin'};
+pages['wyoming']={title:'Online Community Service Hours in Wyoming'};
+for(var slug in pages){
+var match=all.find(function(p){return p.slug===slug;});
+if(match){results.push(slug+'=id:'+match.id);}
+else{results.push(slug+'=NOT_FOUND');}
+}
+document.title='Found: '+results.filter(r=>r.includes('id:')).length+'/50 | Missing: '+results.filter(r=>r.includes('NOT_FOUND')).map(r=>r.split('=')[0]).join(',');
+console.log(results);
+})();

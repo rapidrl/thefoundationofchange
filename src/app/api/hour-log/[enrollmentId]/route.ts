@@ -1,6 +1,8 @@
 import { createClient } from '@/lib/supabase/server';
 import { NextResponse } from 'next/server';
-import { jsPDF } from 'jspdf';
+import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
+import { readFileSync } from 'fs';
+import path from 'path';
 
 interface RouteParams {
     params: Promise<{ enrollmentId: string }>;
@@ -53,147 +55,162 @@ export async function GET(request: Request, { params }: RouteParams) {
 
         const participantProfile = enrollment.profiles as Record<string, string>;
         const verificationCode = certificate?.verification_code || 'N/A';
+        const fullName = participantProfile?.full_name || 'Participant';
+        const startDate = new Date(enrollment.created_at).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
+        const issuedDate = new Date().toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
+        const hoursCompleted = Number(enrollment.hours_completed) || 0;
+        const address = [participantProfile?.address, participantProfile?.city, participantProfile?.state].filter(Boolean).join(', ');
 
-        // Generate PDF
-        const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'letter' });
-        const pageWidth = doc.internal.pageSize.getWidth();
-        const margin = 20;
+        // Load the PDF template
+        const templatePath = path.join(process.cwd(), 'public', 'templates', 'hour-log.pdf');
+        const templateBytes = readFileSync(templatePath);
+        const pdfDoc = await PDFDocument.load(templateBytes);
 
-        // --- Header ---
-        doc.setFontSize(11);
-        doc.setTextColor(26, 39, 68);
-        doc.text('The Foundation of Change', margin, 18);
+        const page1 = pdfDoc.getPage(0);
+        const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+        const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+        const { height: h1 } = page1.getSize();
 
-        // Right-aligned header
-        doc.setFontSize(8);
-        doc.setTextColor(80, 80, 80);
-        doc.text('Jennifer Schroeder, Executive Director', pageWidth - margin, 14, { align: 'right' });
-        doc.text('https://www.thefoundationofchange.org', pageWidth - margin, 19, { align: 'right' });
-        doc.text('info@thefoundationofchange.org', pageWidth - margin, 24, { align: 'right' });
-        doc.text('Organization Tax ID Number: 33-5003265', pageWidth - margin, 29, { align: 'right' });
+        const textColor = rgb(0.1, 0.1, 0.1);
+        const fieldSize = 9;
 
-        // Divider
-        doc.setDrawColor(26, 39, 68);
-        doc.setLineWidth(0.5);
-        doc.line(margin, 33, pageWidth - margin, 33);
+        // ====================================================================
+        // HOUR LOG PAGE 1 FIELD POSITIONS (US Letter: 612 x 792 pt)
+        // Template has same header block as completion letter
+        // ====================================================================
 
-        // --- Title ---
-        doc.setFontSize(16);
-        doc.setTextColor(26, 39, 68);
-        doc.text('Community Service Log - Work Days and Time', pageWidth / 2, 44, { align: 'center' });
+        // LEFT COLUMN header fields
+        const leftValueX = 142;
+        const rightValueX = 230;
+        const headerBaseY = h1 - 225; // approx Y for "Client-Worker:" row
 
-        // --- Info Fields ---
-        const infoY = 54;
-        doc.setFontSize(9);
-        doc.setTextColor(26, 39, 68);
-        const col1 = margin;
-        const col2 = pageWidth / 2 + 5;
+        // Client-Worker: value
+        page1.drawText(fullName, {
+            x: leftValueX,
+            y: headerBaseY,
+            size: fieldSize,
+            font: font,
+            color: textColor,
+        });
 
-        // Left column
-        doc.text(`Client-Worker: ${participantProfile?.full_name || ''}`, col1, infoY);
-        doc.text(`Start Date: ${enrollment.start_date ? new Date(enrollment.start_date).toLocaleDateString() : ''}`, col1, infoY + 6);
-        doc.text(`Date Issued: ${new Date().toLocaleDateString()}`, col1, infoY + 12);
-        doc.text(`Verification Code: ${verificationCode}`, col1, infoY + 18);
+        // Start Date: value
+        page1.drawText(startDate, {
+            x: leftValueX,
+            y: headerBaseY - 20,
+            size: fieldSize,
+            font: font,
+            color: textColor,
+        });
 
-        // Right column
-        const address = [participantProfile?.address, participantProfile?.city, participantProfile?.state, participantProfile?.zip_code].filter(Boolean).join(', ');
-        doc.text(`Current Address: ${address || 'N/A'}`, col2, infoY);
-        doc.text(`Probation Officer: ${participantProfile?.probation_officer || 'N/A'}`, col2, infoY + 6);
-        doc.text(`Court ID: ${participantProfile?.court_id || 'N/A'}`, col2, infoY + 12);
-        doc.text('Local Charity: The Foundation of Change', col2, infoY + 18);
+        // Date Issued: value
+        page1.drawText(issuedDate, {
+            x: leftValueX,
+            y: headerBaseY - 40,
+            size: fieldSize,
+            font: font,
+            color: textColor,
+        });
 
-        // --- Hours Table ---
-        const tableStartY = infoY + 30;
-        doc.setFontSize(12);
-        doc.setTextColor(26, 39, 68);
-        doc.text('Hours Completed:', pageWidth / 2, tableStartY, { align: 'center' });
+        // Verification Code: value
+        page1.drawText(verificationCode, {
+            x: leftValueX,
+            y: headerBaseY - 60,
+            size: fieldSize,
+            font: font,
+            color: textColor,
+        });
 
-        // Table headers — 4 columns of Date | Hrs:Mins
-        const tableY = tableStartY + 8;
-        const colWidth = (pageWidth - margin * 2) / 4;
-        const dateColWidth = colWidth * 0.55;
-        const hrsColWidth = colWidth * 0.45;
+        // RIGHT COLUMN
+        // Current Address: value
+        page1.drawText(address || 'N/A', {
+            x: rightValueX,
+            y: headerBaseY,
+            size: fieldSize - 1,
+            font: font,
+            color: textColor,
+        });
 
-        doc.setFontSize(8);
-        doc.setFillColor(240, 240, 245);
-        doc.setDrawColor(180, 180, 190);
-        doc.setLineWidth(0.2);
-
-        // Draw header row
-        for (let c = 0; c < 4; c++) {
-            const x = margin + c * colWidth;
-            doc.rect(x, tableY, dateColWidth, 7, 'FD');
-            doc.rect(x + dateColWidth, tableY, hrsColWidth, 7, 'FD');
-            doc.setTextColor(26, 39, 68);
-            doc.text('Date', x + 2, tableY + 5);
-            doc.text('Hrs:Mins', x + dateColWidth + 2, tableY + 5);
+        // Probation Officer: value
+        if (participantProfile?.probation_officer) {
+            page1.drawText(participantProfile.probation_officer, {
+                x: rightValueX,
+                y: headerBaseY - 20,
+                size: fieldSize,
+                font: font,
+                color: textColor,
+            });
         }
 
-        // Fill in hour log data across 4 columns
+        // Hours Completed: value (large, after the label)
+        page1.drawText(String(hoursCompleted), {
+            x: 340,
+            y: headerBaseY - 105,
+            size: 14,
+            font: fontBold,
+            color: textColor,
+        });
+
+        // ====================================================================
+        // HOUR LOG TABLE
+        // Template has a table with 4 column pairs (Date | Hrs:Mins)
+        // 8 rows visible in the template
+        // ====================================================================
+
         const logs = hourLogs || [];
-        const rowHeight = 6;
-        const maxRows = 20; // max rows per page
 
-        for (let i = 0; i < Math.max(logs.length, maxRows); i++) {
-            const row = Math.floor(i / 4);
+        // Table grid coordinates (from the template screenshot)
+        // 4 column pairs, each ~80pt wide
+        const tableTopY = headerBaseY - 150;  // Top of first data row
+        const rowHeight = 25;
+        const maxRows = 8;
+
+        // Column pair X positions (Date start, then Hrs:Mins start)
+        const colPairX = [
+            { dateX: 80, hrsX: 144 },   // Column pair 1
+            { dateX: 185, hrsX: 250 },   // Column pair 2
+            { dateX: 290, hrsX: 357 },   // Column pair 3
+            { dateX: 398, hrsX: 465 },   // Column pair 4
+        ];
+
+        // Fill in the log entries across the 4-column grid
+        for (let i = 0; i < Math.min(logs.length, maxRows * 4); i++) {
             const col = i % 4;
-            const y = tableY + 7 + row * rowHeight;
+            const row = Math.floor(i / 4);
+            const y = tableTopY - (row * rowHeight);
 
-            if (y > 240) break; // Don't go past footer area
+            const logDate = new Date(logs[i].log_date + 'T00:00:00').toLocaleDateString('en-US', {
+                month: '2-digit', day: '2-digit', year: 'numeric'
+            });
+            const hours = Number(logs[i].hours) || 0;
+            const mins = Number(logs[i].minutes) || 0;
 
-            const x = margin + col * colWidth;
-            doc.setDrawColor(210, 210, 215);
-            doc.rect(x, y, dateColWidth, rowHeight);
-            doc.rect(x + dateColWidth, y, hrsColWidth, rowHeight);
+            // Date
+            page1.drawText(logDate, {
+                x: colPairX[col].dateX,
+                y: y,
+                size: 7,
+                font: font,
+                color: textColor,
+            });
 
-            if (i < logs.length) {
-                doc.setTextColor(50, 50, 50);
-                doc.setFontSize(7);
-                const logDate = new Date(logs[i].log_date + 'T00:00:00').toLocaleDateString();
-                const hours = Number(logs[i].hours) || 0;
-                const mins = Number(logs[i].minutes) || 0;
-                doc.text(logDate, x + 2, y + 4);
-                doc.text(`${hours}:${mins.toString().padStart(2, '0')}`, x + dateColWidth + 2, y + 4);
-            }
+            // Hours:Mins
+            page1.drawText(`${hours}:${mins.toString().padStart(2, '0')}`, {
+                x: colPairX[col].hrsX,
+                y: y,
+                size: 7,
+                font: font,
+                color: textColor,
+            });
         }
 
-        // Total row
-        const totalHours = logs.reduce((sum, l) => sum + (Number(l.hours) || 0), 0);
-        const totalMins = logs.reduce((sum, l) => sum + (Number(l.minutes) || 0), 0);
-        const finalHours = totalHours + Math.floor(totalMins / 60);
-        const finalMins = totalMins % 60;
+        // Serialize
+        const pdfBytes = await pdfDoc.save();
 
-        const totalY = tableY + 7 + Math.min(Math.max(Math.ceil(logs.length / 4), 1), maxRows) * rowHeight + 4;
-        doc.setFontSize(10);
-        doc.setTextColor(26, 39, 68);
-        doc.text(`Total Hours: ${finalHours}:${finalMins.toString().padStart(2, '0')}`, margin, totalY + 2);
-
-        // --- Footer ---
-        doc.setFontSize(7);
-        doc.setTextColor(100, 100, 100);
-        const footerText = 'The Foundation of Change is a registered 501(c)(3) nonprofit organization. To confirm authenticity, visit www.thefoundationofchange.org, click the Verify Certificate tab, and enter the verification code from this document. Verification details should match the enrollment information above. For further questions, contact info@thefoundationofchange.org.';
-        const footerSplit = doc.splitTextToSize(footerText, pageWidth - margin * 2);
-        doc.text(footerSplit, pageWidth / 2, 245, { align: 'center' });
-
-        // Signature
-        doc.setFontSize(9);
-        doc.setTextColor(50, 50, 50);
-        doc.text('Certified by,', margin, 260);
-        doc.setFontSize(11);
-        doc.setTextColor(26, 39, 68);
-        doc.text('J. Schroeder', margin, 268);
-        doc.setFontSize(7);
-        doc.setTextColor(100, 100, 100);
-        doc.text('J. Schroeder, MS CADC', margin, 273);
-
-        // Output
-        const pdfBuffer = Buffer.from(doc.output('arraybuffer'));
-
-        return new NextResponse(pdfBuffer, {
+        return new NextResponse(Buffer.from(pdfBytes), {
             status: 200,
             headers: {
                 'Content-Type': 'application/pdf',
-                'Content-Disposition': `attachment; filename="Hour_Log_${participantProfile?.full_name?.replace(/\s+/g, '_') || 'Log'}.pdf"`,
+                'Content-Disposition': `attachment; filename="Hour_Log_${fullName.replace(/\s+/g, '_')}.pdf"`,
             },
         });
     } catch (error) {

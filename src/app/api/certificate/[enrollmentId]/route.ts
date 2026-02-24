@@ -1,6 +1,8 @@
 import { createClient } from '@/lib/supabase/server';
 import { NextResponse } from 'next/server';
-import { jsPDF } from 'jspdf';
+import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
+import { readFileSync } from 'fs';
+import path from 'path';
 
 interface RouteParams {
     params: Promise<{ enrollmentId: string }>;
@@ -49,125 +51,161 @@ export async function GET(request: Request, { params }: RouteParams) {
         const issuedDate = certificate?.issued_at
             ? new Date(certificate.issued_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
             : new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+        const startDate = new Date(enrollment.created_at).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
+        const hoursCompleted = Number(enrollment.hours_completed) || 0;
+        const fullName = participantProfile?.full_name || 'Participant';
 
-        // Generate PDF
-        const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'letter' });
-        const pageWidth = doc.internal.pageSize.getWidth();
-        const margin = 25;
+        // Build address string
+        const addrParts = [participantProfile?.address, participantProfile?.city, participantProfile?.state].filter(Boolean);
+        const addressStr = addrParts.join(', ');
 
-        // --- Header ---
-        doc.setFontSize(10);
-        doc.setTextColor(26, 39, 68); // Navy
-        doc.text('The Foundation of Change', margin, 20);
-        doc.setFontSize(8);
-        doc.setTextColor(100, 100, 100);
-        doc.text('501(c)(3) Nonprofit Organization', margin, 25);
-        doc.text('EIN: 33-5003265', margin, 29);
+        // Load the PDF template
+        const templatePath = path.join(process.cwd(), 'public', 'templates', 'completion-letter.pdf');
+        const templateBytes = readFileSync(templatePath);
+        const pdfDoc = await PDFDocument.load(templateBytes);
 
-        // Right-aligned header info
-        doc.text('Jennifer Schroeder, Executive Director', pageWidth - margin, 20, { align: 'right' });
-        doc.text('www.thefoundationofchange.org', pageWidth - margin, 25, { align: 'right' });
-        doc.text('info@thefoundationofchange.org', pageWidth - margin, 29, { align: 'right' });
+        const page = pdfDoc.getPage(0);
+        const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+        const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+        const { height } = page.getSize();
 
-        // Divider
-        doc.setDrawColor(26, 39, 68);
-        doc.setLineWidth(0.5);
-        doc.line(margin, 34, pageWidth - margin, 34);
+        // Text color matching the template
+        const textColor = rgb(0.1, 0.1, 0.1);
 
-        // --- Title ---
-        doc.setFontSize(22);
-        doc.setTextColor(26, 39, 68);
-        doc.text('Certificate of Completion', pageWidth / 2, 55, { align: 'center' });
+        // ====================================================================
+        // COMPLETION LETTER FIELD POSITIONS (A4: 595.275 x 841.889 pt)
+        // PDF coordinates: origin at bottom-left
+        // The template has existing labels; we overlay values next to them
+        // ====================================================================
 
-        // Decorative line
-        doc.setDrawColor(212, 168, 83); // Gold
-        doc.setLineWidth(1);
-        doc.line(pageWidth / 2 - 40, 60, pageWidth / 2 + 40, 60);
+        const fieldFontSize = 10;
+        const valueX_left = 182;   // Left column value start (after "Client-Worker:", etc.)
+        const valueX_right = 265;  // Right column value start (after "Current Address:", etc.)
+        const labelRightX = 230;   // Right column labels start X
 
-        // --- Body ---
-        doc.setFontSize(12);
-        doc.setTextColor(50, 50, 50);
-        doc.text('This is to certify that', pageWidth / 2, 80, { align: 'center' });
+        // LEFT COLUMN fields (from top of page, converting to bottom-up coords)
+        // Client-Worker: value
+        page.drawText(fullName, {
+            x: valueX_left,
+            y: height - 238,
+            size: fieldFontSize,
+            font: font,
+            color: textColor,
+        });
 
-        // Participant name
-        doc.setFontSize(24);
-        doc.setTextColor(26, 39, 68);
-        doc.text(participantProfile?.full_name || 'Participant', pageWidth / 2, 95, { align: 'center' });
+        // Start Date: value
+        page.drawText(startDate, {
+            x: valueX_left,
+            y: height - 260,
+            size: fieldFontSize,
+            font: font,
+            color: textColor,
+        });
 
-        // Underline
-        const nameWidth = doc.getTextWidth(participantProfile?.full_name || 'Participant');
-        doc.setDrawColor(200, 200, 200);
-        doc.setLineWidth(0.3);
-        doc.line(pageWidth / 2 - nameWidth / 2 - 5, 98, pageWidth / 2 + nameWidth / 2 + 5, 98);
+        // Date Issued: value
+        page.drawText(issuedDate, {
+            x: valueX_left,
+            y: height - 282,
+            size: fieldFontSize,
+            font: font,
+            color: textColor,
+        });
 
-        // Completion text
-        doc.setFontSize(12);
-        doc.setTextColor(50, 50, 50);
-        const completionText = `has successfully completed ${Number(enrollment.hours_completed)} hours of community service through The Foundation of Change online community service program.`;
-        const splitText = doc.splitTextToSize(completionText, pageWidth - margin * 2 - 20);
-        doc.text(splitText, pageWidth / 2, 115, { align: 'center' });
+        // Verification Code: value
+        page.drawText(verificationCode, {
+            x: valueX_left,
+            y: height - 304,
+            size: fieldFontSize,
+            font: font,
+            color: textColor,
+        });
 
-        // --- Details Box ---
-        const boxY = 145;
-        doc.setFillColor(249, 250, 251);
-        doc.setDrawColor(229, 231, 235);
-        doc.roundedRect(margin + 10, boxY, pageWidth - margin * 2 - 20, 40, 3, 3, 'FD');
+        // RIGHT COLUMN fields
+        // Current Address: value
+        const addressLines = addressStr.length > 30
+            ? [addressStr.substring(0, 30), addressStr.substring(30)]
+            : [addressStr];
+        addressLines.forEach((line, i) => {
+            page.drawText(line, {
+                x: valueX_right,
+                y: height - 238 - (i * 12),
+                size: fieldFontSize - 1,
+                font: font,
+                color: textColor,
+            });
+        });
 
-        doc.setFontSize(9);
-        doc.setTextColor(107, 114, 128);
-        const col1X = margin + 20;
-        const col2X = pageWidth / 2 + 10;
+        // Probation Officer: value
+        if (participantProfile?.probation_officer) {
+            page.drawText(participantProfile.probation_officer, {
+                x: valueX_right,
+                y: height - 260,
+                size: fieldFontSize,
+                font: font,
+                color: textColor,
+            });
+        }
 
-        doc.text('Verification Code:', col1X, boxY + 10);
-        doc.text('Date Issued:', col1X, boxY + 20);
-        doc.text('Hours Completed:', col1X, boxY + 30);
+        // Court ID: (usually blank)
 
-        doc.text('Program:', col2X, boxY + 10);
-        doc.text('Status:', col2X, boxY + 20);
-        doc.text('Organization:', col2X, boxY + 30);
+        // Local Charity: already says "The Foundation of Change" in template
 
-        doc.setTextColor(26, 39, 68);
-        doc.setFontSize(10);
-        doc.text(verificationCode, col1X + 35, boxY + 10);
-        doc.text(issuedDate, col1X + 26, boxY + 20);
-        doc.text(`${Number(enrollment.hours_completed)} of ${Number(enrollment.hours_required)} hours`, col1X + 35, boxY + 30);
+        // Hours Completed: large centered text
+        // The template has "Hours Completed:" label — we overlay the number
+        page.drawText(String(hoursCompleted), {
+            x: 335,
+            y: height - 370,
+            size: 16,
+            font: fontBold,
+            color: textColor,
+        });
 
-        doc.text('Community Service', col2X + 20, boxY + 10);
-        doc.text('Completed', col2X + 14, boxY + 20);
-        doc.text('The Foundation of Change', col2X + 27, boxY + 30);
+        // Body paragraph — overlay the dynamic name and hours into the text
+        // "...the above named person successfully completed X hours..."
+        // The body text is pre-printed. We need to overlay the dynamic values.
+        // Since the body text already has placeholder values, we'll draw white
+        // rectangles over the old values and write new ones.
 
-        // --- Signature ---
-        doc.setFontSize(10);
-        doc.setTextColor(50, 50, 50);
-        doc.text('Certified by,', margin + 20, 210);
+        // Cover old name in body text (line ~"...confirms that Eman Elouassi has...")
+        page.drawRectangle({
+            x: 162,
+            y: height - 420,
+            width: 120,
+            height: 14,
+            color: rgb(1, 1, 1), // white
+        });
+        page.drawText(fullName, {
+            x: 162,
+            y: height - 418,
+            size: 9,
+            font: font,
+            color: textColor,
+        });
 
-        // Signature line
-        doc.setFontSize(13);
-        doc.setTextColor(26, 39, 68);
-        doc.text('J. Schroeder', margin + 20, 222);
-        doc.setDrawColor(200, 200, 200);
-        doc.line(margin + 20, 224, margin + 80, 224);
+        // Cover old hours in body text ("...completed 17 hours...")
+        page.drawRectangle({
+            x: 308,
+            y: height - 420,
+            width: 55,
+            height: 14,
+            color: rgb(1, 1, 1),
+        });
+        page.drawText(`${hoursCompleted} hours`, {
+            x: 308,
+            y: height - 418,
+            size: 9,
+            font: font,
+            color: textColor,
+        });
 
-        doc.setFontSize(9);
-        doc.setTextColor(100, 100, 100);
-        doc.text('J. Schroeder, MS CADC', margin + 20, 230);
-        doc.text('Executive Director', margin + 20, 235);
+        // Serialize
+        const pdfBytes = await pdfDoc.save();
 
-        // --- Footer ---
-        doc.setFontSize(7);
-        doc.setTextColor(150, 150, 150);
-        const footerText = 'The Foundation of Change is a registered 501(c)(3) nonprofit organization. To confirm authenticity, visit www.thefoundationofchange.org, click the Verify Certificate tab, and enter the verification code from this document.';
-        const footerSplit = doc.splitTextToSize(footerText, pageWidth - margin * 2);
-        doc.text(footerSplit, pageWidth / 2, 255, { align: 'center' });
-
-        // Output
-        const pdfBuffer = Buffer.from(doc.output('arraybuffer'));
-
-        return new NextResponse(pdfBuffer, {
+        return new NextResponse(Buffer.from(pdfBytes), {
             status: 200,
             headers: {
                 'Content-Type': 'application/pdf',
-                'Content-Disposition': `attachment; filename="Certificate_${participantProfile?.full_name?.replace(/\s+/g, '_') || 'Completion'}.pdf"`,
+                'Content-Disposition': `attachment; filename="Completion_Letter_${fullName.replace(/\s+/g, '_')}.pdf"`,
             },
         });
     } catch (error) {

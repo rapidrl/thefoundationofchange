@@ -9,21 +9,58 @@ export interface StateData {
     neighbors: string[];
 }
 
-// State flag-inspired colors for the index page cards
+// State flag-inspired multi-color gradients for the index page cards
 export const stateColors: Record<string, string> = {
-    'alabama': '#9B1B30', 'alaska': '#003F87', 'arizona': '#BD5B04', 'arkansas': '#C41E3A',
-    'california': '#003DA5', 'colorado': '#CF0A2C', 'connecticut': '#004B87', 'delaware': '#003DA5',
-    'florida': '#E25C27', 'georgia': '#BA0C2F', 'hawaii': '#003DA5', 'idaho': '#003DA5',
-    'illinois': '#003DA5', 'indiana': '#003DA5', 'iowa': '#C41E3A', 'kansas': '#003DA5',
-    'kentucky': '#003DA5', 'louisiana': '#002366', 'maine': '#003DA5', 'maryland': '#C41E3A',
-    'massachusetts': '#003DA5', 'michigan': '#003F87', 'minnesota': '#003DA5', 'mississippi': '#BF0A30',
-    'missouri': '#C41E3A', 'montana': '#003DA5', 'nebraska': '#003DA5', 'nevada': '#003DA5',
-    'new-hampshire': '#003DA5', 'new-jersey': '#E1A95F', 'new-mexico': '#E1523D', 'new-york': '#003DA5',
-    'north-carolina': '#CC0000', 'north-dakota': '#003DA5', 'ohio': '#CC0000', 'oklahoma': '#007A33',
-    'oregon': '#002855', 'pennsylvania': '#003DA5', 'rhode-island': '#003DA5', 'south-carolina': '#003DA5',
-    'south-dakota': '#003DA5', 'tennessee': '#C8102E', 'texas': '#BF0A30', 'utah': '#003DA5',
-    'vermont': '#006341', 'virginia': '#002F6C', 'washington': '#046A38', 'west-virginia': '#003DA5',
-    'wisconsin': '#003DA5', 'wyoming': '#C8102E',
+    'alabama': 'linear-gradient(135deg, #fff 0%, #fff 45%, #C8102E 45%, #C8102E 55%, #fff 55%)', // Crimson X on white
+    'alaska': 'linear-gradient(180deg, #002868 0%, #002868 60%, #FFD700 60%, #FFD700 100%)', // Blue with gold stars
+    'arizona': 'linear-gradient(180deg, #C8102E 0%, #C8102E 30%, #FFD700 30%, #FFD700 50%, #002868 50%, #002868 100%)', // Red/copper, gold, blue
+    'arkansas': 'linear-gradient(135deg, #C8102E 0%, #C8102E 33%, #fff 33%, #fff 50%, #002868 50%, #002868 100%)', // Red, white, blue
+    'california': 'linear-gradient(180deg, #fff 0%, #fff 40%, #B71234 40%, #B71234 60%, #046A38 60%)', // White, red, bear green
+    'colorado': 'linear-gradient(180deg, #002868 0%, #002868 33%, #fff 33%, #fff 50%, #C8102E 50%, #C8102E 100%)', // Blue, white, red + C gold
+    'connecticut': 'linear-gradient(135deg, #004B87 0%, #004B87 60%, #FFD700 60%, #FFD700 100%)', // Royal blue with gold
+    'delaware': 'linear-gradient(135deg, #69B3E7 0%, #69B3E7 50%, #BF930D 50%, #BF930D 100%)', // Colonial blue + buff
+    'florida': 'linear-gradient(135deg, #fff 0%, #fff 40%, #C8102E 40%, #C8102E 60%, #E25C27 60%)', // White with red X + orange
+    'georgia': 'linear-gradient(180deg, #C8102E 0%, #C8102E 33%, #fff 33%, #fff 67%, #002868 67%)', // Red, white, blue bars
+    'hawaii': 'linear-gradient(180deg, #CE1126 0%, #CE1126 25%, #fff 25%, #fff 37%, #002868 37%, #002868 50%, #fff 50%, #fff 62%, #CE1126 62%, #CE1126 75%, #fff 75%, #fff 88%, #002868 88%)', // Union Jack stripes
+    'idaho': 'linear-gradient(135deg, #003DA5 0%, #003DA5 55%, #FFD700 55%, #FFD700 100%)', // Blue & gold seal
+    'illinois': 'linear-gradient(180deg, #fff 0%, #fff 40%, #C8102E 40%, #C8102E 60%, #fff 60%)', // White with red banner
+    'indiana': 'linear-gradient(135deg, #002868 0%, #002868 55%, #FFD700 55%, #FFD700 100%)', // Blue with gold torch
+    'iowa': 'linear-gradient(90deg, #002868 0%, #002868 33%, #fff 33%, #fff 67%, #C8102E 67%)', // Blue, white, red vertical
+    'kansas': 'linear-gradient(135deg, #002868 0%, #002868 55%, #FFD700 55%, #FFD700 100%)', // Blue with gold sunflower
+    'kentucky': 'linear-gradient(135deg, #002868 0%, #002868 55%, #FFD700 55%, #FFD700 100%)', // Blue with gold seal
+    'louisiana': 'linear-gradient(135deg, #002366 0%, #002366 50%, #FFD700 50%, #FFD700 70%, #fff 70%)', // Blue, gold, white pelican
+    'maine': 'linear-gradient(135deg, #003DA5 0%, #003DA5 50%, #046A38 50%, #046A38 80%, #FFD700 80%)', // Blue, pine green, gold star
+    'maryland': 'linear-gradient(135deg, #C8102E 0%, #C8102E 25%, #FFD700 25%, #FFD700 50%, #000 50%, #000 75%, #fff 75%)', // Crossland/Calvert quarters
+    'massachusetts': 'linear-gradient(135deg, #002868 0%, #002868 45%, #fff 45%, #fff 55%, #FFD700 55%)', // Blue, white shield, gold
+    'michigan': 'linear-gradient(135deg, #003F87 0%, #003F87 55%, #FFD700 55%, #FFD700 100%)', // Blue with gold elk
+    'minnesota': 'linear-gradient(135deg, #003DA5 0%, #003DA5 55%, #FFD700 55%, #FFD700 100%)', // Royal blue with gold star
+    'mississippi': 'linear-gradient(90deg, #BF0A30 0%, #BF0A30 33%, #fff 33%, #fff 67%, #002868 67%)', // Red, white, blue bars + magnolia
+    'missouri': 'linear-gradient(180deg, #C8102E 0%, #C8102E 33%, #fff 33%, #fff 67%, #002868 67%)', // Red, white, blue horizontal
+    'montana': 'linear-gradient(135deg, #002868 0%, #002868 55%, #FFD700 55%, #FFD700 100%)', // Blue with gold seal
+    'nebraska': 'linear-gradient(135deg, #002868 0%, #002868 55%, #FFD700 55%, #FFD700 100%)', // Blue with gold seal
+    'nevada': 'linear-gradient(135deg, #003DA5 0%, #003DA5 50%, #C0C0C0 50%, #C0C0C0 70%, #FFD700 70%)', // Blue, silver, gold
+    'new-hampshire': 'linear-gradient(135deg, #003DA5 0%, #003DA5 50%, #FFD700 50%, #FFD700 70%, #046A38 70%)', // Blue, gold, green
+    'new-jersey': 'linear-gradient(135deg, #E1A95F 0%, #E1A95F 50%, #002868 50%, #002868 100%)', // Buff & blue
+    'new-mexico': 'linear-gradient(135deg, #FFD700 0%, #FFD700 50%, #E1523D 50%, #E1523D 100%)', // Yellow with red Zia
+    'new-york': 'linear-gradient(135deg, #002868 0%, #002868 50%, #FFD700 50%, #FFD700 100%)', // Blue with gold
+    'north-carolina': 'linear-gradient(90deg, #002868 0%, #002868 33%, #CC0000 33%, #CC0000 67%, #fff 67%)', // Blue union, red & white bars
+    'north-dakota': 'linear-gradient(135deg, #002868 0%, #002868 55%, #FFD700 55%, #FFD700 100%)', // Blue with gold eagle
+    'ohio': 'linear-gradient(135deg, #CC0000 0%, #CC0000 40%, #fff 40%, #fff 60%, #002868 60%)', // Red, white, blue burgee
+    'oklahoma': 'linear-gradient(135deg, #69B3E7 0%, #69B3E7 50%, #B22222 50%, #B22222 70%, #FFD700 70%)', // Sky blue, shield, feathers
+    'oregon': 'linear-gradient(135deg, #002855 0%, #002855 50%, #FFD700 50%, #FFD700 100%)', // Navy with gold beaver
+    'pennsylvania': 'linear-gradient(135deg, #002868 0%, #002868 50%, #FFD700 50%, #FFD700 70%, #046A38 70%)', // Blue, gold, keystone green
+    'rhode-island': 'linear-gradient(135deg, #fff 0%, #fff 50%, #002868 50%, #002868 70%, #FFD700 70%)', // White with blue anchor, gold hope
+    'south-carolina': 'linear-gradient(135deg, #003DA5 0%, #003DA5 55%, #fff 55%, #fff 100%)', // Indigo with white palmetto
+    'south-dakota': 'linear-gradient(135deg, #002868 0%, #002868 45%, #FFD700 45%, #FFD700 55%, #69B3E7 55%)', // Blue, gold sun, sky
+    'tennessee': 'linear-gradient(90deg, #C8102E 0%, #C8102E 75%, #002868 75%, #002868 85%, #fff 85%)', // Red with blue circle, white stripe
+    'texas': 'linear-gradient(90deg, #002868 0%, #002868 33%, #fff 33%, #fff 67%, #BF0A30 67%)', // Blue, white, red (Lone Star)
+    'utah': 'linear-gradient(135deg, #002868 0%, #002868 50%, #FFD700 50%, #FFD700 70%, #fff 70%)', // Blue with gold beehive
+    'vermont': 'linear-gradient(135deg, #006341 0%, #006341 50%, #FFD700 50%, #FFD700 70%, #fff 70%)', // Green mountains, gold, white
+    'virginia': 'linear-gradient(135deg, #002F6C 0%, #002F6C 55%, #FFD700 55%, #FFD700 100%)', // Deep blue with gold seal
+    'washington': 'linear-gradient(135deg, #046A38 0%, #046A38 55%, #FFD700 55%, #FFD700 100%)', // Green with gold seal
+    'west-virginia': 'linear-gradient(135deg, #003DA5 0%, #003DA5 45%, #fff 45%, #fff 55%, #C8102E 55%)', // Blue, white, red
+    'wisconsin': 'linear-gradient(135deg, #003DA5 0%, #003DA5 50%, #C8102E 50%, #C8102E 70%, #FFD700 70%)', // Blue, red, gold
+    'wyoming': 'linear-gradient(135deg, #C8102E 0%, #C8102E 20%, #fff 20%, #fff 30%, #002868 30%, #002868 100%)', // Red border, white, blue with buffalo
 };
 
 export const states: StateData[] = [

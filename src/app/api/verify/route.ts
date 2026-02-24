@@ -59,8 +59,8 @@ export async function POST(request: Request) {
                 issuedDate: certificate.issued_at,
                 completedDate: enrollment?.completed_at || null,
                 startDate: enrollment?.start_date || null,
-                certificateUrl: certificate.certificate_url || null,
-                hourLogUrl: certificate.hour_log_url || null,
+                certificateUrl: `/api/certificates/${certificate.verification_code}/pdf`,
+                hourLogUrl: certificate.enrollment_id ? `/api/hour-log/${certificate.enrollment_id}/pdf` : null,
             },
         });
     } catch {

@@ -161,24 +161,38 @@ export default async function DashboardPage() {
                 {certificates && certificates.length > 0 && (
                     <div className={styles.section} id="certificates">
                         <h2>Your Certificates</h2>
-                        {certificates.map((cert: { id: string; verification_code: string; issued_at: string; certificate_url?: string }) => (
+                        {certificates.map((cert: { id: string; verification_code: string; issued_at: string; enrollment_id: string }) => (
                             <div key={cert.id} style={{
                                 background: 'var(--color-gray-50)', border: '1px solid var(--color-gray-200)',
                                 borderRadius: 'var(--radius-lg)', padding: 'var(--space-5)',
-                                marginBottom: 'var(--space-3)', display: 'flex',
-                                justifyContent: 'space-between', alignItems: 'center'
+                                marginBottom: 'var(--space-3)',
                             }}>
-                                <div>
-                                    <strong>Verification Code:</strong> {cert.verification_code}<br />
-                                    <span style={{ fontSize: 'var(--text-sm)', color: 'var(--color-gray-500)' }}>
-                                        Issued: {new Date(cert.issued_at).toLocaleDateString()}
-                                    </span>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--space-3)' }}>
+                                    <div>
+                                        <strong>Verification Code:</strong>{' '}
+                                        <span style={{ fontFamily: 'monospace', color: 'var(--color-navy)' }}>{cert.verification_code}</span>
+                                        <br />
+                                        <span style={{ fontSize: 'var(--text-sm)', color: 'var(--color-gray-500)' }}>
+                                            Issued: {new Date(cert.issued_at).toLocaleDateString()}
+                                        </span>
+                                    </div>
                                 </div>
-                                {cert.certificate_url && (
-                                    <a href={cert.certificate_url} className="btn btn-secondary" style={{ fontSize: 'var(--text-sm)' }} target="_blank">
-                                        Download
+                                <div style={{ display: 'flex', gap: 'var(--space-3)', flexWrap: 'wrap' }}>
+                                    <a
+                                        href={`/api/certificates/${cert.verification_code}/pdf`}
+                                        className="btn btn-cta"
+                                        style={{ fontSize: 'var(--text-sm)', padding: 'var(--space-2) var(--space-4)' }}
+                                    >
+                                        📄 Download Certificate PDF
                                     </a>
-                                )}
+                                    <a
+                                        href={`/api/hour-log/${cert.enrollment_id}/pdf`}
+                                        className="btn btn-secondary"
+                                        style={{ fontSize: 'var(--text-sm)', padding: 'var(--space-2) var(--space-4)', border: '1px solid var(--color-gray-300)' }}
+                                    >
+                                        📋 Download Hour Log PDF
+                                    </a>
+                                </div>
                             </div>
                         ))}
                     </div>

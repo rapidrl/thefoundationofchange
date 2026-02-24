@@ -60,7 +60,7 @@ export default function StatesIndexPage() {
                                 >
                                     <span
                                         className={styles.stateAbbr}
-                                        style={{ background: `linear-gradient(135deg, ${color} 0%, ${color}cc 100%)` }}
+                                        style={{ background: color }}
                                     >
                                         {state.abbr}
                                     </span>

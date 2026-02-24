@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
 
 interface ProfileData {
@@ -127,6 +128,9 @@ export default function EditProfilePage() {
     return (
         <section style={{ padding: 'var(--space-10) 0 var(--space-16)' }}>
             <div className="container" style={{ maxWidth: '600px', margin: '0 auto' }}>
+                <Link href="/dashboard" style={{ fontSize: 'var(--text-sm)', color: 'var(--color-blue)', textDecoration: 'none', fontWeight: 500, display: 'inline-block', marginBottom: 'var(--space-4)' }}>
+                    ← Back to Dashboard
+                </Link>
                 <h1 style={{ fontSize: 'var(--text-2xl)', marginBottom: 'var(--space-2)' }}>Edit Profile</h1>
                 <p style={{ color: 'var(--color-gray-500)', fontSize: 'var(--text-sm)', marginBottom: 'var(--space-6)' }}>
                     Keep your information up to date. This is used on your certificate and hour log.

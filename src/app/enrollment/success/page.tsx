@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server';
 import { getStripe } from '@/lib/stripe';
 import Link from 'next/link';
+import GoogleAdsConversion from '@/components/GoogleAdsConversion';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -21,6 +22,8 @@ export default async function EnrollmentSuccessPage({ searchParams }: PageProps)
         tierLabel: string;
         hours: string;
         amountPaid: string;
+        amountRaw: number;
+        transactionId: string;
     } | null = null;
 
     // Try to retrieve session details from Stripe
@@ -29,10 +32,12 @@ export default async function EnrollmentSuccessPage({ searchParams }: PageProps)
             const session = await getStripe().checkout.sessions.retrieve(session_id);
             sessionData = {
                 tierLabel: session.metadata?.tierLabel || 'Community Service Program',
-                hours: session.metadata?.hours || '—',
+                hours: session.metadata?.max_hours || session.metadata?.hours || '—',
                 amountPaid: session.amount_total
                     ? `$${(session.amount_total / 100).toFixed(2)}`
                     : '—',
+                amountRaw: session.amount_total ? session.amount_total / 100 : 0,
+                transactionId: (session.payment_intent as string) || session.id,
             };
         } catch {
             // Session retrieval failed — show generic success
@@ -110,6 +115,14 @@ export default async function EnrollmentSuccessPage({ searchParams }: PageProps)
                         View Dashboard
                     </Link>
                 </div>
+
+                {/* Google Ads Conversion Tracking */}
+                {sessionData && sessionData.amountRaw > 0 && (
+                    <GoogleAdsConversion
+                        transactionId={sessionData.transactionId}
+                        value={sessionData.amountRaw}
+                    />
+                )}
             </div>
         </section>
     );

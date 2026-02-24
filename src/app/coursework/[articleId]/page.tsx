@@ -30,12 +30,15 @@ export default async function ArticlePage({ params }: PageProps) {
     // Get active enrollment
     const { data: enrollments } = await supabase
         .from('enrollments')
-        .select('id')
+        .select('id, status')
         .eq('user_id', user.id)
-        .eq('status', 'active')
+        .in('status', ['active', 'suspended'])
         .limit(1);
 
     if (!enrollments?.[0]) redirect('/coursework');
+
+    // If suspended, redirect to coursework page (which shows suspension banner)
+    if (enrollments[0].status === 'suspended') redirect('/coursework');
 
     return (
         <ArticleReader

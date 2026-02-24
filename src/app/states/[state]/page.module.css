@@ -354,6 +354,34 @@
     color: var(--color-navy);
 }
 
+.seoContent em {
+    font-style: italic;
+    color: var(--color-gray-500);
+}
+
+.seoContent ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 var(--space-6);
+}
+
+.seoContent ul li {
+    position: relative;
+    padding-left: var(--space-6);
+    margin-bottom: var(--space-2);
+    color: var(--color-gray-600);
+    font-size: var(--text-base);
+    line-height: var(--leading-relaxed);
+}
+
+.seoContent ul li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--color-blue);
+    font-weight: var(--weight-bold);
+}
+
 /* ——— TRUST GRID ——— */
 .trustGrid {
     display: grid;
@@ -381,7 +409,7 @@
     margin-bottom: var(--space-3);
 }
 
-.trustCard h4 {
+.trustCard h3 {
     font-size: var(--text-base);
     color: var(--color-navy);
     margin-bottom: var(--space-2);
@@ -464,6 +492,67 @@
     color: var(--color-gray-600);
     font-size: var(--text-base);
     line-height: var(--leading-relaxed);
+}
+
+/* ——— TESTIMONIAL CARD ——— */
+.testimonialCard {
+    max-width: 680px;
+    margin: var(--space-8) auto 0;
+    padding: var(--space-10);
+    background: var(--color-white);
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--color-gray-200);
+    text-align: center;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+    position: relative;
+}
+
+.testimonialCard::before {
+    content: '\201C';
+    position: absolute;
+    top: -12px;
+    left: var(--space-10);
+    font-size: 5rem;
+    color: var(--color-blue-light);
+    opacity: 0.3;
+    line-height: 1;
+    font-family: Georgia, serif;
+}
+
+.testimonialStars {
+    font-size: var(--text-xl);
+    color: #f59e0b;
+    letter-spacing: 0.1em;
+    margin-bottom: var(--space-4);
+}
+
+.testimonialText {
+    font-size: var(--text-lg);
+    color: var(--color-gray-700, #374151);
+    line-height: var(--leading-relaxed);
+    font-style: italic;
+    margin: 0 0 var(--space-4);
+}
+
+.testimonialAuthor {
+    font-size: var(--text-sm);
+    color: var(--color-gray-500);
+    font-weight: var(--weight-semibold);
+}
+
+/* ——— MID-PAGE CTA BANNER ——— */
+.midCta {
+    padding: var(--space-10) 0;
+    background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%);
+    border-top: 2px solid rgba(37, 99, 235, 0.15);
+    border-bottom: 2px solid rgba(37, 99, 235, 0.15);
+}
+
+.midCtaText {
+    font-size: var(--text-lg);
+    color: var(--color-navy);
+    font-weight: var(--weight-medium);
+    margin-bottom: var(--space-5);
 }
 
 /* ——— FINAL CTA ——— */

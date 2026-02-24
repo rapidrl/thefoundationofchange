@@ -91,6 +91,23 @@ export async function POST(request: NextRequest) {
         })
         .eq('id', enrollmentId);
 
+    // Auto-generate certificate on completion
+    if (isCompleted) {
+        // Generate unique verification code: TFOC-XXXX-XXXX
+        const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // no ambiguous characters
+        const segment = () => Array.from({ length: 4 }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+        const verificationCode = `TFOC-${segment()}-${segment()}`;
+
+        await supabase
+            .from('certificates')
+            .insert({
+                user_id: user.id,
+                enrollment_id: enrollmentId,
+                verification_code: verificationCode,
+                issued_at: new Date().toISOString(),
+            });
+    }
+
     return NextResponse.json({
         success: true,
         secondsLogged: allowedSeconds,

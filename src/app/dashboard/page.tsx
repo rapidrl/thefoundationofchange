@@ -25,7 +25,7 @@ export default async function DashboardPage() {
         .eq('id', user.id)
         .single();
 
-    // Fetch enrollments
+    // Fetch enrollments (including suspended)
     const { data: enrollments } = await supabase
         .from('enrollments')
         .select('*')
@@ -38,8 +38,8 @@ export default async function DashboardPage() {
         .select('*')
         .eq('user_id', user.id);
 
-    // Fetch hour logs for active enrollment
-    const activeEnrollment = enrollments?.find((e) => e.status === 'active');
+    // Fetch hour logs for active/suspended enrollment
+    const activeEnrollment = enrollments?.find((e) => e.status === 'active' || e.status === 'suspended');
     let hourLogs: Array<{ id: string; log_date: string; hours: number; minutes: number }> | null = null;
     if (activeEnrollment) {
         const { data } = await supabase
@@ -68,6 +68,22 @@ export default async function DashboardPage() {
                     </div>
                     <LogoutButton />
                 </div>
+
+                {/* Suspension Banner */}
+                {activeEnrollment?.status === 'suspended' && (
+                    <div style={{
+                        padding: 'var(--space-5)', background: '#fef2f2',
+                        border: '2px solid #fecaca', borderRadius: 'var(--radius-lg)',
+                        marginBottom: 'var(--space-6)', textAlign: 'center',
+                    }}>
+                        <span style={{ fontSize: '1.5rem' }}>🚫</span>
+                        <h3 style={{ color: '#dc2626', margin: 'var(--space-2) 0' }}>Enrollment Suspended</h3>
+                        <p style={{ color: '#991b1b', fontSize: 'var(--text-sm)', margin: 0 }}>
+                            Your enrollment has been suspended. You cannot access coursework or log hours.
+                            Please <a href="/contact-us" style={{ color: '#dc2626', fontWeight: 600 }}>contact support</a> for assistance.
+                        </p>
+                    </div>
+                )}
 
                 {/* Progress Overview Bar */}
                 {activeEnrollment ? (
@@ -115,7 +131,7 @@ export default async function DashboardPage() {
 
                 {/* Quick Actions */}
                 <div className={styles.quickActions}>
-                    {activeEnrollment ? (
+                    {activeEnrollment && activeEnrollment.status === 'active' ? (
                         <Link href="/coursework" className={styles.actionCardPrimary}>
                             <span className={styles.actionIcon}>📚</span>
                             <div>

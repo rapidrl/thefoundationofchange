@@ -18,8 +18,8 @@ interface VerificationResult {
 }
 
 export default function CertificateVerificationPage() {
-    const [enrolleeName, setEnrolleeName] = useState('');
-    const [location, setLocation] = useState('');
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
     const [verificationCode, setVerificationCode] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
@@ -32,10 +32,11 @@ export default function CertificateVerificationPage() {
         setLoading(true);
 
         try {
+            const enrolleeName = `${firstName.trim()} ${lastName.trim()}`;
             const res = await fetch('/api/verify', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ enrolleeName, location, verificationCode }),
+                body: JSON.stringify({ enrolleeName, verificationCode }),
             });
 
             const data = await res.json();
@@ -100,28 +101,33 @@ export default function CertificateVerificationPage() {
                             </div>
                         )}
 
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
-                            <label htmlFor="enrollee" style={{ fontWeight: 600, color: 'var(--color-navy)', fontSize: 'var(--text-sm)' }}>Enrollee Name *</label>
-                            <input
-                                type="text" id="enrollee" required
-                                value={enrolleeName}
-                                onChange={(e) => setEnrolleeName(e.target.value)}
-                                style={inputStyle}
-                            />
-                        </div>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
-                            <label htmlFor="location" style={{ fontWeight: 600, color: 'var(--color-navy)', fontSize: 'var(--text-sm)' }}>Location *</label>
-                            <input
-                                type="text" id="location" required
-                                value={location}
-                                onChange={(e) => setLocation(e.target.value)}
-                                style={inputStyle}
-                            />
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-4)' }}>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
+                                <label htmlFor="firstName" style={{ fontWeight: 600, color: 'var(--color-navy)', fontSize: 'var(--text-sm)' }}>First Name *</label>
+                                <input
+                                    type="text" id="firstName" required
+                                    placeholder="John"
+                                    value={firstName}
+                                    onChange={(e) => setFirstName(e.target.value)}
+                                    style={inputStyle}
+                                />
+                            </div>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
+                                <label htmlFor="lastName" style={{ fontWeight: 600, color: 'var(--color-navy)', fontSize: 'var(--text-sm)' }}>Last Name *</label>
+                                <input
+                                    type="text" id="lastName" required
+                                    placeholder="Doe"
+                                    value={lastName}
+                                    onChange={(e) => setLastName(e.target.value)}
+                                    style={inputStyle}
+                                />
+                            </div>
                         </div>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
                             <label htmlFor="verificationCode" style={{ fontWeight: 600, color: 'var(--color-navy)', fontSize: 'var(--text-sm)' }}>Verification Code *</label>
                             <input
                                 type="text" id="verificationCode" required
+                                placeholder="e.g. TFOC-XXXX-XXXX"
                                 value={verificationCode}
                                 onChange={(e) => setVerificationCode(e.target.value)}
                                 style={inputStyle}
@@ -154,10 +160,6 @@ export default function CertificateVerificationPage() {
                                     <p style={{ fontWeight: 600, color: 'var(--color-navy)' }}>{result.participantName}</p>
                                 </div>
                                 <div>
-                                    <p style={{ fontSize: 'var(--text-xs)', color: 'var(--color-gray-500)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 'var(--space-1)' }}>Location</p>
-                                    <p style={{ fontWeight: 600, color: 'var(--color-navy)' }}>{result.location}</p>
-                                </div>
-                                <div>
                                     <p style={{ fontSize: 'var(--text-xs)', color: 'var(--color-gray-500)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 'var(--space-1)' }}>Hours Completed</p>
                                     <p style={{ fontWeight: 600, color: 'var(--color-navy)' }}>{result.hoursCompleted} of {result.hoursRequired} hours</p>
                                 </div>
@@ -180,6 +182,12 @@ export default function CertificateVerificationPage() {
                                     <p style={{ fontSize: 'var(--text-xs)', color: 'var(--color-gray-500)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 'var(--space-1)' }}>Issued Date</p>
                                     <p style={{ fontWeight: 600, color: 'var(--color-navy)' }}>{new Date(result.issuedDate).toLocaleDateString()}</p>
                                 </div>
+                                {result.completedDate && (
+                                    <div>
+                                        <p style={{ fontSize: 'var(--text-xs)', color: 'var(--color-gray-500)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 'var(--space-1)' }}>Completed Date</p>
+                                        <p style={{ fontWeight: 600, color: 'var(--color-navy)' }}>{new Date(result.completedDate).toLocaleDateString()}</p>
+                                    </div>
+                                )}
                             </div>
 
                             {/* Download links */}

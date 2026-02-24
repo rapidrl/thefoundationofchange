@@ -52,6 +52,7 @@ export async function POST(request: NextRequest) {
                 status: 'active',
                 amount_paid: (session.amount_total || 0) / 100,
                 stripe_payment_id: session.payment_intent as string,
+                start_date: new Date().toISOString().split('T')[0],
             });
 
         if (error) {

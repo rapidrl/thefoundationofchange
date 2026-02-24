@@ -15,12 +15,13 @@ export default async function CourseworkPage() {
 
     if (!user) redirect('/login');
 
-    // Get active enrollment
+    // Get active or suspended enrollment
     const { data: enrollments } = await supabase
         .from('enrollments')
         .select('*')
         .eq('user_id', user.id)
-        .eq('status', 'active')
+        .in('status', ['active', 'suspended'])
+        .order('created_at', { ascending: false })
         .limit(1);
 
     const enrollment = enrollments?.[0];
@@ -39,10 +40,39 @@ export default async function CourseworkPage() {
         );
     }
 
+    // If enrollment is suspended, show suspension banner
+    if (enrollment.status === 'suspended') {
+        return (
+            <section style={{ padding: 'var(--space-16) 0' }}>
+                <div className="container" style={{ maxWidth: '700px', margin: '0 auto', textAlign: 'center' }}>
+                    <div style={{
+                        padding: 'var(--space-8)', background: '#fef2f2',
+                        border: '2px solid #fecaca', borderRadius: 'var(--radius-xl)',
+                        marginBottom: 'var(--space-6)',
+                    }}>
+                        <span style={{ fontSize: '3rem', display: 'block', marginBottom: 'var(--space-4)' }}>🚫</span>
+                        <h1 style={{ fontSize: 'var(--text-3xl)', color: '#dc2626', marginBottom: 'var(--space-3)' }}>
+                            Enrollment Suspended
+                        </h1>
+                        <p style={{ color: '#991b1b', fontSize: 'var(--text-lg)', marginBottom: 'var(--space-4)', lineHeight: 'var(--leading-relaxed)' }}>
+                            Your enrollment has been suspended. You cannot access coursework or log hours while your enrollment is suspended.
+                        </p>
+                        <p style={{ color: '#dc2626', fontSize: 'var(--text-sm)' }}>
+                            If you believe this is an error, please contact our support team for assistance.
+                        </p>
+                    </div>
+                    <Link href="/contact-us" className="btn btn-cta" style={{ background: '#dc2626' }}>
+                        Contact Support
+                    </Link>
+                </div>
+            </section>
+        );
+    }
+
     // Get courses with articles
     const { data: courses } = await supabase
         .from('courses')
-        .select('*, articles(*)')
+        .select('*, articles(id, title, estimated_minutes, sort_order)')
         .order('sort_order', { ascending: true });
 
     // Get user's article progress

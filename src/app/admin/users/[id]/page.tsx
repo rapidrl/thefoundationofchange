@@ -200,22 +200,14 @@ export default async function AdminUserDetailPage({ params }: PageProps) {
                                         <td><strong>{cert.verification_code}</strong></td>
                                         <td>{new Date(cert.issued_at).toLocaleDateString()}</td>
                                         <td>
-                                            {cert.certificate_url ? (
-                                                <a href={cert.certificate_url} target="_blank" className={styles.downloadBtn}>
-                                                    📄 Download
-                                                </a>
-                                            ) : (
-                                                <span style={{ color: 'var(--color-gray-400)', fontSize: 'var(--text-xs)' }}>Not available</span>
-                                            )}
+                                            <a href={`/api/certificates/${cert.verification_code}/pdf`} target="_blank" className={styles.downloadBtn}>
+                                                📄 Download
+                                            </a>
                                         </td>
                                         <td>
-                                            {cert.hour_log_url ? (
-                                                <a href={cert.hour_log_url} target="_blank" className={styles.downloadBtn}>
-                                                    📋 Download
-                                                </a>
-                                            ) : (
-                                                <span style={{ color: 'var(--color-gray-400)', fontSize: 'var(--text-xs)' }}>Not available</span>
-                                            )}
+                                            <a href={`/api/hour-log/${cert.enrollment_id}/pdf`} target="_blank" className={styles.downloadBtn}>
+                                                📋 Download
+                                            </a>
                                         </td>
                                     </tr>
                                 ))}

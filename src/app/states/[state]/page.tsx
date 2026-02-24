@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getStateBySlug, states } from '../stateData';
+import { stateSeoDataMap } from '../stateSeoData';
 import styles from './page.module.css';
 
 interface Props {
@@ -13,6 +14,7 @@ interface Props {
 export default function StatePage({ params }: Props) {
     const { state: stateSlug } = require('react').use(params);
     const stateData = getStateBySlug(stateSlug);
+    const seoData = stateSeoDataMap[stateSlug];
     const [openFaq, setOpenFaq] = useState<number | null>(null);
 
     if (!stateData) return notFound();
@@ -20,6 +22,7 @@ export default function StatePage({ params }: Props) {
     const { name, abbr, cities, counties, courtInfo, geoContext, neighbors } = stateData;
     const citiesStr = cities.slice(0, -1).join(', ') + ', and ' + cities[cities.length - 1];
 
+    /* ── Standard FAQs ── */
     const faqs = [
         {
             q: `Is online community service accepted by ${name} courts?`,
@@ -43,7 +46,55 @@ export default function StatePage({ params }: Props) {
         },
     ];
 
+    /* ── Merge unique FAQs from SEO data ── */
+    const allFaqs = seoData ? [...faqs, ...seoData.uniqueFaqs] : faqs;
+
     const neighborStates = neighbors.map((slug) => states.find((s) => s.slug === slug)).filter(Boolean);
+
+    /* ── Build all JSON-LD schemas ── */
+    const schemas = [];
+
+    // FAQPage schema
+    schemas.push({
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: allFaqs.map((faq) => ({
+            '@type': 'Question',
+            name: faq.q,
+            acceptedAnswer: { '@type': 'Answer', text: faq.a },
+        })),
+    });
+
+    // BreadcrumbList schema
+    schemas.push({
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://thefoundationofchange.org/' },
+            { '@type': 'ListItem', position: 2, name: 'State Programs', item: 'https://thefoundationofchange.org/states' },
+            { '@type': 'ListItem', position: 3, name: `${name} Community Service` },
+        ],
+    });
+
+    // Service + Organization schema
+    schemas.push({
+        '@context': 'https://schema.org',
+        '@type': 'Service',
+        name: `Online Community Service in ${name}`,
+        description: `Complete court-approved community service hours online in ${name}. 501(c)(3) nonprofit program.`,
+        provider: {
+            '@type': 'Organization',
+            name: 'The Foundation of Change',
+            url: 'https://thefoundationofchange.org',
+            '@id': 'https://thefoundationofchange.org/#organization',
+        },
+        areaServed: {
+            '@type': 'State',
+            name: name,
+            containedInPlace: { '@type': 'Country', name: 'United States' },
+        },
+        serviceType: 'Online Community Service Program',
+    });
 
     return (
         <>
@@ -75,25 +126,42 @@ export default function StatePage({ params }: Props) {
                 </div>
             </section>
 
-            {/* ======= STATS BAR ======= */}
+            {/* ======= STATS BAR — now shows local stats if available ======= */}
             <section className={styles.statsBar}>
                 <div className={`container ${styles.statsInner}`}>
-                    <div className={styles.statItem}>
-                        <span className={styles.statValue}>10,000+</span>
-                        <span className={styles.statLabel}>Hours Completed</span>
-                    </div>
-                    <div className={styles.statItem}>
-                        <span className={styles.statValue}>50</span>
-                        <span className={styles.statLabel}>States Covered</span>
-                    </div>
-                    <div className={styles.statItem}>
-                        <span className={styles.statValue}>4.9★</span>
-                        <span className={styles.statLabel}>Satisfaction Rating</span>
-                    </div>
-                    <div className={styles.statItem}>
-                        <span className={styles.statValue}>501(c)(3)</span>
-                        <span className={styles.statLabel}>Verified Nonprofit</span>
-                    </div>
+                    {seoData ? (
+                        <>
+                            {seoData.localStats.map((stat) => (
+                                <div key={stat.label} className={styles.statItem} title={stat.source || ''}>
+                                    <span className={styles.statValue}>{stat.value}</span>
+                                    <span className={styles.statLabel}>{stat.label}</span>
+                                </div>
+                            ))}
+                            <div className={styles.statItem}>
+                                <span className={styles.statValue}>501(c)(3)</span>
+                                <span className={styles.statLabel}>Verified Nonprofit</span>
+                            </div>
+                        </>
+                    ) : (
+                        <>
+                            <div className={styles.statItem}>
+                                <span className={styles.statValue}>10,000+</span>
+                                <span className={styles.statLabel}>Hours Completed</span>
+                            </div>
+                            <div className={styles.statItem}>
+                                <span className={styles.statValue}>50</span>
+                                <span className={styles.statLabel}>States Covered</span>
+                            </div>
+                            <div className={styles.statItem}>
+                                <span className={styles.statValue}>4.9★</span>
+                                <span className={styles.statLabel}>Satisfaction Rating</span>
+                            </div>
+                            <div className={styles.statItem}>
+                                <span className={styles.statValue}>501(c)(3)</span>
+                                <span className={styles.statLabel}>Verified Nonprofit</span>
+                            </div>
+                        </>
+                    )}
                 </div>
             </section>
 
@@ -135,36 +203,59 @@ export default function StatePage({ params }: Props) {
                             <span className={styles.audienceIcon}>⚖️</span>
                             <h3>Court-Ordered Hours in {name}?</h3>
                             <p>Fulfill your court-mandated community service through our verified online program. Accepted by {name} {courtInfo} across all {counties} counties.</p>
-                            <Link href="/how-to-register" className={styles.audienceCta}>Start Your Hours →</Link>
+                            <Link href="/how-to-register" className={styles.audienceCta}>Start Your {name} Court Hours →</Link>
                         </div>
                         <div className={styles.audienceCard}>
                             <span className={styles.audienceIcon}>🎓</span>
                             <h3>{name} Graduation Requirement?</h3>
                             <p>Earn service credit for graduation on your own schedule from anywhere in {name}. Accepted by schools statewide.</p>
-                            <Link href="/how-to-register" className={styles.audienceCta}>Get Credit →</Link>
+                            <Link href="/how-to-register" className={styles.audienceCta}>Earn Your {name} Credit →</Link>
                         </div>
                         <div className={styles.audienceCard}>
                             <span className={styles.audienceIcon}>🤝</span>
                             <h3>{name} Probation Requirement?</h3>
                             <p>Complete probation-mandated community service from the comfort of home. Certificates accepted by {name} probation departments.</p>
-                            <Link href="/how-to-register" className={styles.audienceCta}>Get Compliant →</Link>
+                            <Link href="/how-to-register" className={styles.audienceCta}>Get {abbr} Compliant →</Link>
                         </div>
                     </div>
                 </div>
             </section>
 
-            {/* ======= STATE-SPECIFIC SEO CONTENT ======= */}
+            {/* ======= MID-PAGE CTA BANNER ======= */}
+            <section className={styles.midCta}>
+                <div className="container" style={{ textAlign: 'center' }}>
+                    <p className={styles.midCtaText}>
+                        Ready to start? Most {name} participants finish within 1–2 weeks.
+                    </p>
+                    <Link href="/how-to-register" className={styles.ctaPrimary}>
+                        Complete Your {name} Hours Now →
+                    </Link>
+                </div>
+            </section>
+
+            {/* ======= STATE-SPECIFIC SEO CONTENT (UNIQUE) ======= */}
             <section className={styles.section}>
                 <div className="container">
                     <div className={styles.seoContent}>
                         <h2>Online Community Service in {name} — What You Need to Know</h2>
-                        <p>
-                            {name} residents who need to complete community service hours — whether for court requirements,
-                            probation conditions, school graduation, or personal development — can fulfill their obligations
-                            entirely online through The Foundation of Change. Our 501(c)(3) nonprofit program provides a
-                            structured, self-paced educational experience accepted by courts and probation departments
-                            throughout {name}.
-                        </p>
+
+                        {/* Unique paragraphs from SEO data */}
+                        {seoData?.uniqueContent.map((para, i) => (
+                            <p key={i}>{para}</p>
+                        ))}
+
+                        {/* State law reference — GEO optimization */}
+                        {seoData?.stateLaws && (
+                            <>
+                                <h3>{name} Community Service Laws</h3>
+                                <p>
+                                    <em>{seoData.stateLaws}</em> Our program provides the verified,
+                                    documented hours that satisfy these legal requirements. Learn more about{' '}
+                                    <Link href="/how-it-works">how our program works</Link> or{' '}
+                                    <Link href="/faq">read our FAQ</Link>.
+                                </p>
+                            </>
+                        )}
 
                         <h3>{name} Court System and Community Service</h3>
                         <p>
@@ -178,26 +269,27 @@ export default function StatePage({ params }: Props) {
                         <p>{geoContext}</p>
 
                         <h3>{name} County Coverage</h3>
-                        <p>
-                            Our program is available in all {counties} {name} counties. Whether you are in a major
-                            metropolitan area like {cities[0]} or a rural county, you can start and complete your hours online.
-                            {name}&apos;s {courtInfo} all recognize 501(c)(3) nonprofit community service certificates.
-                            No in-person visits to service sites are needed — everything is completed from home using any
-                            device with internet access.
-                        </p>
+                        <ul>
+                            <li>Available in all <strong>{counties} {name} counties</strong></li>
+                            <li>Serving metro areas: <strong>{citiesStr}</strong></li>
+                            <li>{name}&apos;s {courtInfo} recognize 501(c)(3) certificates</li>
+                            <li>No in-person visits needed — complete from home on any device</li>
+                            <li><Link href="/certificate-verification">Verify any certificate online</Link></li>
+                        </ul>
 
                         <h3>Verification and Acceptance</h3>
                         <p>
                             Every certificate includes a unique verification code that {name} courts and probation officers
-                            can independently verify through our online portal. We provide detailed hour logs showing dates,
-                            times, and hours completed. Our 501(c)(3) nonprofit status provides the legitimacy {name} courts
-                            expect from community service providers.
+                            can independently verify through our{' '}
+                            <Link href="/certificate-verification">online verification portal</Link>.
+                            We provide detailed hour logs showing dates, times, and hours completed.
+                            Our 501(c)(3) nonprofit status provides the legitimacy {name} courts expect.
                         </p>
 
                         <h3>Getting Started in {name}</h3>
                         <p>
                             Enroll today and begin your hours immediately. There are no deadlines — work at your own pace
-                            with an 8-hour daily maximum. Your progress is saved automatically on any device. Upon completion,
+                            with an 8-hour daily maximum. Your progress saves automatically on any device. Upon completion,
                             your certificate and hour log are instantly available.{' '}
                             <Link href="/how-to-register" style={{ fontWeight: 600 }}>
                                 Start your {name} community service hours now
@@ -230,6 +322,26 @@ export default function StatePage({ params }: Props) {
                 </div>
             </section>
 
+            {/* ======= TESTIMONIAL (E-E-A-T) ======= */}
+            {seoData?.testimonial && (
+                <section className={styles.section}>
+                    <div className="container">
+                        <h2 className={styles.sectionTitle}>What {name} Participants Say</h2>
+                        <div className={styles.testimonialCard}>
+                            <div className={styles.testimonialStars}>
+                                {'★'.repeat(seoData.testimonial.rating)}
+                            </div>
+                            <blockquote className={styles.testimonialText}>
+                                &ldquo;{seoData.testimonial.text}&rdquo;
+                            </blockquote>
+                            <p className={styles.testimonialAuthor}>
+                                — {seoData.testimonial.name}, {seoData.testimonial.role}
+                            </p>
+                        </div>
+                    </div>
+                </section>
+            )}
+
             {/* ======= TRUST GRID ======= */}
             <section className={styles.sectionAlt}>
                 <div className="container">
@@ -238,35 +350,35 @@ export default function StatePage({ params }: Props) {
                     <div className={styles.trustGrid}>
                         <div className={styles.trustCard}>
                             <span className={styles.trustIcon}>🏛️</span>
-                            <h4>Court Compliant</h4>
+                            <h3>Court Compliant</h3>
                             <p>Accepted by {name} courts and probation departments statewide.</p>
                         </div>
                         <div className={styles.trustCard}>
                             <span className={styles.trustIcon}>🔒</span>
-                            <h4>Audit Ready</h4>
+                            <h3>Audit Ready</h3>
                             <p>Tamper-proof time tracking with verification logs for every session.</p>
                         </div>
                         <div className={styles.trustCard}>
                             <span className={styles.trustIcon}>📄</span>
-                            <h4>501(c)(3) Nonprofit</h4>
+                            <h3>501(c)(3) Nonprofit</h3>
                             <p>Registered nonprofit — your hours carry legitimate weight.</p>
                         </div>
                         <div className={styles.trustCard}>
                             <span className={styles.trustIcon}>⏰</span>
-                            <h4>Self-Paced</h4>
+                            <h3>Self-Paced</h3>
                             <p>No deadlines. Complete hours at your pace from anywhere in {name}.</p>
                         </div>
                     </div>
                 </div>
             </section>
 
-            {/* ======= FAQ ======= */}
+            {/* ======= FAQ (merged: standard + unique) ======= */}
             <section className={styles.section} id="faq">
                 <div className="container">
                     <h2 className={styles.sectionTitle}>Frequently Asked Questions</h2>
                     <p className={styles.sectionSubtitle}>{name} Community Service — Answered</p>
                     <div className={styles.faqList}>
-                        {faqs.map((faq, i) => (
+                        {allFaqs.map((faq, i) => (
                             <div key={i} className={`${styles.faqItem} ${openFaq === i ? styles.faqOpen : ''}`}>
                                 <button
                                     className={styles.faqQuestion}
@@ -285,7 +397,7 @@ export default function StatePage({ params }: Props) {
                 </div>
             </section>
 
-            {/* ======= FINAL CTA ======= */}
+            {/* ======= FINAL CTA (localized) ======= */}
             <section className={styles.finalCta}>
                 <div className={styles.finalCtaGlow} />
                 <div className={`container ${styles.finalCtaContent}`}>
@@ -295,7 +407,7 @@ export default function StatePage({ params }: Props) {
                         through our verified nonprofit program.
                     </p>
                     <Link href="/how-to-register" className={styles.ctaPrimary}>
-                        Enroll Now — Get Started
+                        Complete Your {name} Hours — Enroll Now
                     </Link>
                 </div>
             </section>
@@ -308,32 +420,25 @@ export default function StatePage({ params }: Props) {
                         <div className={styles.nearbyGrid}>
                             {neighborStates.map((s) => s && (
                                 <Link key={s.slug} href={`/states/${s.slug}`} className={styles.nearbyLink}>
-                                    {s.name}
+                                    Online Community Service in {s.name}
                                 </Link>
                             ))}
                         </div>
+                        <p style={{ marginTop: '1rem', textAlign: 'center' }}>
+                            <Link href="/states" style={{ opacity: 0.8 }}>View all 50 state programs →</Link>
+                        </p>
                     </div>
                 </section>
             )}
 
-            {/* ======= JSON-LD STRUCTURED DATA ======= */}
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{
-                    __html: JSON.stringify({
-                        '@context': 'https://schema.org',
-                        '@type': 'FAQPage',
-                        mainEntity: faqs.map((faq) => ({
-                            '@type': 'Question',
-                            name: faq.q,
-                            acceptedAnswer: {
-                                '@type': 'Answer',
-                                text: faq.a,
-                            },
-                        })),
-                    }),
-                }}
-            />
+            {/* ======= JSON-LD STRUCTURED DATA (FAQPage + BreadcrumbList + Service) ======= */}
+            {schemas.map((schema, i) => (
+                <script
+                    key={i}
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+                />
+            ))}
         </>
     );
 }

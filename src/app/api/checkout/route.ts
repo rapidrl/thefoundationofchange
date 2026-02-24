@@ -58,9 +58,9 @@ export async function POST(request: Request) {
             cancel_url: `${origin}/start-now`,
             customer_email: user.email,
             metadata: {
-                userId: user.id,
-                hours: hours.toString(),
-                tierId: tier.id,
+                user_id: user.id,
+                max_hours: hours.toString(),
+                tier_id: tier.id,
                 tierLabel: `${hours} Hours (${tier.price})`,
             },
         });

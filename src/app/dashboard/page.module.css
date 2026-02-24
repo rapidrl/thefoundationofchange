@@ -3,19 +3,214 @@
     min-height: calc(100vh - var(--header-height) - 200px);
 }
 
+/* ——— Greeting ——— */
 .greeting {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: var(--space-8);
 }
 
 .greeting h1 {
     font-size: var(--text-3xl);
-    margin-bottom: var(--space-2);
+    margin-bottom: var(--space-1);
 }
 
 .greeting p {
     color: var(--color-gray-500);
+    font-size: var(--text-sm);
 }
 
+/* ——— Progress Overview ——— */
+.progressOverview {
+    background: linear-gradient(135deg, var(--color-navy-dark) 0%, #162d5a 100%);
+    border-radius: var(--radius-xl);
+    padding: var(--space-6) var(--space-8);
+    margin-bottom: var(--space-8);
+    color: var(--color-white);
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+}
+
+.progressLeft {
+    flex: 1;
+}
+
+.progressTitle {
+    font-size: var(--text-sm);
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: var(--space-2);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.progressNumbers {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-2);
+    margin-bottom: var(--space-3);
+}
+
+.progressBig {
+    font-size: var(--text-4xl);
+    font-weight: 800;
+    line-height: 1;
+}
+
+.progressSep {
+    font-size: var(--text-lg);
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.progressSmall {
+    font-size: var(--text-lg);
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.progressUnit {
+    font-size: var(--text-sm);
+    color: rgba(255, 255, 255, 0.4);
+    margin-left: var(--space-1);
+}
+
+.progressBarTrack {
+    width: 100%;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.progressBarFill {
+    height: 100%;
+    background: linear-gradient(90deg, #34d399 0%, #10b981 100%);
+    border-radius: 5px;
+    transition: width 0.6s ease;
+}
+
+.progressRight {
+    display: flex;
+    gap: var(--space-6);
+}
+
+.progressStat {
+    text-align: center;
+}
+
+.progressStatVal {
+    font-size: var(--text-2xl);
+    font-weight: 700;
+    display: block;
+}
+
+.progressStatLabel {
+    font-size: var(--text-xs);
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* ——— Quick Actions ——— */
+.quickActions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: var(--space-4);
+    margin-bottom: var(--space-10);
+}
+
+.actionCard {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    background: var(--color-white);
+    border: 1px solid var(--color-gray-200);
+    border-radius: var(--radius-lg);
+    padding: var(--space-5) var(--space-5);
+    text-decoration: none;
+    color: var(--color-navy);
+    transition: all var(--transition-normal);
+}
+
+.actionCard:hover {
+    border-color: var(--color-blue-light);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+.actionCardPrimary {
+    composes: actionCard;
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    border-color: transparent;
+    color: #fff;
+}
+
+.actionCardPrimary:hover {
+    box-shadow: 0 8px 25px rgba(37, 99, 235, 0.4);
+    transform: translateY(-2px);
+}
+
+.actionIcon {
+    font-size: 1.75rem;
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-md);
+    background: var(--color-gray-50);
+}
+
+.actionCardPrimary .actionIcon {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.actionLabel {
+    font-size: var(--text-sm);
+    font-weight: var(--weight-semibold);
+}
+
+.actionDesc {
+    font-size: var(--text-xs);
+    color: var(--color-gray-400);
+    margin-top: 2px;
+}
+
+.actionCardPrimary .actionDesc {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* ——— Sections ——— */
+.section {
+    margin-bottom: var(--space-10);
+}
+
+.section h2 {
+    font-size: var(--text-xl);
+    margin-bottom: var(--space-4);
+}
+
+.emptyState {
+    background: var(--color-gray-50);
+    border: 1px dashed var(--color-gray-300);
+    border-radius: var(--radius-lg);
+    padding: var(--space-10);
+    text-align: center;
+    color: var(--color-gray-500);
+}
+
+.emptyState p {
+    margin-bottom: var(--space-4);
+}
+
+.actions {
+    display: flex;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+}
+
+/* ——— Stats Grid (kept for compatibility) ——— */
 .statsGrid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -48,34 +243,7 @@
     margin-top: var(--space-1);
 }
 
-.section {
-    margin-bottom: var(--space-10);
-}
-
-.section h2 {
-    font-size: var(--text-xl);
-    margin-bottom: var(--space-4);
-}
-
-.emptyState {
-    background: var(--color-gray-50);
-    border: 1px dashed var(--color-gray-300);
-    border-radius: var(--radius-lg);
-    padding: var(--space-10);
-    text-align: center;
-    color: var(--color-gray-500);
-}
-
-.emptyState p {
-    margin-bottom: var(--space-4);
-}
-
-.actions {
-    display: flex;
-    gap: var(--space-4);
-    flex-wrap: wrap;
-}
-
+/* ——— Logout ——— */
 .logoutBtn {
     background: none;
     border: 1px solid var(--color-gray-300);
@@ -93,7 +261,7 @@
     color: var(--color-error);
 }
 
-/* Hour Log Table */
+/* ——— Hour Log Table ——— */
 .hourLogTable {
     background: var(--color-white);
     border: 1px solid var(--color-gray-200);
@@ -123,4 +291,28 @@
     font-size: var(--text-sm);
     border-bottom: 1px solid var(--color-gray-100);
     color: var(--color-gray-700);
+}
+
+/* ——— Responsive ——— */
+@media (max-width: 768px) {
+    .progressOverview {
+        flex-direction: column;
+        padding: var(--space-5);
+        gap: var(--space-5);
+    }
+
+    .progressRight {
+        width: 100%;
+        justify-content: space-around;
+    }
+
+    .quickActions {
+        grid-template-columns: 1fr;
+    }
+
+    .greeting {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-2);
+    }
 }

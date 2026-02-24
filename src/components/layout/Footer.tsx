@@ -15,6 +15,8 @@ export default function Footer() {
                         <li><Link href="/letter-of-introductions">Court Acceptance</Link></li>
                         <li><Link href="/our-guarantee">Program Details</Link></li>
                         <li><Link href="/states">State Programs</Link></li>
+                        <li><Link href="/dashboard">My Dashboard</Link></li>
+                        <li><Link href="/coursework">My Coursework</Link></li>
                     </ul>
                 </div>
 

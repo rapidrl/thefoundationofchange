@@ -101,6 +101,14 @@ export default async function CourseworkPage() {
     return (
         <section style={{ padding: 'var(--space-10) 0' }}>
             <div className="container" style={{ maxWidth: '900px', margin: '0 auto' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--space-4)' }}>
+                    <Link href="/dashboard" style={{ fontSize: 'var(--text-sm)', color: 'var(--color-blue)', textDecoration: 'none', fontWeight: 500 }}>
+                        ← Back to Dashboard
+                    </Link>
+                    <Link href="/contact-us" style={{ fontSize: 'var(--text-sm)', color: 'var(--color-gray-400)', textDecoration: 'none' }}>
+                        Need help?
+                    </Link>
+                </div>
                 <h1 style={{ fontSize: 'var(--text-3xl)', marginBottom: 'var(--space-2)' }}>Your Coursework</h1>
                 <p style={{ color: 'var(--color-gray-500)', marginBottom: 'var(--space-8)' }}>
                     Read each article and submit a reflection to log your hours.

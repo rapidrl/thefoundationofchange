@@ -54,6 +54,8 @@ export default async function DashboardPage() {
     const progressPercent = totalHoursRequired > 0
         ? Math.min(100, Math.round((totalHoursCompleted / totalHoursRequired) * 100))
         : 0;
+    const hoursRemaining = Math.max(0, totalHoursRequired - totalHoursCompleted);
+    const certCount = certificates?.length ?? 0;
 
     return (
         <div className={styles.dashboard}>
@@ -61,55 +63,103 @@ export default async function DashboardPage() {
                 {/* Greeting */}
                 <div className={styles.greeting}>
                     <div>
-                        <h1>Welcome, {profile?.full_name || user.email}</h1>
+                        <h1>Welcome back, {profile?.full_name || user.email?.split('@')[0]}</h1>
                         <p>{user.email}</p>
                     </div>
-                    <Link href="/dashboard/profile" style={{ fontSize: 'var(--text-sm)', color: 'var(--color-blue)', fontWeight: 500 }}>✏️ Edit Profile</Link>
+                    <LogoutButton />
                 </div>
 
-                {/* Stats */}
-                <div className={styles.statsGrid}>
-                    <div className={styles.statCard}>
-                        <div className={styles.statLabel}>Hours Completed</div>
-                        <div className={styles.statValue}>{totalHoursCompleted}</div>
-                        <div className={styles.statSub}>of {totalHoursRequired} required</div>
-                    </div>
-                    <div className={styles.statCard}>
-                        <div className={styles.statLabel}>Progress</div>
-                        <div className={styles.statValue}>{progressPercent}%</div>
-                        <div className={styles.statSub}>
-                            {progressPercent === 100 ? '✓ Complete' : `${totalHoursRequired - totalHoursCompleted} hours remaining`}
+                {/* Progress Overview Bar */}
+                {activeEnrollment ? (
+                    <div className={styles.progressOverview}>
+                        <div className={styles.progressLeft}>
+                            <div className={styles.progressTitle}>Overall Progress</div>
+                            <div className={styles.progressNumbers}>
+                                <span className={styles.progressBig}>{totalHoursCompleted}</span>
+                                <span className={styles.progressSep}>/</span>
+                                <span className={styles.progressSmall}>{totalHoursRequired}</span>
+                                <span className={styles.progressUnit}>hours</span>
+                            </div>
+                            <div className={styles.progressBarTrack}>
+                                <div
+                                    className={styles.progressBarFill}
+                                    style={{ width: `${progressPercent}%` }}
+                                />
+                            </div>
+                        </div>
+                        <div className={styles.progressRight}>
+                            <div className={styles.progressStat}>
+                                <span className={styles.progressStatVal}>{progressPercent}%</span>
+                                <span className={styles.progressStatLabel}>Complete</span>
+                            </div>
+                            <div className={styles.progressStat}>
+                                <span className={styles.progressStatVal}>{hoursRemaining}</span>
+                                <span className={styles.progressStatLabel}>Remaining</span>
+                            </div>
+                            <div className={styles.progressStat}>
+                                <span className={styles.progressStatVal}>{certCount}</span>
+                                <span className={styles.progressStatLabel}>Certificates</span>
+                            </div>
                         </div>
                     </div>
-                    <div className={styles.statCard}>
-                        <div className={styles.statLabel}>Certificates</div>
-                        <div className={styles.statValue}>{certificates?.length ?? 0}</div>
-                        <div className={styles.statSub}>issued</div>
+                ) : (
+                    <div className={styles.progressOverview}>
+                        <div className={styles.progressLeft}>
+                            <div className={styles.progressTitle}>No Active Program</div>
+                            <div className={styles.progressNumbers}>
+                                <span className={styles.progressSmall}>Enroll to start tracking your community service hours</span>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                )}
 
-                {/* Active Program */}
-                <div className={styles.section}>
-                    <h2>Your Program</h2>
+                {/* Quick Actions */}
+                <div className={styles.quickActions}>
                     {activeEnrollment ? (
-                        <div className={styles.actions}>
-                            <Link href="/coursework" className="btn btn-cta">
-                                Continue Coursework
-                            </Link>
-                        </div>
+                        <Link href="/coursework" className={styles.actionCardPrimary}>
+                            <span className={styles.actionIcon}>📚</span>
+                            <div>
+                                <div className={styles.actionLabel}>Continue Coursework</div>
+                                <div className={styles.actionDesc}>{hoursRemaining}h remaining — pick up where you left off</div>
+                            </div>
+                        </Link>
                     ) : (
-                        <div className={styles.emptyState}>
-                            <p>You don&apos;t have an active enrollment yet.</p>
-                            <Link href="/start-now" className="btn btn-cta">
-                                Enroll Now
-                            </Link>
-                        </div>
+                        <Link href="/start-now" className={styles.actionCardPrimary}>
+                            <span className={styles.actionIcon}>🚀</span>
+                            <div>
+                                <div className={styles.actionLabel}>Enroll Now</div>
+                                <div className={styles.actionDesc}>Choose your hours and start today</div>
+                            </div>
+                        </Link>
                     )}
+                    <Link href="/dashboard/profile" className={styles.actionCard}>
+                        <span className={styles.actionIcon}>✏️</span>
+                        <div>
+                            <div className={styles.actionLabel}>Edit Profile</div>
+                            <div className={styles.actionDesc}>Update your name, phone, or address</div>
+                        </div>
+                    </Link>
+                    {certCount > 0 && (
+                        <Link href="#certificates" className={styles.actionCard}>
+                            <span className={styles.actionIcon}>📄</span>
+                            <div>
+                                <div className={styles.actionLabel}>View Certificates</div>
+                                <div className={styles.actionDesc}>{certCount} certificate{certCount > 1 ? 's' : ''} issued</div>
+                            </div>
+                        </Link>
+                    )}
+                    <Link href="/contact-us" className={styles.actionCard}>
+                        <span className={styles.actionIcon}>💬</span>
+                        <div>
+                            <div className={styles.actionLabel}>Need Help?</div>
+                            <div className={styles.actionDesc}>Contact our support team</div>
+                        </div>
+                    </Link>
                 </div>
 
                 {/* Certificates */}
                 {certificates && certificates.length > 0 && (
-                    <div className={styles.section}>
+                    <div className={styles.section} id="certificates">
                         <h2>Your Certificates</h2>
                         {certificates.map((cert: { id: string; verification_code: string; issued_at: string; certificate_url?: string }) => (
                             <div key={cert.id} style={{
@@ -174,9 +224,6 @@ export default async function DashboardPage() {
                         </div>
                     )}
                 </div>
-
-                {/* Logout */}
-                <LogoutButton />
             </div>
         </div>
     );

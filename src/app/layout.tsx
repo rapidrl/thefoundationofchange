@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import Script from "next/script";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import TimezoneDetector from "@/components/TimezoneDetector";
@@ -10,6 +11,8 @@ const inter = Inter({
   variable: "--font-inter",
   display: "swap",
 });
+
+const GA_MEASUREMENT_ID = "AW-17595795029";
 
 export const metadata: Metadata = {
   title: {
@@ -45,6 +48,21 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={inter.variable}>
+      <head>
+        {/* Google Ads Conversion Tracking (gtag.js) */}
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="google-ads-gtag" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GA_MEASUREMENT_ID}');
+          `}
+        </Script>
+      </head>
       <body>
         <TimezoneDetector />
         <Header />

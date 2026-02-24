@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import styles from './Footer.module.css';
 
+const WP = 'https://thefoundationofchange.org';
+
 export default function Footer() {
     return (
         <footer className={styles.footer}>
@@ -9,12 +11,12 @@ export default function Footer() {
                 <div className={styles.footerColumn}>
                     <h3>About the Program</h3>
                     <ul>
-                        <li><Link href="/community">Community Service Program</Link></li>
-                        <li><Link href="/how-it-works">How It Works</Link></li>
-                        <li><Link href="/faq">Frequently Asked Questions</Link></li>
-                        <li><Link href="/letter-of-introductions">Court Acceptance</Link></li>
-                        <li><Link href="/our-guarantee">Program Details</Link></li>
-                        <li><Link href="/states">State Programs</Link></li>
+                        <li><a href={`${WP}/community-service`}>Community Service Program</a></li>
+                        <li><a href={`${WP}/how-it-works`}>How It Works</a></li>
+                        <li><a href={`${WP}/faq`}>Frequently Asked Questions</a></li>
+                        <li><a href={`${WP}/court-acceptance`}>Court Acceptance</a></li>
+                        <li><a href={`${WP}/program-details`}>Program Details</a></li>
+                        <li><a href={`${WP}/community-service-by-state`}>State Programs</a></li>
                         <li><Link href="/dashboard">My Dashboard</Link></li>
                         <li><Link href="/coursework">My Coursework</Link></li>
                     </ul>
@@ -25,9 +27,9 @@ export default function Footer() {
                     <h3>Verification &amp; Documents</h3>
                     <ul>
                         <li><Link href="/certificate-verification">Verify a Certificate</Link></li>
-                        <li><Link href="/letter-of-introductions">Sample Enrollment Letter</Link></li>
-                        <li><Link href="/terms-of-service">Attendance Policy</Link></li>
-                        <li><Link href="/refund-policy">Refund Policy</Link></li>
+                        <li><a href={`${WP}/enrollment-letter`}>Sample Enrollment Letter</a></li>
+                        <li><a href={`${WP}/terms-of-service`}>Attendance Policy</a></li>
+                        <li><a href={`${WP}/refund-policy`}>Refund Policy</a></li>
                     </ul>
                 </div>
 
@@ -41,9 +43,9 @@ export default function Footer() {
                         <a href="tel:+17348346934" className={styles.contactLink}>
                             734-834-6934
                         </a>
-                        <Link href="/contact-us" className={styles.contactLink}>
+                        <a href={`${WP}/contact-us`} className={styles.contactLink}>
                             Secure Contact Form
-                        </Link>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -73,9 +75,9 @@ export default function Footer() {
                     © {new Date().getFullYear()} The Foundation of Change — 501(c)(3) Nonprofit — EIN: 33-5003265
                 </p>
                 <div className={styles.legalLinks}>
-                    <Link href="/privacy-policy">Privacy</Link>
-                    <Link href="/terms-of-service">Terms &amp; Conditions</Link>
-                    <Link href="/refund-policy">Refund Policy</Link>
+                    <a href={`${WP}/privacy-policy`}>Privacy</a>
+                    <a href={`${WP}/terms-of-service`}>Terms &amp; Conditions</a>
+                    <a href={`${WP}/refund-policy`}>Refund Policy</a>
                 </div>
             </div>
         </footer>

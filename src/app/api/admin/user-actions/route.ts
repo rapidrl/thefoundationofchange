@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAdmin } from '@/lib/admin';
-import { createClient as createServiceClient } from '@supabase/supabase-js';
 
 // POST /api/admin/user-actions — Perform admin actions on user accounts
 export async function POST(req: NextRequest) {
@@ -31,13 +30,8 @@ export async function POST(req: NextRequest) {
                     return NextResponse.json({ error: 'User email not found' }, { status: 404 });
                 }
 
-                // Use service role client to send password reset
-                const serviceClient = createServiceClient(
-                    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-                    process.env.SUPABASE_SERVICE_ROLE_KEY!
-                );
-
-                const { error } = await serviceClient.auth.resetPasswordForEmail(profile.email, {
+                // supabase from requireAdmin() is already service-role
+                const { error } = await supabase.auth.resetPasswordForEmail(profile.email, {
                     redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://app.thefoundationofchange.org'}/reset-password`,
                 });
 

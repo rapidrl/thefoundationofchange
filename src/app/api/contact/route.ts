@@ -47,7 +47,7 @@ export async function POST(request: Request) {
             try {
                 const resendClient = new Resend(apiKey);
                 await resendClient.emails.send({
-                    from: 'Contact Form <onboarding@resend.dev>',
+                    from: 'Contact Form <contact@thefoundationofchange.org>',
                     to: ['info@thefoundationofchange.org'],
                     replyTo: trimmedEmail,
                     subject: `New Contact Form: ${trimmedName}`,

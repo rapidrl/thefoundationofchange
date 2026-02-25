@@ -86,9 +86,9 @@ export default async function CourseworkPage() {
     );
 
     // Calculate stats
-    const hoursCompleted = Number(enrollment.hours_completed) || 0;
+    const hoursCompleted = Math.round((Number(enrollment.hours_completed) || 0) * 100) / 100;
     const hoursRequired = Number(enrollment.hours_required) || 0;
-    const hoursRemaining = Math.max(0, hoursRequired - hoursCompleted);
+    const hoursRemaining = Math.round(Math.max(0, hoursRequired - hoursCompleted) * 100) / 100;
     const progressPct = hoursRequired > 0 ? Math.round((hoursCompleted / hoursRequired) * 100) : 0;
 
     // Get user's timezone for daily cap
@@ -105,11 +105,11 @@ export default async function CourseworkPage() {
         .eq('user_id', user.id)
         .eq('log_date', today);
 
-    const hoursToday = (todayLogs || []).reduce(
+    const hoursToday = Math.round((todayLogs || []).reduce(
         (sum, l) => sum + (Number(l.hours) || 0) + ((Number(l.minutes) || 0) / 60),
         0
-    );
-    const hoursRemainingToday = Math.max(0, 8 - hoursToday);
+    ) * 100) / 100;
+    const hoursRemainingToday = Math.round(Math.max(0, 8 - hoursToday) * 100) / 100;
 
     // Find next incomplete article
     let nextArticleId: string | null = null;
@@ -155,14 +155,14 @@ export default async function CourseworkPage() {
                     }}>
                         <div style={{ fontSize: 'var(--text-xs)', color: 'var(--color-gray-500)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 'var(--space-1)' }}>Overall Progress</div>
                         <div style={{ fontSize: 'var(--text-2xl)', fontWeight: 700, color: 'var(--color-navy)' }}>{progressPct}%</div>
-                        <div style={{ fontSize: 'var(--text-xs)', color: 'var(--color-gray-400)' }}>{hoursCompleted}h of {hoursRequired}h</div>
+                        <div style={{ fontSize: 'var(--text-xs)', color: 'var(--color-gray-400)' }}>{hoursCompleted.toFixed(1)}h of {hoursRequired}h</div>
                     </div>
                     <div style={{
                         background: 'var(--color-white)', border: '1px solid var(--color-gray-200)',
                         borderRadius: 'var(--radius-lg)', padding: 'var(--space-5)',
                     }}>
                         <div style={{ fontSize: 'var(--text-xs)', color: 'var(--color-gray-500)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 'var(--space-1)' }}>Hours Remaining</div>
-                        <div style={{ fontSize: 'var(--text-2xl)', fontWeight: 700, color: 'var(--color-navy)' }}>{hoursRemaining}h</div>
+                        <div style={{ fontSize: 'var(--text-2xl)', fontWeight: 700, color: 'var(--color-navy)' }}>{hoursRemaining.toFixed(1)}h</div>
                         <div style={{ fontSize: 'var(--text-xs)', color: 'var(--color-gray-400)' }}>to complete</div>
                     </div>
                     <div style={{

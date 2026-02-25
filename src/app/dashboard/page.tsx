@@ -49,12 +49,12 @@ export default async function DashboardPage() {
             .order('log_date', { ascending: true });
         hourLogs = data;
     }
-    const totalHoursCompleted = activeEnrollment?.hours_completed ?? 0;
+    const totalHoursCompleted = Math.round((activeEnrollment?.hours_completed ?? 0) * 100) / 100;
     const totalHoursRequired = activeEnrollment?.hours_required ?? 0;
     const progressPercent = totalHoursRequired > 0
         ? Math.min(100, Math.round((totalHoursCompleted / totalHoursRequired) * 100))
         : 0;
-    const hoursRemaining = Math.max(0, totalHoursRequired - totalHoursCompleted);
+    const hoursRemaining = Math.round(Math.max(0, totalHoursRequired - totalHoursCompleted) * 100) / 100;
     const certCount = certificates?.length ?? 0;
 
     return (
@@ -91,7 +91,7 @@ export default async function DashboardPage() {
                         <div className={styles.progressLeft}>
                             <div className={styles.progressTitle}>Overall Progress</div>
                             <div className={styles.progressNumbers}>
-                                <span className={styles.progressBig}>{totalHoursCompleted}</span>
+                                <span className={styles.progressBig}>{totalHoursCompleted.toFixed(1)}</span>
                                 <span className={styles.progressSep}>/</span>
                                 <span className={styles.progressSmall}>{totalHoursRequired}</span>
                                 <span className={styles.progressUnit}>hours</span>
@@ -109,7 +109,7 @@ export default async function DashboardPage() {
                                 <span className={styles.progressStatLabel}>Complete</span>
                             </div>
                             <div className={styles.progressStat}>
-                                <span className={styles.progressStatVal}>{hoursRemaining}</span>
+                                <span className={styles.progressStatVal}>{hoursRemaining.toFixed(1)}</span>
                                 <span className={styles.progressStatLabel}>Remaining</span>
                             </div>
                             <div className={styles.progressStat}>
@@ -136,7 +136,7 @@ export default async function DashboardPage() {
                             <span className={styles.actionIcon}>📚</span>
                             <div>
                                 <div className={styles.actionLabel}>Continue Coursework</div>
-                                <div className={styles.actionDesc}>{hoursRemaining}h remaining — pick up where you left off</div>
+                                <div className={styles.actionDesc}>{hoursRemaining.toFixed(1)}h remaining — pick up where you left off</div>
                             </div>
                         </Link>
                     ) : (

@@ -4,7 +4,8 @@ import path from 'path';
 
 // Cache loaded images
 let logoBase64: string | null = null;
-let sealBase64: string | null = null;
+let signatureBase64: string | null = null;
+let goldSealBase64: string | null = null;
 
 function getLogoBase64(): string {
     if (!logoBase64) {
@@ -15,13 +16,22 @@ function getLogoBase64(): string {
     return logoBase64;
 }
 
-function getSealBase64(): string {
-    if (!sealBase64) {
-        const sealPath = path.join(process.cwd(), 'src', 'assets', 'seal.png');
-        const buf = fs.readFileSync(sealPath);
-        sealBase64 = buf.toString('base64');
+function getSignatureBase64(): string {
+    if (!signatureBase64) {
+        const sigPath = path.join(process.cwd(), 'src', 'assets', 'signature.png');
+        const buf = fs.readFileSync(sigPath);
+        signatureBase64 = buf.toString('base64');
     }
-    return sealBase64;
+    return signatureBase64;
+}
+
+function getGoldSealBase64(): string {
+    if (!goldSealBase64) {
+        const sealPath = path.join(process.cwd(), 'src', 'assets', 'gold_seal.jpg');
+        const buf = fs.readFileSync(sealPath);
+        goldSealBase64 = buf.toString('base64');
+    }
+    return goldSealBase64;
 }
 
 // Shared styles
@@ -129,31 +139,31 @@ function drawSignature(doc: jsPDF, y: number, label: string = 'Respectfully subm
     doc.setTextColor(...MAROON);
     doc.text(label, 20, y);
 
-    // Signature name
-    doc.setFont('helvetica', 'bolditalic');
-    doc.setFontSize(14);
-    doc.setTextColor(...NAVY);
-    doc.text('Jennifer Schroeder', 20, y + 12);
+    // Signature image
+    try {
+        const sigData = getSignatureBase64();
+        doc.addImage(`data:image/png;base64,${sigData}`, 'PNG', 18, y + 2, 50, 25);
+    } catch {
+        // Fallback: text-based signature
+        doc.setFont('helvetica', 'bolditalic');
+        doc.setFontSize(14);
+        doc.setTextColor(...NAVY);
+        doc.text('Jennifer Schroeder', 20, y + 12);
+    }
 
-    // Line under signature
-    doc.setDrawColor(...LIGHT_GRAY);
-    doc.setLineWidth(0.3);
-    doc.line(20, y + 14, 75, y + 14);
-
-    // Title lines
+    // Title lines below signature
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(8);
     doc.setTextColor(...DARK_GRAY);
-    doc.text('Jennifer Schroeder, M.S., CADC', 20, y + 20);
-    doc.text('Executive Director, The Foundation of Change', 20, y + 25);
+    doc.text('Executive Director, The Foundation of Change', 20, y + 30);
 
-    return y + 30;
+    return y + 36;
 }
 
-function drawSeal(doc: jsPDF, x: number, y: number, size: number = 25) {
+function drawSeal(doc: jsPDF, x: number, y: number, size: number = 30) {
     try {
-        const sealData = getSealBase64();
-        doc.addImage(`data:image/png;base64,${sealData}`, 'PNG', x, y, size, size);
+        const sealData = getGoldSealBase64();
+        doc.addImage(`data:image/jpeg;base64,${sealData}`, 'JPEG', x, y, size, size);
     } catch {
         // Fallback: draw circles
         doc.setDrawColor(184, 157, 82);

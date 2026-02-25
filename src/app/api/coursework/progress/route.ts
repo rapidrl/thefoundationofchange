@@ -134,7 +134,53 @@ export async function POST(request: Request) {
                 onConflict: 'enrollment_id,log_date',
             });
 
-        return NextResponse.json({ success: true, secondsSaved: validatedSeconds });
+        // ── Recalculate overall enrollment hours_completed from all hour_logs ──
+        const { data: allLogs } = await supabase
+            .from('hour_logs')
+            .select('hours, minutes')
+            .eq('enrollment_id', enrollmentId);
+
+        const totalHoursFromLogs = (allLogs || []).reduce(
+            (sum, log) => sum + (Number(log.hours) || 0) + ((Number(log.minutes) || 0) / 60),
+            0
+        );
+        const roundedTotal = Math.round(totalHoursFromLogs * 100) / 100;
+
+        // Get enrollment to check completion
+        const { data: enrollment } = await supabase
+            .from('enrollments')
+            .select('hours_required, status')
+            .eq('id', enrollmentId)
+            .single();
+
+        const isCompleted = enrollment && roundedTotal >= enrollment.hours_required && enrollment.status === 'active';
+
+        await supabase
+            .from('enrollments')
+            .update({
+                hours_completed: roundedTotal,
+                ...(isCompleted ? { status: 'completed', completed_at: new Date().toISOString() } : {}),
+            })
+            .eq('id', enrollmentId);
+
+        // Auto-generate certificate on completion
+        if (isCompleted) {
+            const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+            const segment = () => Array.from({ length: 4 }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+            const verificationCode = `TFOC-${segment()}-${segment()}`;
+
+            await supabase
+                .from('certificates')
+                .insert({
+                    user_id: user.id,
+                    enrollment_id: enrollmentId,
+                    verification_code: verificationCode,
+                    issued_at: new Date().toISOString(),
+                    hours_completed: roundedTotal,
+                });
+        }
+
+        return NextResponse.json({ success: true, secondsSaved: validatedSeconds, totalHours: roundedTotal });
     } catch {
         return NextResponse.json({ error: 'Server error' }, { status: 500 });
     }

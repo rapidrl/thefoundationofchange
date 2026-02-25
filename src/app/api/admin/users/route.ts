@@ -55,17 +55,8 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: 'userId and hoursRequired are required' }, { status: 400 });
         }
 
-        // Check if user already has an active enrollment
-        const { data: existing } = await supabase
-            .from('enrollments')
-            .select('id')
-            .eq('user_id', userId)
-            .eq('status', 'active')
-            .limit(1);
 
-        if (existing && existing.length > 0) {
-            return NextResponse.json({ error: 'User already has an active enrollment' }, { status: 409 });
-        }
+
 
         // Create enrollment (admin-granted, no payment)
         const { data, error } = await supabase

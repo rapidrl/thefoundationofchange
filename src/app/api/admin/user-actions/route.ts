@@ -154,14 +154,6 @@ export async function POST(req: NextRequest) {
                     .delete()
                     .eq('enrollment_id', enrollmentId);
 
-                // Delete course progress
-                if (enr) {
-                    await supabase
-                        .from('course_progress')
-                        .delete()
-                        .eq('enrollment_id', enrollmentId);
-                }
-
                 // Delete certificate if exists
                 await supabase
                     .from('certificates')
@@ -174,10 +166,9 @@ export async function POST(req: NextRequest) {
             case 'delete_enrollment': {
                 if (!enrollmentId) return NextResponse.json({ error: 'enrollmentId required' }, { status: 400 });
 
-                // Cascade delete: certificates, hour_logs, course_progress, then enrollment
+                // Cascade delete: certificates, hour_logs, then enrollment
                 await supabase.from('certificates').delete().eq('enrollment_id', enrollmentId);
                 await supabase.from('hour_logs').delete().eq('enrollment_id', enrollmentId);
-                await supabase.from('course_progress').delete().eq('enrollment_id', enrollmentId);
                 await supabase.from('enrollments').delete().eq('id', enrollmentId);
 
                 return NextResponse.json({ success: true, message: 'Enrollment deleted' });
@@ -350,8 +341,9 @@ export async function POST(req: NextRequest) {
             default:
                 return NextResponse.json({ error: `Unknown action: ${action}` }, { status: 400 });
         }
-    } catch (err) {
+    } catch (err: unknown) {
         console.error('Admin user-actions error:', err);
-        return NextResponse.json({ error: 'Unauthorized or server error' }, { status: 401 });
+        const message = err instanceof Error ? err.message : 'Server error';
+        return NextResponse.json({ error: message }, { status: 500 });
     }
 }

@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
 
                 // supabase from requireAdmin() is already service-role
                 const { error } = await supabase.auth.resetPasswordForEmail(profile.email, {
-                    redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://app.thefoundationofchange.org'}/reset-password`,
+                    redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://www.thefoundationofchange.org'}/reset-password`,
                 });
 
                 if (error) return NextResponse.json({ error: error.message }, { status: 500 });

@@ -94,11 +94,6 @@ const nextConfig: NextConfig = {
       // ═══════════════════════════════════════════════════════
       { source: '/canada/:province', destination: '/', permanent: false },
 
-      // ═══════════════════════════════════════════════════════
-      // Wix auth/utility pages that exist on Vercel at same path
-      // (no redirect needed — but catch any Wix-specific variants)
-      // ═══════════════════════════════════════════════════════
-      { source: '/login', destination: '/login', permanent: true },
     ];
   },
 };

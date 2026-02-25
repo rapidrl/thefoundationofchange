@@ -70,7 +70,7 @@ export default function Home() {
           </p>
           <div className={styles.heroButtons}>
             <Link href="/start-now" className="btn btn-cta">
-              Begin Your Program
+              Enroll Now
             </Link>
             <Link href="/how-it-works" className="btn btn-secondary" style={{ borderColor: 'rgba(255,255,255,0.3)', color: '#fff' }}>
               See How It Works
@@ -273,7 +273,7 @@ export default function Home() {
             pace. Register today and receive your verified certificate upon completion.
           </p>
           <Link href="/how-to-register" className="btn btn-cta">
-            Register for Program
+            Enroll Now
           </Link>
         </div>
       </section>

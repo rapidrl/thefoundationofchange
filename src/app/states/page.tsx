@@ -116,7 +116,7 @@ export default function StatesIndexPage() {
                     <h2>Ready to Get Started?</h2>
                     <p>Select your state above to learn more, or register today and begin your hours.</p>
                     <Link href="/how-to-register" className={styles.ctaPrimary}>
-                        Register for Program
+                        Enroll Now
                     </Link>
                 </div>
             </section>

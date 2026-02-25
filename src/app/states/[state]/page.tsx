@@ -117,7 +117,7 @@ export default function StatePage({ params }: Props) {
                     </p>
                     <div className={styles.heroCta}>
                         <Link href="/how-to-register" className={styles.ctaPrimary} id="hero-cta-enroll">
-                            Begin Your {abbr} Program
+                            Enroll Now
                         </Link>
                         <Link href="/contact-us" className={styles.ctaSecondary} id="hero-cta-contact">
                             Have Questions? Contact Us
@@ -407,7 +407,7 @@ export default function StatePage({ params }: Props) {
                         through our verified nonprofit program.
                     </p>
                     <Link href="/how-to-register" className={styles.ctaPrimary}>
-                        Begin Your {name} Program — Register Today
+                        Enroll Now
                     </Link>
                 </div>
             </section>

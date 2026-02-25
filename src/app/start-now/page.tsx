@@ -143,7 +143,7 @@ export default function StartNowPage() {
                                 cursor: !tier || loading ? 'not-allowed' : 'pointer',
                             }}
                         >
-                            {loading ? 'Processing...' : tier ? `Register — ${tier.price}` : 'Enter hours to continue'}
+                            {loading ? 'Processing...' : tier ? `Enroll Now — ${tier.price}` : 'Enter hours to continue'}
                         </button>
                     </div>
 

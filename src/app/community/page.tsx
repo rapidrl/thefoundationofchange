@@ -134,7 +134,7 @@ export default function CommunityPage() {
                     </p>
                     <div className={styles.heroCta}>
                         <Link href="/how-to-register" className={styles.ctaPrimary} id="hero-cta-enroll">
-                            Begin Your Program
+                            Enroll Now
                         </Link>
                         <Link href="/contact-us" className={styles.ctaSecondary} id="hero-cta-contact">
                             Have Questions? Contact Us
@@ -273,7 +273,7 @@ export default function CommunityPage() {
                     <h2>Take the Next Step</h2>
                     <p>Begin fulfilling your community service requirements through our structured, verified nonprofit program.</p>
                     <Link href="/how-to-register" className={styles.ctaPrimary} id="final-cta-enroll">
-                        Register for Program
+                        Enroll Now
                     </Link>
                 </div>
             </section>

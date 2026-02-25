@@ -27,7 +27,7 @@ function getSignatureBase64(): string {
 
 function getGoldSealBase64(): string {
     if (!goldSealBase64) {
-        const sealPath = path.join(process.cwd(), 'src', 'assets', 'gold_seal.jpg');
+        const sealPath = path.join(process.cwd(), 'src', 'assets', 'gold_seal.png');
         const buf = fs.readFileSync(sealPath);
         goldSealBase64 = buf.toString('base64');
     }
@@ -136,7 +136,7 @@ function drawFields(doc: jsPDF, fields: FieldData, startY: number): number {
 function drawSignature(doc: jsPDF, y: number, label: string = 'Respectfully submitted,') {
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(9);
-    doc.setTextColor(...MAROON);
+    doc.setTextColor(...DARK_GRAY);
     doc.text(label, 20, y);
 
     // Signature image
@@ -163,7 +163,7 @@ function drawSignature(doc: jsPDF, y: number, label: string = 'Respectfully subm
 function drawSeal(doc: jsPDF, x: number, y: number, size: number = 30) {
     try {
         const sealData = getGoldSealBase64();
-        doc.addImage(`data:image/jpeg;base64,${sealData}`, 'JPEG', x, y, size, size);
+        doc.addImage(`data:image/png;base64,${sealData}`, 'PNG', x, y, size, size);
     } catch {
         // Fallback: draw circles
         doc.setDrawColor(184, 157, 82);

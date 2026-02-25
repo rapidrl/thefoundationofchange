@@ -142,7 +142,7 @@ function drawSignature(doc: jsPDF, y: number, label: string = 'Respectfully subm
     // Signature image
     try {
         const sigData = getSignatureBase64();
-        doc.addImage(`data:image/png;base64,${sigData}`, 'PNG', 18, y + 2, 50, 25);
+        doc.addImage(`data:image/png;base64,${sigData}`, 'PNG', 18, y + 2, 40, 20);
     } catch {
         // Fallback: text-based signature
         doc.setFont('helvetica', 'bolditalic');
@@ -222,7 +222,7 @@ export function buildCertificatePDF(data: {
     doc.text(para1, 20, para1Y, { maxWidth: 170 });
 
     // Paragraph 2 — Verification
-    const para2Y = para1Y + 35;
+    const para2Y = para1Y + 25;
     const para2 = `To verify the authenticity of this document, please go to https://www.thefoundationofchange.org. Near the bottom center of the page, click the Client Authentication tab. You will be instructed to enter the Verification Code from this letter. The information from our database should match the enrollment information given above. If any other information is needed, feel free to contact me at: info@thefoundationofchange.org. The Foundation of Change is a 501c(3) registered non-profit organization.`;
     doc.text(para2, 20, para2Y, { maxWidth: 170 });
 
@@ -231,7 +231,7 @@ export function buildCertificatePDF(data: {
     drawSignature(doc, sigY);
 
     // Gold seal
-    drawSeal(doc, 160, sigY - 5, 30);
+    drawSeal(doc, 155, sigY - 5, 35);
 
     // Footer line
     doc.setDrawColor(...LIGHT_GRAY);
@@ -368,7 +368,7 @@ export function buildHourLogPDF(data: {
     drawSignature(doc, sigY, 'Certified by,');
 
     // Gold seal on certificate
-    drawSeal(doc, 160, sigY - 5, 28);
+    drawSeal(doc, 155, sigY - 5, 35);
 
     return Buffer.from(doc.output('arraybuffer'));
 }

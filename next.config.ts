@@ -87,6 +87,18 @@ const nextConfig: NextConfig = {
       { source: '/home-second-version', destination: '/', permanent: true },
       { source: '/courthouses-item-item', destination: '/states', permanent: true },
       { source: '/terms-of-service-1', destination: '/terms-of-service', permanent: true },
+
+      // ═══════════════════════════════════════════════════════
+      // Canada province pages (indexed by Google on Wix)
+      // Redirect to homepage until Canada pages are built
+      // ═══════════════════════════════════════════════════════
+      { source: '/canada/:province', destination: '/', permanent: false },
+
+      // ═══════════════════════════════════════════════════════
+      // Wix auth/utility pages that exist on Vercel at same path
+      // (no redirect needed — but catch any Wix-specific variants)
+      // ═══════════════════════════════════════════════════════
+      { source: '/login', destination: '/login', permanent: true },
     ];
   },
 };

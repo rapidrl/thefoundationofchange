@@ -100,8 +100,8 @@ export default async function EnrollmentSuccessPage({ searchParams }: PageProps)
                     </h3>
                     <ol style={{ paddingLeft: 'var(--space-5)', color: 'var(--color-gray-700)', fontSize: 'var(--text-sm)', lineHeight: 'var(--leading-relaxed)' }}>
                         <li style={{ marginBottom: 'var(--space-2)' }}>Go to your <strong>Coursework</strong> page to begin reading articles</li>
-                        <li style={{ marginBottom: 'var(--space-2)' }}>Each article includes a <strong>60-minute timer</strong> — just read and the time is tracked automatically</li>
-                        <li style={{ marginBottom: 'var(--space-2)' }}>After each article, write a brief <strong>reflection</strong></li>
+                        <li style={{ marginBottom: 'var(--space-2)' }}>Each article includes a <strong>30-minute timer</strong> — just read and the time is tracked automatically</li>
+                        <li style={{ marginBottom: 'var(--space-2)' }}>After each article, write a brief <strong>reflection</strong> (1-hour timer)</li>
                         <li>Once all hours are complete, your <strong>certificate</strong> will be generated automatically</li>
                     </ol>
                 </div>

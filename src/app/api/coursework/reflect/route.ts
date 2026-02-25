@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server';
+import { createClient as createServiceClient } from '@supabase/supabase-js';
 import { NextResponse } from 'next/server';
 
 function generateVerificationCode(): string {
@@ -96,7 +97,13 @@ export async function POST(request: Request) {
 
         if (isNowComplete && enrollment?.status === 'active') {
             // ── Auto-complete enrollment ──
-            await supabase
+            // Use service-role client to bypass RLS for enrollment updates
+            const serviceClient = createServiceClient(
+                process.env.NEXT_PUBLIC_SUPABASE_URL!,
+                process.env.SUPABASE_SERVICE_ROLE_KEY!
+            );
+
+            await serviceClient
                 .from('enrollments')
                 .update({
                     hours_completed: totalHours,
@@ -107,7 +114,7 @@ export async function POST(request: Request) {
 
             // ── Auto-generate certificate ──
             const verificationCode = generateVerificationCode();
-            await supabase
+            await serviceClient
                 .from('certificates')
                 .insert({
                     user_id: user.id,
@@ -125,7 +132,11 @@ export async function POST(request: Request) {
             });
         } else {
             // Just update hours
-            await supabase
+            const serviceClient = createServiceClient(
+                process.env.NEXT_PUBLIC_SUPABASE_URL!,
+                process.env.SUPABASE_SERVICE_ROLE_KEY!
+            );
+            await serviceClient
                 .from('enrollments')
                 .update({ hours_completed: totalHours })
                 .eq('id', enrollmentId);

@@ -4,8 +4,12 @@ import styles from './page.module.css';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'How Online Community Service Works',
-    description: 'Learn how Foundation of Change delivers, verifies, and documents online community service for courts, schools, and probation requirements.',
+    title: 'How Online Community Service Works — Step-by-Step Process',
+    description: 'Learn how The Foundation of Change delivers, verifies, and documents online community service for courts, schools, and probation requirements. 5-step process from enrollment to certificate.',
+    openGraph: {
+        title: 'How Online Community Service Works | The Foundation of Change',
+        description: 'Enroll, complete structured coursework, log your time, get reviewed, and receive your verified certificate. Self-paced and court-accepted.',
+    },
 };
 
 const steps = [

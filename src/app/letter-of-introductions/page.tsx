@@ -2,8 +2,12 @@ import PageHeader from '@/components/ui/PageHeader';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Letters of Introduction',
-    description: 'Official letters of introduction for courts, schools, and probation officers from The Foundation of Change.',
+    title: 'Letters of Introduction for Courts, Schools & Probation Officers',
+    description: 'Download official letters of introduction for courts, probation officers, judges, and schools. Verify our 501(c)(3) nonprofit community service program structure and legitimacy.',
+    openGraph: {
+        title: 'Court Acceptance Letters | The Foundation of Change',
+        description: 'Official letters verifying our program for courts, judges, probation officers, and schools. Download PDFs instantly.',
+    },
 };
 
 export default function LettersPage() {

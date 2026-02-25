@@ -4,9 +4,13 @@ import { getPosts, getCategories, stripHtml, formatDate, WPPost } from '@/lib/wo
 import styles from './page.module.css';
 
 export const metadata: Metadata = {
-    title: 'Blog — Community Service News & Resources',
+    title: 'Blog — Community Service News, Guides & Resources',
     description:
         'Read the latest articles on community service requirements, court-approved programs, volunteer opportunities, and tips for completing your hours online.',
+    openGraph: {
+        title: 'Community Service Blog | The Foundation of Change',
+        description: 'News, guides, and resources for completing community service requirements across all 50 states.',
+    },
 };
 
 function PostCard({ post }: { post: WPPost }) {

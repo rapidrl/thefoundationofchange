@@ -1,23 +1,43 @@
 import Link from "next/link";
 import styles from "./page.module.css";
 
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  name: "The Foundation of Change",
-  url: "https://thefoundationofchange.org",
-  logo: "https://thefoundationofchange.org/logo.png",
-  description: "501(c)(3) nonprofit providing court-recognized online community service programs. Complete self-paced coursework from home and earn verified certificates.",
-  email: "info@thefoundationofchange.org",
-  telephone: "+1-734-834-6934",
-  taxID: "33-5003265",
-  nonprofitStatus: "501(c)(3)",
-  sameAs: [],
-  address: {
-    "@type": "PostalAddress",
-    addressCountry: "US",
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": "https://thefoundationofchange.org/#website",
+    name: "The Foundation of Change",
+    url: "https://thefoundationofchange.org",
+    potentialAction: {
+      "@type": "SearchAction",
+      target: "https://thefoundationofchange.org/states/{search_term_string}",
+      "query-input": "required name=search_term_string",
+    },
   },
-};
+  {
+    "@context": "https://schema.org",
+    "@type": "NonprofitOrganization",
+    "@id": "https://thefoundationofchange.org/#organization",
+    name: "The Foundation of Change",
+    url: "https://thefoundationofchange.org",
+    logo: "https://thefoundationofchange.org/logo.png",
+    description: "501(c)(3) nonprofit providing court-recognized online community service programs. Complete self-paced coursework from home and earn verified certificates.",
+    email: "info@thefoundationofchange.org",
+    telephone: "+1-734-834-6934",
+    taxID: "33-5003265",
+    nonprofitStatus: "501(c)(3)",
+    sameAs: [],
+    address: {
+      "@type": "PostalAddress",
+      addressCountry: "US",
+    },
+    areaServed: {
+      "@type": "Country",
+      name: "United States",
+    },
+    serviceType: "Online Community Service Program",
+  },
+];
 
 export default function Home() {
   return (
@@ -259,10 +279,13 @@ export default function Home() {
       </section>
 
       {/* JSON-LD Structured Data */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      {jsonLd.map((schema, i) => (
+        <script
+          key={i}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        />
+      ))}
     </>
   );
 }

@@ -3,8 +3,12 @@ import PageHeader from '@/components/ui/PageHeader';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Additional Services',
-    description: 'Explore additional court-approved services through our partner, Schroeder Counseling.',
+    title: 'Additional Court-Ordered Services — Alcohol Education, DV Classes & More',
+    description: 'Court-ordered alcohol education, domestic violence classes, substance abuse assessments, driver license evaluations, and economic crime courses through our licensed partner Schroeder Counseling.',
+    openGraph: {
+        title: 'Court-Ordered Services | The Foundation of Change',
+        description: 'Alcohol education, domestic violence, substance abuse assessments, and more through our licensed partner Schroeder Counseling.',
+    },
 };
 
 const services = [

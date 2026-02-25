@@ -15,29 +15,31 @@ const inter = Inter({
 const GA_MEASUREMENT_ID = "AW-17595795029";
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://thefoundationofchange.org'),
   title: {
-    default: "The Foundation of Change | Online Community Service Programs",
+    default: "The Foundation of Change | Court-Approved Online Community Service",
     template: "%s | The Foundation of Change",
   },
   description:
-    "The Foundation of Change is a 501(c)(3) nonprofit providing court recognized community service hours online. Complete self-paced tasks from home, earn a certificate of completion, and meet court, school, or probation requirements.",
+    "Complete court-approved community service hours 100% online. 501(c)(3) nonprofit accepted by courts, probation, and schools in all 50 states. Self-paced coursework, verified certificates, and instant enrollment from $28.99.",
   keywords: [
-    "community service",
     "online community service",
-    "court-approved",
-    "community service hours",
-    "probation",
-    "nonprofit",
-    "certificate",
-    "501(c)(3)",
+    "court-approved community service",
+    "community service hours online",
+    "court-ordered community service",
+    "probation community service",
+    "community service certificate",
+    "501(c)(3) nonprofit",
+    "volunteer hours online",
   ],
   openGraph: {
     type: "website",
     locale: "en_US",
     siteName: "The Foundation of Change",
-    title: "The Foundation of Change | Online Community Service Programs",
+    title: "Court-Approved Online Community Service | The Foundation of Change",
     description:
-      "Complete your court-approved community service online. Earn verified community service hours from home — accepted by courts, probation, and schools nationwide.",
+      "Complete your court-approved community service 100% online. Verified by a 501(c)(3) nonprofit — accepted by courts, probation, and schools in all 50 states.",
+    images: [{ url: '/logo.png', width: 600, height: 600, alt: 'The Foundation of Change Logo' }],
   },
   icons: {
     icon: "/logo.png",

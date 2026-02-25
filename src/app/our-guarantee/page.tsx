@@ -3,8 +3,12 @@ import PageHeader from '@/components/ui/PageHeader';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Our Guarantee',
-    description: 'Transparent and affordable pricing for online community service hours. Programs start at $28.99.',
+    title: 'Our Program — Enroll in Court-Approved Online Community Service',
+    description: 'Learn about our structured community service program — enroll, complete self-paced coursework, and receive a verified 501(c)(3) certificate accepted by courts nationwide. Programs from $28.99.',
+    openGraph: {
+        title: 'Court-Approved Community Service Program | The Foundation of Change',
+        description: 'Enroll, learn, and receive a verified certificate. Structured curriculum teaching civic responsibility and personal growth. Programs from $28.99.',
+    },
 };
 
 export default function OurGuaranteePage() {

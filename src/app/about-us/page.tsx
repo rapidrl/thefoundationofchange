@@ -4,8 +4,12 @@ import styles from './page.module.css';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'About Us',
-    description: 'The Foundation of Change is a 501(c)(3) nonprofit providing court-approved community service nationwide with verified hours and official certificates.',
+    title: 'About The Foundation of Change — 501(c)(3) Nonprofit',
+    description: 'The Foundation of Change is a 501(c)(3) nonprofit providing court-approved community service nationwide with verified hours, licensed content, and official certificates.',
+    openGraph: {
+        title: 'About The Foundation of Change | 501(c)(3) Nonprofit',
+        description: 'Our mission is making community service accessible, meaningful, and verifiable. Licensed content, tamper-proof tracking, and certificates accepted by courts nationwide.',
+    },
 };
 
 export default function AboutPage() {

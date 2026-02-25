@@ -4,8 +4,12 @@ import styles from './page.module.css';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Contact Us',
-    description: 'Have questions or need assistance? Contact The Foundation of Change today. We respond within 1-2 business days.',
+    title: 'Contact Us — Get Help with Community Service',
+    description: 'Have questions about our online community service program? Contact The Foundation of Change today. We respond within 1-2 business days.',
+    openGraph: {
+        title: 'Contact The Foundation of Change',
+        description: 'Get answers about enrollment, certificates, court acceptance, and more. We respond within 1-2 business days.',
+    },
 };
 
 export default function ContactPage() {

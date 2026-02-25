@@ -3,8 +3,12 @@ import PageHeader from '@/components/ui/PageHeader';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'How to Register',
-    description: 'Register for your online community service program in 5 simple steps.',
+    title: 'How to Register for Online Community Service',
+    description: 'Register for court-approved online community service in 5 easy steps. Create your account, choose your hours, and start earning verified service credit from home today.',
+    openGraph: {
+        title: 'How to Register for Online Community Service | The Foundation of Change',
+        description: 'Create your account, choose your required hours, and begin earning verified community service credit from home. 5 simple steps to get started.',
+    },
 };
 
 const steps = [

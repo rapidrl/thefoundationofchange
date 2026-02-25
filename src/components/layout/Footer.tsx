@@ -38,9 +38,6 @@ export default function Footer() {
                         <a href="mailto:info@thefoundationofchange.org" className={styles.contactLink}>
                             info@thefoundationofchange.org
                         </a>
-                        <a href="tel:+17348346934" className={styles.contactLink}>
-                            734-834-6934
-                        </a>
                         <Link href="/contact-us" className={styles.contactLink}>
                             Secure Contact Form
                         </Link>

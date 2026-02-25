@@ -36,9 +36,14 @@ export default function Header() {
         <header className={styles.header}>
             <div className={styles.headerInner}>
                 <Link href="/" className={styles.logo}>
-                    <div className={styles.logoIcon}>
-                        <span>TFC</span>
-                    </div>
+                    <img
+                        src="/logo.png"
+                        alt="The Foundation of Change"
+                        width={36}
+                        height={36}
+                        className={styles.logoIcon}
+                        style={{ borderRadius: '50%', objectFit: 'contain' }}
+                    />
                     <span className={styles.logoText}>The Foundation of Change</span>
                 </Link>
 

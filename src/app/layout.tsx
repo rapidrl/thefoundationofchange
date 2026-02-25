@@ -39,6 +39,10 @@ export const metadata: Metadata = {
     description:
       "Complete your court-approved community service online. Earn verified community service hours from home — accepted by courts, probation, and schools nationwide.",
   },
+  icons: {
+    icon: "/logo.png",
+    apple: "/logo.png",
+  },
 };
 
 export default function RootLayout({

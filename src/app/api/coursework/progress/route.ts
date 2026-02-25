@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server';
+import { createClient as createServiceClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 import { getTodayInTimezone } from '@/lib/timezone';
 
@@ -155,7 +156,13 @@ export async function POST(request: Request) {
 
         const isCompleted = enrollment && roundedTotal >= enrollment.hours_required && enrollment.status === 'active';
 
-        await supabase
+        // Use service-role client to bypass RLS for enrollment updates
+        const serviceClient = createServiceClient(
+            process.env.NEXT_PUBLIC_SUPABASE_URL!,
+            process.env.SUPABASE_SERVICE_ROLE_KEY!
+        );
+
+        await serviceClient
             .from('enrollments')
             .update({
                 hours_completed: roundedTotal,
@@ -169,7 +176,7 @@ export async function POST(request: Request) {
             const segment = () => Array.from({ length: 4 }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
             const verificationCode = `TFOC-${segment()}-${segment()}`;
 
-            await supabase
+            await serviceClient
                 .from('certificates')
                 .insert({
                     user_id: user.id,

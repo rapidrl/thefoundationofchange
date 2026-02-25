@@ -1,177 +1,364 @@
-// Utility: Build a PDF from scratch (no dependencies)
-// Uses PDF 1.4 spec with direct content streams
-// Supports text, lines, and rectangles
+import { jsPDF } from 'jspdf';
+import fs from 'fs';
+import path from 'path';
 
-interface TextItem {
-    type?: 'text';
-    text: string;
-    x: number;
-    y: number;
-    fontSize?: number;
-    bold?: boolean;
-    color?: [number, number, number];
+// Cache loaded images
+let logoBase64: string | null = null;
+let sealBase64: string | null = null;
+
+function getLogoBase64(): string {
+    if (!logoBase64) {
+        const logoPath = path.join(process.cwd(), 'src', 'assets', 'logo.png');
+        const buf = fs.readFileSync(logoPath);
+        logoBase64 = buf.toString('base64');
+    }
+    return logoBase64;
 }
 
-interface LineItem {
-    type: 'line';
-    x1: number;
-    y1: number;
-    x2: number;
-    y2: number;
-    lineWidth?: number;
-    color?: [number, number, number];
+function getSealBase64(): string {
+    if (!sealBase64) {
+        const sealPath = path.join(process.cwd(), 'src', 'assets', 'seal.png');
+        const buf = fs.readFileSync(sealPath);
+        sealBase64 = buf.toString('base64');
+    }
+    return sealBase64;
 }
 
-interface RectItem {
-    type: 'rect';
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-    fill?: [number, number, number];
-    stroke?: [number, number, number];
-    lineWidth?: number;
-}
+// Shared styles
+const NAVY: [number, number, number] = [10, 30, 61];
+const DARK_GRAY: [number, number, number] = [50, 50, 50];
+const GRAY: [number, number, number] = [100, 100, 100];
+const LIGHT_GRAY: [number, number, number] = [180, 180, 180];
+const BLUE: [number, number, number] = [37, 99, 235];
+const MAROON: [number, number, number] = [139, 0, 0];
 
-interface CircleItem {
-    type: 'circle';
-    cx: number;
-    cy: number;
-    r: number;
-    fill?: [number, number, number];
-    stroke?: [number, number, number];
-    lineWidth?: number;
-}
-
-type PDFItem = TextItem | LineItem | RectItem | CircleItem;
-
-export function buildPDF(options: {
-    title: string;
-    lines: PDFItem[];
-    pageWidth?: number;
-    pageHeight?: number;
-}): Uint8Array {
-    const { title, lines, pageWidth = 612, pageHeight = 792 } = options;
-
-    // Build content stream
-    let contentStream = '';
-
-    for (const item of lines) {
-        if (item.type === 'line') {
-            // Draw line
-            const { x1, y1, x2, y2, lineWidth = 0.5, color = [0, 0, 0] } = item;
-            const [r, g, b] = color;
-            contentStream += `${(r / 255).toFixed(3)} ${(g / 255).toFixed(3)} ${(b / 255).toFixed(3)} RG\n`;
-            contentStream += `${lineWidth} w\n`;
-            contentStream += `${x1} ${pageHeight - y1} m\n`;
-            contentStream += `${x2} ${pageHeight - y2} l\n`;
-            contentStream += 'S\n';
-        } else if (item.type === 'rect') {
-            // Draw rectangle
-            const { x, y, width, height, fill, stroke, lineWidth = 0.5 } = item;
-            if (fill) {
-                const [r, g, b] = fill;
-                contentStream += `${(r / 255).toFixed(3)} ${(g / 255).toFixed(3)} ${(b / 255).toFixed(3)} rg\n`;
-                contentStream += `${x} ${pageHeight - y - height} ${width} ${height} re\n`;
-                contentStream += 'f\n';
-            }
-            if (stroke) {
-                const [r, g, b] = stroke;
-                contentStream += `${(r / 255).toFixed(3)} ${(g / 255).toFixed(3)} ${(b / 255).toFixed(3)} RG\n`;
-                contentStream += `${lineWidth} w\n`;
-                contentStream += `${x} ${pageHeight - y - height} ${width} ${height} re\n`;
-                contentStream += 'S\n';
-            }
-        } else if (item.type === 'circle') {
-            // Approximate circle with bezier curves
-            const { cx, cy, r, fill, stroke, lineWidth = 0.5 } = item;
-            const py = pageHeight - cy;
-            const k = 0.5522848; // kappa for bezier circle approximation
-            const kr = k * r;
-            contentStream += `${cx} ${py + r} m\n`;
-            contentStream += `${cx + kr} ${py + r} ${cx + r} ${py + kr} ${cx + r} ${py} c\n`;
-            contentStream += `${cx + r} ${py - kr} ${cx + kr} ${py - r} ${cx} ${py - r} c\n`;
-            contentStream += `${cx - kr} ${py - r} ${cx - r} ${py - kr} ${cx - r} ${py} c\n`;
-            contentStream += `${cx - r} ${py + kr} ${cx - kr} ${py + r} ${cx} ${py + r} c\n`;
-            if (fill) {
-                const [fr, fg, fb] = fill;
-                contentStream += `${(fr / 255).toFixed(3)} ${(fg / 255).toFixed(3)} ${(fb / 255).toFixed(3)} rg\n`;
-            }
-            if (stroke) {
-                const [sr, sg, sb] = stroke;
-                contentStream += `${(sr / 255).toFixed(3)} ${(sg / 255).toFixed(3)} ${(sb / 255).toFixed(3)} RG\n`;
-                contentStream += `${lineWidth} w\n`;
-            }
-            if (fill && stroke) contentStream += 'B\n';
-            else if (fill) contentStream += 'f\n';
-            else contentStream += 'S\n';
-        } else {
-            // Text item (original behavior)
-            const textItem = item as TextItem;
-            const fontSize = textItem.fontSize || 12;
-            const fontKey = textItem.bold ? '/F2' : '/F1';
-            contentStream += 'BT\n';
-            if (textItem.color) {
-                const [r, g, b] = textItem.color;
-                contentStream += `${(r / 255).toFixed(3)} ${(g / 255).toFixed(3)} ${(b / 255).toFixed(3)} rg\n`;
-            } else {
-                contentStream += '0 0 0 rg\n';
-            }
-            contentStream += `${fontKey} ${fontSize} Tf\n`;
-            const pdfY = pageHeight - textItem.y;
-            contentStream += `${textItem.x} ${pdfY} Td\n`;
-            const escaped = textItem.text.replace(/\\/g, '\\\\').replace(/\(/g, '\\(').replace(/\)/g, '\\)');
-            contentStream += `(${escaped}) Tj\n`;
-            contentStream += 'ET\n';
-        }
+function drawHeader(doc: jsPDF, includeTitle: string) {
+    // Logo (left side)
+    try {
+        const logoData = getLogoBase64();
+        doc.addImage(`data:image/png;base64,${logoData}`, 'PNG', 15, 10, 22, 22);
+    } catch {
+        // Fallback text if image not available
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(10);
+        doc.setTextColor(...NAVY);
+        doc.text('TFC', 22, 25);
     }
 
-    const objects: string[] = [];
-    const offsets: number[] = [];
+    // "The Foundation of Change" next to logo
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(16);
+    doc.setTextColor(...NAVY);
+    doc.text('The Foundation of Change', 42, 24);
 
-    // Object 1: Catalog
-    objects.push('1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n');
+    // Executive Director info (right side)
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(7);
+    doc.setTextColor(...DARK_GRAY);
+    doc.text('Jennifer Schroeder, Executive Director', 140, 12);
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(...BLUE);
+    doc.text('Website: https://www.thefoundationofchange.org', 140, 17);
+    doc.text('Email: info@thefoundationofchange.org', 140, 22);
+    doc.setTextColor(...DARK_GRAY);
+    doc.text('Organization Tax ID Number: 33-5003265', 140, 27);
 
-    // Object 2: Pages
-    objects.push('2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n');
+    // Divider line under header
+    doc.setDrawColor(...NAVY);
+    doc.setLineWidth(0.5);
+    doc.line(15, 35, 195, 35);
 
-    // Object 3: Page
-    objects.push(`3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${pageWidth} ${pageHeight}] /Contents 4 0 R /Resources << /Font << /F1 5 0 R /F2 6 0 R >> >> >>\nendobj\n`);
+    // Title
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(13);
+    doc.setTextColor(...NAVY);
+    const titleWidth = doc.getTextWidth(includeTitle);
+    doc.text(includeTitle, (210 - titleWidth) / 2, 47);
+}
 
-    // Object 4: Content stream
-    const streamBytes = Buffer.from(contentStream, 'utf-8');
-    objects.push(`4 0 obj\n<< /Length ${streamBytes.length} >>\nstream\n${contentStream}endstream\nendobj\n`);
+interface FieldData {
+    clientWorker: string;
+    startDate: string;
+    dateIssued: string;
+    verificationCode: string;
+    currentAddress: string;
+}
 
-    // Object 5: Font (Helvetica)
-    objects.push('5 0 obj\n<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>\nendobj\n');
+function drawFields(doc: jsPDF, fields: FieldData, startY: number): number {
+    const leftLabelX = 20;
+    const leftValueX = 55;
+    const rightLabelX = 110;
+    const rightValueX = 148;
+    const lineHeight = 6;
+    let y = startY;
 
-    // Object 6: Font Bold (Helvetica-Bold)
-    objects.push('6 0 obj\n<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>\nendobj\n');
+    const fieldPairs = [
+        { leftLabel: 'Client-Worker:', leftValue: fields.clientWorker, rightLabel: 'Current Address:', rightValue: fields.currentAddress },
+        { leftLabel: 'Start Date:', leftValue: fields.startDate, rightLabel: 'Probation Officer:', rightValue: '' },
+        { leftLabel: 'Date Issued:', leftValue: fields.dateIssued, rightLabel: 'Court ID:', rightValue: '' },
+        { leftLabel: 'Verification Code:', leftValue: fields.verificationCode, rightLabel: 'Local Charity:', rightValue: 'The Foundation of Change' },
+    ];
 
-    // Object 7: Info
-    const escapedTitle = title.replace(/\\/g, '\\\\').replace(/\(/g, '\\(').replace(/\)/g, '\\)');
-    objects.push(`7 0 obj\n<< /Title (${escapedTitle}) /Producer (The Foundation of Change) /CreationDate (D:${new Date().toISOString().replace(/[-:T]/g, '').slice(0, 14)}) >>\nendobj\n`);
-
-    // Build PDF
-    let pdf = '%PDF-1.4\n%\xE2\xE3\xCF\xD3\n';
-    for (let i = 0; i < objects.length; i++) {
-        offsets.push(pdf.length);
-        pdf += objects[i];
+    for (const pair of fieldPairs) {
+        // Left label
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(8);
+        doc.setTextColor(...DARK_GRAY);
+        doc.text(pair.leftLabel, leftLabelX, y);
+        // Left value
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(...GRAY);
+        doc.text(pair.leftValue, leftValueX, y);
+        // Right label
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(...DARK_GRAY);
+        doc.text(pair.rightLabel, rightLabelX, y);
+        // Right value
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(...GRAY);
+        doc.text(pair.rightValue, rightValueX, y);
+        y += lineHeight;
     }
 
-    const xrefOffset = pdf.length;
-    pdf += 'xref\n';
-    pdf += `0 ${objects.length + 1}\n`;
-    pdf += '0000000000 65535 f \n';
-    for (const offset of offsets) {
-        pdf += `${offset.toString().padStart(10, '0')} 00000 n \n`;
+    return y;
+}
+
+function drawSignature(doc: jsPDF, y: number, label: string = 'Respectfully submitted,') {
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(9);
+    doc.setTextColor(...MAROON);
+    doc.text(label, 20, y);
+
+    // Signature name
+    doc.setFont('helvetica', 'bolditalic');
+    doc.setFontSize(14);
+    doc.setTextColor(...NAVY);
+    doc.text('Jennifer Schroeder', 20, y + 12);
+
+    // Line under signature
+    doc.setDrawColor(...LIGHT_GRAY);
+    doc.setLineWidth(0.3);
+    doc.line(20, y + 14, 75, y + 14);
+
+    // Title lines
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(8);
+    doc.setTextColor(...DARK_GRAY);
+    doc.text('Jennifer Schroeder, M.S., CADC', 20, y + 20);
+    doc.text('Executive Director, The Foundation of Change', 20, y + 25);
+
+    return y + 30;
+}
+
+function drawSeal(doc: jsPDF, x: number, y: number, size: number = 25) {
+    try {
+        const sealData = getSealBase64();
+        doc.addImage(`data:image/png;base64,${sealData}`, 'PNG', x, y, size, size);
+    } catch {
+        // Fallback: draw circles
+        doc.setDrawColor(184, 157, 82);
+        doc.setLineWidth(1);
+        doc.circle(x + size / 2, y + size / 2, size / 2);
+        doc.circle(x + size / 2, y + size / 2, size / 2 - 3);
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(5);
+        doc.setTextColor(139, 115, 50);
+        doc.text('THE FOUNDATION', x + 3, y + size / 2);
+        doc.text('OF CHANGE', x + 5, y + size / 2 + 4);
+    }
+}
+
+export function buildCertificatePDF(data: {
+    participantName: string;
+    address: string;
+    startDate: string;
+    issuedDate: string;
+    verificationCode: string;
+    hoursCompleted: number;
+}): Buffer {
+    const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'letter' });
+
+    drawHeader(doc, 'Community Service Statement of Completion');
+
+    // Fields
+    const fieldsEndY = drawFields(doc, {
+        clientWorker: data.participantName,
+        startDate: data.startDate,
+        dateIssued: data.issuedDate,
+        verificationCode: data.verificationCode,
+        currentAddress: data.address,
+    }, 58);
+
+    // Hours Completed
+    const hoursY = fieldsEndY + 6;
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(14);
+    doc.setTextColor(...NAVY);
+    const hoursText = `Hours Completed: ${data.hoursCompleted}`;
+    const hoursWidth = doc.getTextWidth(hoursText);
+    doc.text(hoursText, (210 - hoursWidth) / 2, hoursY);
+
+    // Divider
+    doc.setDrawColor(...LIGHT_GRAY);
+    doc.setLineWidth(0.3);
+    doc.line(15, hoursY + 4, 195, hoursY + 4);
+
+    // Paragraph 1 — Service description
+    const para1Y = hoursY + 12;
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(8.5);
+    doc.setTextColor(...DARK_GRAY);
+    const para1 = `This letter serves to verify the above named person successfully completed ${data.hoursCompleted} hours of volunteer community service work, sponsored by our non profit organization. The services performed were educational in nature, with a labor component, and provide ongoing value to the community and the client through self improvement. All training materials were prepared or approved by a licensed and experienced Master's Level Social Worker. Examples of topics addressed include Anger Management, Civics, Drug and Alcohol Awareness, Parenting and American Government. Structured feedback from the client is used to improve our other programs.`;
+    doc.text(para1, 20, para1Y, { maxWidth: 170 });
+
+    // Paragraph 2 — Verification
+    const para2Y = para1Y + 35;
+    const para2 = `To verify the authenticity of this document, please go to https://www.thefoundationofchange.org. Near the bottom center of the page, click the Client Authentication tab. You will be instructed to enter the Verification Code from this letter. The information from our database should match the enrollment information given above. If any other information is needed, feel free to contact me at: info@thefoundationofchange.org. The Foundation of Change is a 501c(3) registered non-profit organization.`;
+    doc.text(para2, 20, para2Y, { maxWidth: 170 });
+
+    // Signature
+    const sigY = para2Y + 32;
+    drawSignature(doc, sigY);
+
+    // Gold seal
+    drawSeal(doc, 160, sigY - 5, 30);
+
+    // Footer line
+    doc.setDrawColor(...LIGHT_GRAY);
+    doc.setLineWidth(0.2);
+    doc.line(15, 265, 195, 265);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(6);
+    doc.setTextColor(160, 160, 160);
+    doc.text('The Foundation of Change  |  501(c)(3)  |  EIN: 33-5003265  |  info@thefoundationofchange.org  |  734-834-6934', 105, 269, { align: 'center' });
+
+    return Buffer.from(doc.output('arraybuffer'));
+}
+
+export function buildHourLogPDF(data: {
+    participantName: string;
+    address: string;
+    startDate: string;
+    issuedDate: string;
+    verificationCode: string;
+    hoursCompleted: number;
+    hourLogs: Array<{ log_date: string; hours: number; minutes: number }>;
+}): Buffer {
+    const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'letter' });
+
+    drawHeader(doc, 'Community Service Log - Work Days and Time');
+
+    // Fields
+    const fieldsEndY = drawFields(doc, {
+        clientWorker: data.participantName,
+        startDate: data.startDate,
+        dateIssued: data.issuedDate,
+        verificationCode: data.verificationCode,
+        currentAddress: data.address,
+    }, 58);
+
+    // Hours Completed
+    const hoursY = fieldsEndY + 4;
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(13);
+    doc.setTextColor(...NAVY);
+    const hoursText = `Hours Completed: ${data.hoursCompleted}`;
+    const hoursWidth = doc.getTextWidth(hoursText);
+    doc.text(hoursText, (210 - hoursWidth) / 2, hoursY);
+
+    // ═══════════ TABLE ═══════════
+    const tableTop = hoursY + 6;
+    const tableLeft = 15;
+    const tableWidth = 180;
+    const colWidth = tableWidth / 4; // 4 columns of Date | Hrs:Mins
+    const rowHeight = 5.5;
+    const maxRows = 16;
+
+    // Header row background
+    doc.setFillColor(230, 235, 245);
+    doc.rect(tableLeft, tableTop, tableWidth, rowHeight, 'F');
+
+    // Header text
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(7);
+    doc.setTextColor(...NAVY);
+    for (let col = 0; col < 4; col++) {
+        const colX = tableLeft + col * colWidth;
+        doc.text('Date', colX + 3, tableTop + 4);
+        doc.text('Hrs:Mins', colX + colWidth / 2 + 2, tableTop + 4);
     }
 
-    pdf += 'trailer\n';
-    pdf += `<< /Size ${objects.length + 1} /Root 1 0 R /Info 7 0 R >>\n`;
-    pdf += 'startxref\n';
-    pdf += `${xrefOffset}\n`;
-    pdf += '%%EOF\n';
+    // Draw table grid
+    doc.setDrawColor(...NAVY);
+    doc.setLineWidth(0.3);
 
-    return new Uint8Array(Buffer.from(pdf, 'binary'));
+    // Outer border
+    const tableHeight = rowHeight * (maxRows + 1);
+    doc.rect(tableLeft, tableTop, tableWidth, tableHeight);
+
+    // Header bottom line (thicker)
+    doc.setLineWidth(0.4);
+    doc.line(tableLeft, tableTop + rowHeight, tableLeft + tableWidth, tableTop + rowHeight);
+    doc.setLineWidth(0.2);
+
+    // Column separators
+    for (let col = 1; col < 4; col++) {
+        const x = tableLeft + col * colWidth;
+        doc.line(x, tableTop, x, tableTop + tableHeight);
+    }
+
+    // Mid-column separators (between Date and Hrs:Mins)
+    doc.setDrawColor(...LIGHT_GRAY);
+    doc.setLineWidth(0.15);
+    for (let col = 0; col < 4; col++) {
+        const x = tableLeft + col * colWidth + colWidth / 2;
+        doc.line(x, tableTop, x, tableTop + tableHeight);
+    }
+
+    // Row lines
+    for (let row = 2; row <= maxRows; row++) {
+        const y = tableTop + rowHeight * row;
+        doc.line(tableLeft, y, tableLeft + tableWidth, y);
+    }
+
+    // Fill in data
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(7);
+    doc.setTextColor(...GRAY);
+    const logs = data.hourLogs || [];
+    for (let i = 0; i < logs.length && i < maxRows * 4; i++) {
+        const col = Math.floor(i / maxRows);
+        const row = i % maxRows;
+        const log = logs[i];
+        const h = Number(log.hours) || 0;
+        const m = Number(log.minutes) || 0;
+        const dateStr = new Date(log.log_date + 'T00:00:00').toLocaleDateString('en-US', {
+            month: '2-digit', day: '2-digit', year: '2-digit',
+        });
+        const timeStr = `${h}:${m.toString().padStart(2, '0')}`;
+
+        const colX = tableLeft + col * colWidth;
+        const rowY = tableTop + rowHeight * (row + 1) + 4;
+
+        doc.text(dateStr, colX + 3, rowY);
+        doc.text(timeStr, colX + colWidth / 2 + 5, rowY);
+    }
+
+    // ═══════════ FOOTER ═══════════
+    const footerY = tableTop + tableHeight + 6;
+
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(7.5);
+    doc.setTextColor(...DARK_GRAY);
+    const footerText = 'The Foundation of Change is a registered 501(c)(3) nonprofit organization. To confirm authenticity, visit www.thefoundationofchange.org, click the Verify Certificate tab, and enter the verification code from this document. Verification details should match the enrollment information above. For further questions, contact info@thefoundationofchange.org.';
+    doc.text(footerText, 20, footerY, { maxWidth: 170 });
+
+    // Signature
+    const sigY = footerY + 18;
+    drawSignature(doc, sigY, 'Certified by,');
+
+    // Gold seal on certificate
+    drawSeal(doc, 160, sigY - 5, 28);
+
+    return Buffer.from(doc.output('arraybuffer'));
 }

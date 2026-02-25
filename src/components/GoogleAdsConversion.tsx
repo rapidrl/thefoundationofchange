@@ -21,7 +21,7 @@ export default function GoogleAdsConversion({ transactionId, value, currency = '
         <Script id="google-ads-conversion" strategy="afterInteractive">
             {`
                 gtag('event', 'conversion', {
-                    'send_to': 'AW-17595795029/GADiCMmK5_0bENWMqs2B',
+                    'send_to': 'AW-17595795029/GADiCMmK5_0bENWMqsZB',
                     'value': ${value},
                     'currency': '${currency}',
                     'transaction_id': '${transactionId}',

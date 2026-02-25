@@ -68,7 +68,6 @@ export async function POST(req: NextRequest) {
                 status: 'active',
                 amount_paid: 0,
                 start_date: new Date().toISOString().split('T')[0],
-                notes: notes || 'Admin-granted enrollment',
             })
             .select()
             .single();

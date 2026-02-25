@@ -143,7 +143,7 @@ export default async function DashboardPage() {
                         <Link href="/start-now" className={styles.actionCardPrimary}>
                             <span className={styles.actionIcon}>🚀</span>
                             <div>
-                                <div className={styles.actionLabel}>Enroll Now</div>
+                                <div className={styles.actionLabel}>Register for Program</div>
                                 <div className={styles.actionDesc}>Choose your hours and start today</div>
                             </div>
                         </Link>

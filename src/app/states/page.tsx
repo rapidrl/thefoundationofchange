@@ -114,9 +114,9 @@ export default function StatesIndexPage() {
                 <div className={styles.finalCtaGlow} />
                 <div className={`container ${styles.finalCtaContent}`}>
                     <h2>Ready to Get Started?</h2>
-                    <p>Select your state above to learn more, or enroll now and begin your hours today.</p>
+                    <p>Select your state above to learn more, or register today and begin your hours.</p>
                     <Link href="/how-to-register" className={styles.ctaPrimary}>
-                        Enroll Now — Get Started Today
+                        Register for Program
                     </Link>
                 </div>
             </section>

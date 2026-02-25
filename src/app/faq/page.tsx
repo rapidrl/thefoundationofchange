@@ -39,7 +39,7 @@ const faqItems = [
     {
         question: 'How do I get my certificate?',
         answer:
-            'Once your hours are completed, you can instantly download your certificate from your dashboard.',
+            'Once all required hours and reflections are completed, your certificate becomes available for download directly from your dashboard.',
     },
 ];
 

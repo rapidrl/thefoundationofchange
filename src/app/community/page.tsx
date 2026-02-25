@@ -26,8 +26,8 @@ const steps = [
     },
     {
         num: '3',
-        title: 'Download Certificate',
-        desc: 'Instantly receive your verified certificate of completion.',
+        title: 'Receive Your Certificate',
+        desc: 'Access your verified certificate upon successful completion of your required hours.',
         icon: '📜',
     },
 ];
@@ -37,19 +37,19 @@ const audiences = [
         icon: '⚖️',
         title: 'Court-Ordered Hours?',
         desc: 'Fulfill your court or probation requirements online with a verified, audit-ready program accepted nationwide.',
-        cta: 'Start Your Hours',
+        cta: 'View Program Details',
     },
     {
         icon: '🎓',
         title: 'Graduating Soon?',
         desc: 'Earn community service credit for graduation or service learning — on your own schedule.',
-        cta: 'Earn Your Credit',
+        cta: 'Learn More',
     },
     {
         icon: '🤝',
         title: 'Probation Requirement?',
         desc: 'Complete your probation-mandated community service from the comfort of home, accepted by probation departments.',
-        cta: 'Get Compliant',
+        cta: 'View Requirements',
     },
 ];
 
@@ -78,7 +78,7 @@ const testimonials = [
     {
         name: 'James R.',
         role: 'Probation Requirement',
-        text: 'Completed all my hours in one weekend. The certificate looked professional and was accepted right away. Highly recommend.',
+        text: 'The self-paced structure allowed me to fulfill my obligations while working night shifts. The coursework was actually relevant and my probation officer accepted the certificate without question.',
         rating: 5,
     },
 ];
@@ -86,7 +86,7 @@ const testimonials = [
 const faqs = [
     {
         q: 'How does the program work?',
-        a: 'Select your required hours, complete educational coursework focused on anger management, accountability, emotional regulation, and decision-making. A built-in timer tracks your learning time. Once your hours are fulfilled, download your certificate instantly.',
+        a: 'Select your required hours, complete educational coursework focused on anger management, accountability, emotional regulation, and decision-making. A built-in timer tracks your learning time. Once your hours are fulfilled, your certificate of completion becomes available for download.',
     },
     {
         q: 'Will my certificate be accepted by the court?',
@@ -102,7 +102,7 @@ const faqs = [
     },
     {
         q: 'How do I get my certificate?',
-        a: 'Once your hours are completed, you can instantly download your certificate from your dashboard. No waiting, no mail — it\'s immediate.',
+        a: 'Once all required hours and reflections are completed, your certificate becomes available for download directly from your dashboard.',
     },
     {
         q: 'Can I get a refund if my hours are not accepted?',
@@ -134,7 +134,7 @@ export default function CommunityPage() {
                     </p>
                     <div className={styles.heroCta}>
                         <Link href="/how-to-register" className={styles.ctaPrimary} id="hero-cta-enroll">
-                            Enroll Now — Get Started Today
+                            Begin Your Program
                         </Link>
                         <Link href="/contact-us" className={styles.ctaSecondary} id="hero-cta-contact">
                             Have Questions? Contact Us
@@ -196,8 +196,8 @@ export default function CommunityPage() {
             {/* ======= TRUST & CREDIBILITY ======= */}
             <section className={styles.section} id="why-choose-us">
                 <div className="container">
-                    <h2 className={styles.sectionTitle}>Why Choose The Foundation of Change</h2>
-                    <p className={styles.sectionSubtitle}>Built for accountability. Designed for trust.</p>
+                    <h2 className={styles.sectionTitle}>Program Integrity &amp; Accountability</h2>
+                    <p className={styles.sectionSubtitle}>How we ensure every hour is verified, meaningful, and audit-ready.</p>
                     <div className={styles.trustGrid}>
                         {trustItems.map((item) => (
                             <div key={item.title} className={styles.trustCard}>
@@ -270,10 +270,10 @@ export default function CommunityPage() {
             <section className={styles.finalCta} id="enroll">
                 <div className={styles.finalCtaGlow} />
                 <div className={`container ${styles.finalCtaContent}`}>
-                    <h2>Don&apos;t Wait. Get Started Today.</h2>
-                    <p>Join thousands who have completed their community service hours online through our verified nonprofit program.</p>
+                    <h2>Take the Next Step</h2>
+                    <p>Begin fulfilling your community service requirements through our structured, verified nonprofit program.</p>
                     <Link href="/how-to-register" className={styles.ctaPrimary} id="final-cta-enroll">
-                        Enroll Now
+                        Register for Program
                     </Link>
                 </div>
             </section>

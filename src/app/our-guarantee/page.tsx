@@ -70,7 +70,7 @@ export default function OurGuaranteePage() {
                     </p>
 
                     <div style={{ textAlign: 'center', marginTop: 'var(--space-10)' }}>
-                        <Link href="/how-to-register" className="btn btn-cta">Enroll Now</Link>
+                        <Link href="/how-to-register" className="btn btn-cta">Register for Program</Link>
                     </div>
                 </div>
             </section>

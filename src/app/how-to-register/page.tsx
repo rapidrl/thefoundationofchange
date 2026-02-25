@@ -49,7 +49,7 @@ export default function HowToRegisterPage() {
                         ))}
                     </div>
                     <div style={{ textAlign: 'center', marginTop: 'var(--space-10)' }}>
-                        <Link href="/register" className="btn btn-cta">Start Now</Link>
+                        <Link href="/register" className="btn btn-cta">Create Your Account</Link>
                     </div>
                 </div>
             </section>

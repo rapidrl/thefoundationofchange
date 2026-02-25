@@ -117,7 +117,7 @@ export default function StatePage({ params }: Props) {
                     </p>
                     <div className={styles.heroCta}>
                         <Link href="/how-to-register" className={styles.ctaPrimary} id="hero-cta-enroll">
-                            Enroll Now — Start Your {abbr} Hours Today
+                            Begin Your {abbr} Program
                         </Link>
                         <Link href="/contact-us" className={styles.ctaSecondary} id="hero-cta-contact">
                             Have Questions? Contact Us
@@ -187,7 +187,7 @@ export default function StatePage({ params }: Props) {
                             <div className={styles.stepNumber}>3</div>
                             <span className={styles.stepIcon}>📜</span>
                             <h3>Download Certificate</h3>
-                            <p>Instantly receive your verified certificate of completion with a unique verification code.</p>
+                            <p>Access your verified certificate of completion with a unique verification code upon fulfilling your required hours.</p>
                         </div>
                     </div>
                 </div>
@@ -290,7 +290,7 @@ export default function StatePage({ params }: Props) {
                         <p>
                             Enroll today and begin your hours immediately. There are no deadlines — work at your own pace
                             with an 8-hour daily maximum. Your progress saves automatically on any device. Upon completion,
-                            your certificate and hour log are instantly available.{' '}
+                            your certificate and hour log become available for download.{' '}
                             <Link href="/how-to-register" style={{ fontWeight: 600 }}>
                                 Start your {name} community service hours now
                             </Link>.
@@ -407,7 +407,7 @@ export default function StatePage({ params }: Props) {
                         through our verified nonprofit program.
                     </p>
                     <Link href="/how-to-register" className={styles.ctaPrimary}>
-                        Complete Your {name} Hours — Enroll Now
+                        Begin Your {name} Program — Register Today
                     </Link>
                 </div>
             </section>

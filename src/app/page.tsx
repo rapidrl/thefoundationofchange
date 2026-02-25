@@ -70,7 +70,7 @@ export default function Home() {
           </p>
           <div className={styles.heroButtons}>
             <Link href="/start-now" className="btn btn-cta">
-              Enroll Now — Get Started Today
+              Begin Your Program
             </Link>
             <Link href="/how-it-works" className="btn btn-secondary" style={{ borderColor: 'rgba(255,255,255,0.3)', color: '#fff' }}>
               See How It Works
@@ -267,13 +267,13 @@ export default function Home() {
       {/* Final CTA */}
       <section className={styles.ctaSection}>
         <div className="container">
-          <h2>Ready to Get Started?</h2>
+          <h2>Take the Next Step</h2>
           <p>
             Complete your community service requirements from home, at your own
-            pace. Enroll now and receive your verified certificate upon completion.
+            pace. Register today and receive your verified certificate upon completion.
           </p>
           <Link href="/how-to-register" className="btn btn-cta">
-            Enroll Now
+            Register for Program
           </Link>
         </div>
       </section>

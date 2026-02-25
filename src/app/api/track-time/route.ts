@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
+import { getTodayInTimezone } from '@/lib/timezone';
 
 // POST: Log time for a session
 export async function POST(request: NextRequest) {
@@ -30,8 +31,15 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: 'No active enrollment found' }, { status: 404 });
     }
 
-    // Check 8-hour daily cap
-    const today = new Date().toISOString().split('T')[0];
+    // Get user's timezone for daily cap calculation
+    const { data: profile } = await supabase
+        .from('profiles')
+        .select('timezone')
+        .eq('id', user.id)
+        .single();
+
+    // Check 8-hour daily cap (uses user's local midnight, not UTC)
+    const today = getTodayInTimezone(profile?.timezone);
     const { data: todayLog } = await supabase
         .from('hour_logs')
         .select('hours')

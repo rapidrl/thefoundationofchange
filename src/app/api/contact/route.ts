@@ -1,6 +1,14 @@
-import { createClient } from '@/lib/supabase/server';
+import { createClient } from '@supabase/supabase-js';
 import { Resend } from 'resend';
 import { NextResponse } from 'next/server';
+
+// Use a direct Supabase client (no cookies needed for public contact form)
+function getSupabase() {
+    return createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    );
+}
 
 export async function POST(request: Request) {
     try {
@@ -28,7 +36,7 @@ export async function POST(request: Request) {
         const trimmedMessage = message.trim();
 
         // Save to Supabase
-        const supabase = await createClient();
+        const supabase = getSupabase();
         const { error: dbError } = await supabase
             .from('contact_submissions')
             .insert({
@@ -81,7 +89,8 @@ export async function POST(request: Request) {
             success: true,
             message: 'Your message has been received. We typically respond within 1-2 business days.',
         });
-    } catch {
+    } catch (err) {
+        console.error('Contact form unhandled error:', err);
         return NextResponse.json(
             { error: 'An unexpected error occurred. Please try again.' },
             { status: 500 }

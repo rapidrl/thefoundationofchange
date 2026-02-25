@@ -7,7 +7,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
     title: 'User Detail — Admin',
-    description: 'View and edit user information.',
+    description: 'View and manage user information, enrollments, hour logs, and certificates.',
 };
 
 interface PageProps {
@@ -69,7 +69,7 @@ export default async function AdminUserDetailPage({ params }: PageProps) {
             <h1 className={styles.pageTitle}>{profile.full_name}</h1>
             <p className={styles.pageSubtitle}>{profile.email} • Member since {new Date(profile.created_at).toLocaleDateString()}</p>
 
-            {/* Editable Profile + Enrollments */}
+            {/* Full Admin Editor (profile, enrollments, hour logs, certificates) */}
             <div className={styles.detailGrid}>
                 <AdminUserEditor
                     profile={{
@@ -87,6 +87,7 @@ export default async function AdminUserDetailPage({ params }: PageProps) {
                         court_id: profile.court_id || '',
                         reason_for_service: profile.reason_for_service || '',
                         role: profile.role || 'participant',
+                        account_status: profile.account_status || 'active',
                     }}
                     enrollments={(enrollments || []).map(e => ({
                         id: e.id,
@@ -96,49 +97,23 @@ export default async function AdminUserDetailPage({ params }: PageProps) {
                         amount_paid: Number(e.amount_paid) || 0,
                         start_date: e.start_date,
                     }))}
+                    hourLogs={(hourLogs || []).map(l => ({
+                        id: l.id,
+                        enrollment_id: l.enrollment_id,
+                        log_date: l.log_date,
+                        hours: Number(l.hours) || 0,
+                        minutes: Number(l.minutes) || 0,
+                    }))}
+                    certificates={(certificates || []).map(c => ({
+                        id: c.id,
+                        enrollment_id: c.enrollment_id,
+                        verification_code: c.verification_code,
+                        issued_at: c.issued_at,
+                    }))}
                 />
             </div>
 
-            {/* Hour Log Table */}
-            <div className={styles.detailGrid} style={{ marginBottom: 0 }}>
-                <div className={`${styles.detailCard} ${styles.detailCardFull}`}>
-                    <h3>⏱️ Daily Hour Log</h3>
-                    {hourLogs && hourLogs.length > 0 ? (
-                        <table className={styles.table}>
-                            <thead>
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Hours</th>
-                                    <th>Minutes</th>
-                                    <th>Total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {(() => {
-                                    let runningTotal = 0;
-                                    return hourLogs.map((log) => {
-                                        const h = Number(log.hours) || 0;
-                                        const m = Number(log.minutes) || 0;
-                                        runningTotal += h + m / 60;
-                                        return (
-                                            <tr key={log.id}>
-                                                <td>{new Date(log.log_date + 'T00:00:00').toLocaleDateString()}</td>
-                                                <td>{h}h</td>
-                                                <td>{m}m</td>
-                                                <td><strong>{runningTotal.toFixed(1)}h</strong></td>
-                                            </tr>
-                                        );
-                                    });
-                                })()}
-                            </tbody>
-                        </table>
-                    ) : (
-                        <div className={styles.emptyState}>No hour logs recorded</div>
-                    )}
-                </div>
-            </div>
-
-            {/* Reflections */}
+            {/* Reflections (read-only, stays server-rendered) */}
             <div className={styles.detailGrid} style={{ marginTop: 'var(--space-6)' }}>
                 <div className={`${styles.detailCard} ${styles.detailCardFull}`}>
                     <h3>💬 Reflections ({reflections?.length ?? 0})</h3>
@@ -176,45 +151,6 @@ export default async function AdminUserDetailPage({ params }: PageProps) {
                         </table>
                     ) : (
                         <div className={styles.emptyState}>No reflections submitted</div>
-                    )}
-                </div>
-            </div>
-
-            {/* Certificates */}
-            <div className={styles.detailGrid} style={{ marginTop: 'var(--space-6)' }}>
-                <div className={`${styles.detailCard} ${styles.detailCardFull}`}>
-                    <h3>🎓 Certificates ({certificates?.length ?? 0})</h3>
-                    {certificates && certificates.length > 0 ? (
-                        <table className={styles.table}>
-                            <thead>
-                                <tr>
-                                    <th>Verification Code</th>
-                                    <th>Issued Date</th>
-                                    <th>Certificate</th>
-                                    <th>Hour Log</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {certificates.map((cert) => (
-                                    <tr key={cert.id}>
-                                        <td><strong>{cert.verification_code}</strong></td>
-                                        <td>{new Date(cert.issued_at).toLocaleDateString()}</td>
-                                        <td>
-                                            <a href={`/api/certificates/${cert.verification_code}/pdf`} target="_blank" className={styles.downloadBtn}>
-                                                📄 Download
-                                            </a>
-                                        </td>
-                                        <td>
-                                            <a href={`/api/hour-log/${cert.enrollment_id}/pdf`} target="_blank" className={styles.downloadBtn}>
-                                                📋 Download
-                                            </a>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    ) : (
-                        <div className={styles.emptyState}>No certificates issued</div>
                     )}
                 </div>
             </div>

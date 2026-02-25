@@ -205,13 +205,25 @@ export async function POST(req: NextRequest) {
                 if (!enrl) return NextResponse.json({ error: 'Enrollment not found' }, { status: 404 });
 
                 const h = Number(hours);
-                await supabase.from('hour_logs').insert({
+
+                // Check if an entry already exists for this date
+                const { data: existingLog } = await supabase
+                    .from('hour_logs')
+                    .select('hours')
+                    .eq('enrollment_id', enrollmentId)
+                    .eq('log_date', logDate)
+                    .single();
+
+                const existingHours = existingLog?.hours || 0;
+                const newHours = Math.round((existingHours + h) * 100) / 100;
+
+                await supabase.from('hour_logs').upsert({
                     enrollment_id: enrollmentId,
                     user_id: enrl.user_id,
                     log_date: logDate,
-                    hours: h,
-                    minutes: Math.round(h * 60),
-                });
+                    hours: newHours,
+                    minutes: Math.round(newHours * 60),
+                }, { onConflict: 'enrollment_id,log_date' });
 
                 // Update enrollment total
                 const { data: allLogs } = await supabase
@@ -225,7 +237,7 @@ export async function POST(req: NextRequest) {
                     .update({ hours_completed: Math.round(total * 100) / 100 })
                     .eq('id', enrollmentId);
 
-                return NextResponse.json({ success: true, message: `Added ${h}h on ${logDate}`, newTotal: total });
+                return NextResponse.json({ success: true, message: `Added ${h}h on ${logDate} (total for day: ${newHours}h)`, newTotal: total });
             }
 
             case 'edit_hour_log': {

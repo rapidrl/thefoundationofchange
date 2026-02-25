@@ -2,8 +2,8 @@ import PageHeader from '@/components/ui/PageHeader';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Refund Policy',
-    description: 'Refund and return policy for The Foundation of Change community service programs.',
+    title: 'Refund Policy — Community Service Programs',
+    description: 'Understand our refund policy for online community service programs. All sales are final once access is granted. Confirm court or probation acceptance before enrolling.',
 };
 
 export default function RefundPolicyPage() {

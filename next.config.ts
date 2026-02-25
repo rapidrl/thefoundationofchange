@@ -1,6 +1,13 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  images: {
+    remotePatterns: [
+      { protocol: 'https', hostname: 'y8e.62b.myftpupload.com' },
+      { protocol: 'https', hostname: '*.wp.com' },
+      { protocol: 'https', hostname: '*.wordpress.com' },
+    ],
+  },
   async redirects() {
     return [
       // ═══════════════════════════════════════════════════════

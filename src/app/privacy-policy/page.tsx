@@ -2,8 +2,8 @@ import PageHeader from '@/components/ui/PageHeader';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Privacy Policy',
-    description: 'Privacy Policy for The Foundation of Change.',
+    title: 'Privacy Policy — How We Protect Your Data',
+    description: 'Learn how The Foundation of Change collects, uses, and protects your personal information. Our privacy practices cover registration data, payment processing, and certificate verification.',
 };
 
 export default function PrivacyPolicyPage() {

@@ -2,8 +2,8 @@ import PageHeader from '@/components/ui/PageHeader';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Terms of Service',
-    description: 'Terms of Service for The Foundation of Change community service programs.',
+    title: 'Terms of Service — Online Community Service Program',
+    description: 'Terms of Service governing use of The Foundation of Change online community service programs, including participation rules, payment terms, and certificate issuance policies.',
 };
 
 export default function TermsOfServicePage() {

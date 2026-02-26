@@ -33,13 +33,17 @@ export async function POST(request: Request) {
         const session = event.data.object;
         const metadata = session.metadata;
 
-        if (!metadata?.userId || !metadata?.hours) {
-            console.error('Missing metadata in checkout session:', session.id);
+        // Support both metadata formats:
+        // Old format: userId, hours
+        // New format: user_id, max_hours, tier_id
+        const userId = metadata?.user_id || metadata?.userId;
+        const hours = parseInt(metadata?.max_hours || metadata?.hours || '0', 10);
+
+        if (!userId || !hours) {
+            console.error('Missing metadata in checkout session:', session.id, metadata);
             return NextResponse.json({ error: 'Missing metadata' }, { status: 400 });
         }
 
-        const userId = metadata.userId;
-        const hours = parseInt(metadata.hours, 10);
         const amountPaid = (session.amount_total || 0) / 100;
         const paymentIntent = typeof session.payment_intent === 'string'
             ? session.payment_intent
@@ -55,7 +59,7 @@ export async function POST(request: Request) {
                 status: 'active',
                 amount_paid: amountPaid,
                 stripe_payment_id: paymentIntent,
-                start_date: new Date().toISOString(),
+                start_date: new Date().toISOString().split('T')[0],
             });
 
         if (enrollmentError) {

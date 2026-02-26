@@ -1,8 +1,7 @@
 import { createClient } from '@/lib/supabase/server';
-import { NextResponse } from 'next/server';
-import { redirect } from 'next/navigation';
+import { NextRequest, NextResponse } from 'next/server';
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
     try {
         const supabase = await createClient();
         const { data: { user } } = await supabase.auth.getUser();
@@ -33,13 +32,20 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: 'Invalid action' }, { status: 400 });
         }
 
-        await supabase
+        const { error } = await supabase
             .from('contact_submissions')
             .update({ status: action })
             .eq('id', messageId);
-    } catch {
+
+        if (error) {
+            console.error('Failed to update message:', error);
+            return NextResponse.json({ error: 'Failed to update message' }, { status: 500 });
+        }
+
+        const origin = request.nextUrl.origin;
+        return NextResponse.redirect(`${origin}/admin/messages`, { status: 303 });
+    } catch (err) {
+        console.error('Message action error:', err);
         return NextResponse.json({ error: 'Server error' }, { status: 500 });
     }
-
-    redirect('/admin/messages');
 }

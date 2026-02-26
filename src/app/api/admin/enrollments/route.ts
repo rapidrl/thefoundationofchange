@@ -1,8 +1,7 @@
 import { createClient } from '@/lib/supabase/server';
-import { NextResponse } from 'next/server';
-import { redirect } from 'next/navigation';
+import { NextRequest, NextResponse } from 'next/server';
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
     try {
         const supabase = await createClient();
         const { data: { user } } = await supabase.auth.getUser();
@@ -81,9 +80,11 @@ export async function POST(request: Request) {
             default:
                 return NextResponse.json({ error: 'Invalid action' }, { status: 400 });
         }
-    } catch {
+
+        const origin = request.nextUrl.origin;
+        return NextResponse.redirect(`${origin}/admin/enrollments`, { status: 303 });
+    } catch (err) {
+        console.error('Enrollment action error:', err);
         return NextResponse.json({ error: 'Server error' }, { status: 500 });
     }
-
-    redirect('/admin/enrollments');
 }

@@ -4,6 +4,9 @@ import Link from 'next/link';
 import { getTodayInTimezone } from '@/lib/timezone';
 import type { Metadata } from 'next';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export const metadata: Metadata = {
     title: 'Coursework — The Foundation of Change',
     description: 'Complete your community service coursework and reflections.',

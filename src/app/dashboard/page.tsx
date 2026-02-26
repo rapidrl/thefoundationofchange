@@ -5,6 +5,9 @@ import styles from './page.module.css';
 import LogoutButton from './LogoutButton';
 import type { Metadata } from 'next';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export const metadata: Metadata = {
     title: 'Dashboard',
     description: 'Your community service program dashboard.',

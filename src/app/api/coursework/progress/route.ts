@@ -145,14 +145,18 @@ export async function POST(request: Request) {
             (sum, log) => sum + (Number(log.hours) || 0) + ((Number(log.minutes) || 0) / 60),
             0
         );
-        const roundedTotal = Math.round(totalHoursFromLogs * 100) / 100;
 
-        // Get enrollment to check completion
+        // Get enrollment to check completion (and preserve admin-set hours)
         const { data: enrollment } = await supabase
             .from('enrollments')
-            .select('hours_required, status')
+            .select('hours_required, hours_completed, status')
             .eq('id', enrollmentId)
             .single();
+
+        // Never reduce hours below what's already on the enrollment
+        // (admin may have manually set a higher value)
+        const currentHours = Number(enrollment?.hours_completed) || 0;
+        const roundedTotal = Math.max(currentHours, Math.round(totalHoursFromLogs * 100) / 100);
 
         const isCompleted = enrollment && roundedTotal >= enrollment.hours_required && enrollment.status === 'active';
 

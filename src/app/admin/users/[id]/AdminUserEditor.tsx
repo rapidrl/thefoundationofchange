@@ -492,6 +492,7 @@ export default function AdminUserEditor({ profile: initial, enrollments: initial
                                         <td>
                                             <div style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>
                                                 <input type="number" min={0} step={1}
+                                                    key={`hrs-${e.id}-${e.hours_completed}`}
                                                     defaultValue={Math.floor(e.hours_completed)}
                                                     id={`hrs-${e.id}`}
                                                     onBlur={() => {
@@ -504,6 +505,7 @@ export default function AdminUserEditor({ profile: initial, enrollments: initial
                                                 />
                                                 <span style={{ fontSize: '11px', color: 'var(--color-gray-500)' }}>h</span>
                                                 <input type="number" min={0} max={59} step={1}
+                                                    key={`min-${e.id}-${e.hours_completed}`}
                                                     defaultValue={Math.round((e.hours_completed % 1) * 60)}
                                                     id={`min-${e.id}`}
                                                     onBlur={() => {

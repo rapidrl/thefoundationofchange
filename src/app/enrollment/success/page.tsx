@@ -116,11 +116,11 @@ export default async function EnrollmentSuccessPage({ searchParams }: PageProps)
                     </Link>
                 </div>
 
-                {/* Google Ads Conversion Tracking */}
-                {sessionData && sessionData.amountRaw > 0 && (
+                {/* Google Ads Conversion Tracking — always fire when session_id present */}
+                {session_id && (
                     <GoogleAdsConversion
-                        transactionId={sessionData.transactionId}
-                        value={sessionData.amountRaw}
+                        transactionId={sessionData?.transactionId || session_id}
+                        value={sessionData?.amountRaw || 1}
                     />
                 )}
             </div>

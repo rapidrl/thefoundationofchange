@@ -19,8 +19,14 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: 'Invalid parameters' }, { status: 400 });
     }
 
+    // Service-role client for ALL writes (bypasses RLS)
+    const serviceClient = createServiceClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.SUPABASE_SERVICE_ROLE_KEY!
+    );
+
     // Check enrollment belongs to user and is active
-    const { data: enrollment } = await supabase
+    const { data: enrollment } = await serviceClient
         .from('enrollments')
         .select('*')
         .eq('id', enrollmentId)
@@ -33,7 +39,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Get user's timezone for daily cap calculation
-    const { data: profile } = await supabase
+    const { data: profile } = await serviceClient
         .from('profiles')
         .select('timezone')
         .eq('id', user.id)
@@ -41,7 +47,7 @@ export async function POST(request: NextRequest) {
 
     // Check 8-hour daily cap (uses user's local midnight, not UTC)
     const today = getTodayInTimezone(profile?.timezone);
-    const { data: todayLog } = await supabase
+    const { data: todayLog } = await serviceClient
         .from('hour_logs')
         .select('hours')
         .eq('enrollment_id', enrollmentId)
@@ -64,9 +70,9 @@ export async function POST(request: NextRequest) {
     const allowedHours = Math.min(hoursToAdd, MAX_DAILY_HOURS - currentDailyHours);
     const allowedSeconds = Math.round(allowedHours * 3600);
 
-    // Upsert daily hour log
+    // Upsert daily hour log (service client)
     const newDailyHours = Math.round((currentDailyHours + allowedHours) * 100) / 100;
-    await supabase
+    await serviceClient
         .from('hour_logs')
         .upsert({
             enrollment_id: enrollmentId,
@@ -76,24 +82,29 @@ export async function POST(request: NextRequest) {
             minutes: Math.round(newDailyHours * 60),
         }, { onConflict: 'enrollment_id,log_date' });
 
-    // Update course progress
-    await supabase
+    // Update course progress - accumulate time (service client)
+    const { data: existingProgress } = await serviceClient
+        .from('course_progress')
+        .select('time_spent_seconds')
+        .eq('user_id', user.id)
+        .eq('enrollment_id', enrollmentId)
+        .eq('article_id', articleId)
+        .single();
+
+    const previousSeconds = Number(existingProgress?.time_spent_seconds) || 0;
+    const accumulatedSeconds = previousSeconds + allowedSeconds;
+
+    await serviceClient
         .from('course_progress')
         .upsert({
             user_id: user.id,
             enrollment_id: enrollmentId,
             article_id: articleId,
-            time_spent_seconds: allowedSeconds,
+            time_spent_seconds: accumulatedSeconds,
             started_at: new Date().toISOString(),
         }, { onConflict: 'user_id,enrollment_id,article_id' });
 
-    // Update total enrollment hours
-    // Use service-role client to bypass RLS for enrollment updates
-    const serviceClient = createServiceClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!
-    );
-
+    // Update total enrollment hours (service client)
     const newTotal = Math.round((enrollment.hours_completed + allowedHours) * 100) / 100;
     const isCompleted = newTotal >= enrollment.hours_required;
 
@@ -108,12 +119,11 @@ export async function POST(request: NextRequest) {
 
     // Auto-generate certificate on completion
     if (isCompleted) {
-        // Generate unique verification code: TFOC-XXXX-XXXX
-        const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // no ambiguous characters
+        const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
         const segment = () => Array.from({ length: 4 }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
         const verificationCode = `TFOC-${segment()}-${segment()}`;
 
-        await supabase
+        await serviceClient
             .from('certificates')
             .insert({
                 user_id: user.id,

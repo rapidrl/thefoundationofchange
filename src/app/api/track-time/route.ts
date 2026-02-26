@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
+import { createClient as createServiceClient } from '@supabase/supabase-js';
 import { getTodayInTimezone } from '@/lib/timezone';
 
 // POST: Log time for a session
@@ -87,10 +88,16 @@ export async function POST(request: NextRequest) {
         }, { onConflict: 'user_id,enrollment_id,article_id' });
 
     // Update total enrollment hours
+    // Use service-role client to bypass RLS for enrollment updates
+    const serviceClient = createServiceClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.SUPABASE_SERVICE_ROLE_KEY!
+    );
+
     const newTotal = Math.round((enrollment.hours_completed + allowedHours) * 100) / 100;
     const isCompleted = newTotal >= enrollment.hours_required;
 
-    await supabase
+    await serviceClient
         .from('enrollments')
         .update({
             hours_completed: newTotal,

@@ -135,15 +135,25 @@ export default function CourseworkClient({
                     return;
                 }
 
-                setSessionSeconds((prev) => prev + 1);
-                unsyncedSecondsRef.current += 1;
+                // Cap at max per article: reading time + 1 hour reflection
+                const maxPerArticle = ((selectedArticle?.estimated_minutes || 30) + 60) * 60;
+                setSessionSeconds((prev) => {
+                    if (prev >= maxPerArticle) {
+                        // Auto-stop timer at article cap
+                        syncTime();
+                        setIsTimerRunning(false);
+                        return prev;
+                    }
+                    unsyncedSecondsRef.current += 1;
+                    return prev + 1;
+                });
             }, 1000);
         }
 
         return () => {
             if (timerRef.current) clearInterval(timerRef.current);
         };
-    }, [isTimerRunning, isIdle, dailyLimitReached]);
+    }, [isTimerRunning, isIdle, dailyLimitReached, selectedArticle, syncTime]);
 
     // Periodic sync
     useEffect(() => {
@@ -354,15 +364,25 @@ export default function CourseworkClient({
 
                         {/* Reflection Form */}
                         {(() => {
-                            const requiredSeconds = (selectedArticle.estimated_minutes || 30) * 60;
-                            const timeRemaining = Math.max(0, requiredSeconds - sessionSeconds);
-                            const canReflect = timeRemaining === 0;
-                            const minsLeft = Math.ceil(timeRemaining / 60);
+                            const readingSeconds = (selectedArticle.estimated_minutes || 30) * 60;
+                            const reflectionSeconds = 60 * 60; // 1 hour for reflection
+                            const maxTotalSeconds = readingSeconds + reflectionSeconds; // 1.5 hours max per article
+
+                            const readingRemaining = Math.max(0, readingSeconds - sessionSeconds);
+                            const canReflect = readingRemaining === 0;
+
+                            // Reflection countdown: time left in the 1-hour reflection window
+                            const reflectionTimeSpent = Math.max(0, sessionSeconds - readingSeconds);
+                            const reflectionRemaining = Math.max(0, reflectionSeconds - reflectionTimeSpent);
+                            const reflectionDone = canReflect && reflectionRemaining === 0;
+
+                            const minsLeft = Math.ceil(readingRemaining / 60);
 
                             return (
                                 <div className={styles.reflectionSection}>
                                     <h2>Reflection</h2>
                                     {!canReflect ? (
+                                        /* ──── READING PHASE: Countdown to unlock ──── */
                                         <div style={{
                                             textAlign: 'center', padding: 'var(--space-6)',
                                             background: 'var(--color-gray-50)', borderRadius: 'var(--radius-lg)',
@@ -380,14 +400,14 @@ export default function CourseworkClient({
                                                 borderRadius: 'var(--radius-full)', fontSize: '1.2rem', fontWeight: 700,
                                                 fontFamily: 'monospace',
                                             }}>
-                                                {Math.floor(timeRemaining / 60)}:{(timeRemaining % 60).toString().padStart(2, '0')} remaining
+                                                📖 {Math.floor(readingRemaining / 60)}:{(readingRemaining % 60).toString().padStart(2, '0')} reading time left
                                             </div>
                                             <div style={{
                                                 marginTop: 'var(--space-3)', height: '6px',
                                                 background: 'var(--color-gray-200)', borderRadius: '3px', overflow: 'hidden',
                                             }}>
                                                 <div style={{
-                                                    width: `${Math.min(100, (sessionSeconds / requiredSeconds) * 100)}%`,
+                                                    width: `${Math.min(100, (sessionSeconds / readingSeconds) * 100)}%`,
                                                     height: '100%', background: 'var(--color-blue)',
                                                     borderRadius: '3px', transition: 'width 1s linear',
                                                 }} />
@@ -397,9 +417,44 @@ export default function CourseworkClient({
                                             </p>
                                         </div>
                                     ) : (
+                                        /* ──── REFLECTION PHASE: Countdown from 1 hour ──── */
                                         <>
+                                            {/* Reflection timer display */}
+                                            <div style={{
+                                                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                                                padding: 'var(--space-3) var(--space-4)',
+                                                background: reflectionDone ? '#ecfdf5' : '#eff6ff',
+                                                border: `1px solid ${reflectionDone ? '#a7f3d0' : '#bfdbfe'}`,
+                                                borderRadius: 'var(--radius-md)', marginBottom: 'var(--space-4)',
+                                            }}>
+                                                <span style={{ fontSize: '13px', color: reflectionDone ? '#059669' : '#1e40af', fontWeight: 600 }}>
+                                                    {reflectionDone ? '✅ Reflection time complete!' : '✍️ Reflection time counting...'}
+                                                </span>
+                                                <div style={{
+                                                    display: 'flex', alignItems: 'center', gap: 'var(--space-3)',
+                                                }}>
+                                                    <span style={{
+                                                        fontFamily: 'monospace', fontSize: '1rem', fontWeight: 700,
+                                                        color: reflectionDone ? '#059669' : 'var(--color-navy)',
+                                                    }}>
+                                                        ✍️ {Math.floor(reflectionRemaining / 60)}:{(reflectionRemaining % 60).toString().padStart(2, '0')} left
+                                                    </span>
+                                                    <div style={{
+                                                        width: '80px', height: '6px', background: 'var(--color-gray-200)',
+                                                        borderRadius: '3px', overflow: 'hidden',
+                                                    }}>
+                                                        <div style={{
+                                                            width: `${Math.min(100, (reflectionTimeSpent / reflectionSeconds) * 100)}%`,
+                                                            height: '100%',
+                                                            background: reflectionDone ? '#059669' : '#3b82f6',
+                                                            borderRadius: '3px', transition: 'width 1s linear',
+                                                        }} />
+                                                    </div>
+                                                </div>
+                                            </div>
+
                                             <p className={styles.reflectionHint}>
-                                                Write a thoughtful response (minimum 50 characters). Your timer continues while you write.
+                                                Write a thoughtful response (minimum 50 characters). Your timer continues while you write — time counts toward your total!
                                             </p>
                                             <textarea
                                                 className={styles.reflectionInput}

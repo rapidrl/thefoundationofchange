@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
             enrollment_id: enrollmentId,
             article_id: articleId,
             response_text: responseText.trim(),
-            status: 'pending',
+            status: 'approved',
             submitted_at: new Date().toISOString(),
         }, { onConflict: 'user_id,enrollment_id,article_id' })
         .select()

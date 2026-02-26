@@ -51,7 +51,7 @@ export async function POST(request: Request) {
                 enrollment_id: enrollmentId,
                 article_title: article?.title || 'Unknown Article',
                 response_text: responseText.trim(),
-                status: 'pending',
+                status: 'approved',
             });
 
         if (reflectionError) {

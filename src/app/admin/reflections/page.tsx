@@ -7,7 +7,7 @@ export default async function AdminReflectionsPage() {
     const { data: reflections } = await supabase
         .from('reflections')
         .select('*, profiles:user_id(full_name)')
-        .order('created_at', { ascending: false });
+        .order('submitted_at', { ascending: false });
 
     return (
         <>
@@ -56,14 +56,14 @@ export default async function AdminReflectionsPage() {
                                         </td>
                                         <td>
                                             <span className={`${styles.badge} ${status === 'approved' ? styles.badgeCompleted
-                                                    : status === 'flagged' ? styles.badgeSuspended
-                                                        : styles.badgeActive
+                                                : status === 'flagged' ? styles.badgeSuspended
+                                                    : styles.badgeActive
                                                 }`}>
                                                 {status}
                                             </span>
                                         </td>
                                         <td style={{ fontSize: 'var(--text-xs)' }}>
-                                            {new Date(ref.created_at as string).toLocaleDateString()}
+                                            {new Date(ref.submitted_at as string).toLocaleDateString()}
                                         </td>
                                         <td>
                                             <form method="POST" action="/api/admin/reflections" style={{ display: 'flex', gap: '4px' }}>

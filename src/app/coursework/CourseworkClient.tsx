@@ -219,6 +219,10 @@ export default function CourseworkClient({
             const data = await res.json();
             if (data.success) {
                 setReflectionStatus('Reflection submitted successfully!');
+                // Update progress bar with credited article time
+                if (data.totalHours !== undefined) {
+                    setTotalHours(data.totalHours);
+                }
             } else {
                 setReflectionStatus(data.error || 'Failed to submit.');
             }

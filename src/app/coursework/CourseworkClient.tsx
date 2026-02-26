@@ -45,7 +45,7 @@ interface Props {
     dailyHours: number;
 }
 
-const IDLE_TIMEOUT_MS = 120000; // 2 minutes of inactivity pauses timer
+const IDLE_TIMEOUT_MS = 600000; // 10 minutes of inactivity pauses timer
 const SYNC_INTERVAL_MS = 30000; // Sync every 30 seconds
 const MAX_DAILY_HOURS = 8;
 

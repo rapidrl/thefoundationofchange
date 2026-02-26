@@ -15,18 +15,33 @@ const navLinks = [
 
 export default function Header() {
     const [mobileOpen, setMobileOpen] = useState(false);
-    const [user, setUser] = useState<{ email?: string } | null>(null);
+    const [user, setUser] = useState<{ email?: string; id?: string } | null>(null);
+    const [isAdmin, setIsAdmin] = useState(false);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const supabase = createClient();
-        supabase.auth.getUser().then(({ data }) => {
+
+        async function checkUser() {
+            const { data } = await supabase.auth.getUser();
             setUser(data.user);
             setLoading(false);
-        });
+
+            if (data.user) {
+                const { data: profile } = await supabase
+                    .from('profiles')
+                    .select('role')
+                    .eq('id', data.user.id)
+                    .single();
+                setIsAdmin(profile?.role === 'admin');
+            }
+        }
+
+        checkUser();
 
         const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
             setUser(session?.user ?? null);
+            if (!session?.user) setIsAdmin(false);
         });
 
         return () => subscription.unsubscribe();
@@ -57,6 +72,11 @@ export default function Header() {
 
                     {!loading && user ? (
                         <>
+                            {isAdmin && (
+                                <Link href="/admin" className={styles.navLink} style={{ fontWeight: 700, color: '#dc2626' }}>
+                                    🛡️ Admin
+                                </Link>
+                            )}
                             <Link href="/dashboard" className={styles.navLink} style={{ fontWeight: 600 }}>
                                 Dashboard
                             </Link>
@@ -106,6 +126,16 @@ export default function Header() {
 
                 {!loading && user ? (
                     <>
+                        {isAdmin && (
+                            <Link
+                                href="/admin"
+                                className={styles.mobileNavLink}
+                                onClick={() => setMobileOpen(false)}
+                                style={{ fontWeight: 700, color: '#dc2626' }}
+                            >
+                                🛡️ Admin Dashboard
+                            </Link>
+                        )}
                         <Link
                             href="/dashboard"
                             className={styles.mobileNavLink}

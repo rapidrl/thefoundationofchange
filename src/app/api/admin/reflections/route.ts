@@ -1,8 +1,7 @@
 import { createClient } from '@/lib/supabase/server';
-import { NextResponse } from 'next/server';
-import { redirect } from 'next/navigation';
+import { NextRequest, NextResponse } from 'next/server';
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
     try {
         const supabase = await createClient();
         const { data: { user } } = await supabase.auth.getUser();
@@ -35,13 +34,21 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: 'Invalid action' }, { status: 400 });
         }
 
-        await supabase
+        const { error } = await supabase
             .from('reflections')
             .update({ status: newStatus })
             .eq('id', reflectionId);
-    } catch {
+
+        if (error) {
+            console.error('Failed to update reflection:', error);
+            return NextResponse.json({ error: 'Failed to update reflection' }, { status: 500 });
+        }
+
+        // Redirect back to reflections page
+        const origin = request.nextUrl.origin;
+        return NextResponse.redirect(`${origin}/admin/reflections`, { status: 303 });
+    } catch (err) {
+        console.error('Reflection action error:', err);
         return NextResponse.json({ error: 'Server error' }, { status: 500 });
     }
-
-    redirect('/admin/reflections');
 }

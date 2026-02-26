@@ -490,13 +490,32 @@ export default function AdminUserEditor({ profile: initial, enrollments: initial
                                             />
                                         </td>
                                         <td>
-                                            <input type="number" min={0} step={0.01} defaultValue={e.hours_completed}
-                                                onBlur={(ev) => {
-                                                    const v = Number(ev.target.value);
-                                                    if (v !== e.hours_completed) handleUpdateEnrollment(e.id, { hoursCompleted: v });
-                                                }}
-                                                style={{ width: '65px', padding: '4px 6px', border: '1px solid var(--color-gray-300)', borderRadius: 'var(--radius-md)', textAlign: 'center', fontFamily: 'var(--font-body)' }}
-                                            />
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>
+                                                <input type="number" min={0} step={1}
+                                                    defaultValue={Math.floor(e.hours_completed)}
+                                                    id={`hrs-${e.id}`}
+                                                    onBlur={() => {
+                                                        const h = Number((document.getElementById(`hrs-${e.id}`) as HTMLInputElement).value) || 0;
+                                                        const m = Number((document.getElementById(`min-${e.id}`) as HTMLInputElement).value) || 0;
+                                                        const combined = Math.round((h + m / 60) * 100) / 100;
+                                                        if (combined !== e.hours_completed) handleUpdateEnrollment(e.id, { hoursCompleted: combined });
+                                                    }}
+                                                    style={{ width: '50px', padding: '4px 4px', border: '1px solid var(--color-gray-300)', borderRadius: 'var(--radius-md)', textAlign: 'center', fontFamily: 'var(--font-body)', fontSize: '13px' }}
+                                                />
+                                                <span style={{ fontSize: '11px', color: 'var(--color-gray-500)' }}>h</span>
+                                                <input type="number" min={0} max={59} step={1}
+                                                    defaultValue={Math.round((e.hours_completed % 1) * 60)}
+                                                    id={`min-${e.id}`}
+                                                    onBlur={() => {
+                                                        const h = Number((document.getElementById(`hrs-${e.id}`) as HTMLInputElement).value) || 0;
+                                                        const m = Number((document.getElementById(`min-${e.id}`) as HTMLInputElement).value) || 0;
+                                                        const combined = Math.round((h + m / 60) * 100) / 100;
+                                                        if (combined !== e.hours_completed) handleUpdateEnrollment(e.id, { hoursCompleted: combined });
+                                                    }}
+                                                    style={{ width: '45px', padding: '4px 4px', border: '1px solid var(--color-gray-300)', borderRadius: 'var(--radius-md)', textAlign: 'center', fontFamily: 'var(--font-body)', fontSize: '13px' }}
+                                                />
+                                                <span style={{ fontSize: '11px', color: 'var(--color-gray-500)' }}>m</span>
+                                            </div>
                                         </td>
                                         <td>${Number(e.amount_paid || 0).toFixed(2)}</td>
                                         <td style={{ fontSize: '12px' }}>{new Date(e.start_date).toLocaleDateString()}</td>

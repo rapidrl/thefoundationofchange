@@ -12,7 +12,8 @@ const inter = Inter({
   display: "swap",
 });
 
-const GA_MEASUREMENT_ID = "AW-17595795029";
+const GA_ADS_ID = "AW-17595795029";
+const GA4_MEASUREMENT_ID = "G-ER8YE9QEM6";
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://thefoundationofchange.org'),
@@ -57,15 +58,16 @@ export default function RootLayout({
       <head>
         {/* Google Ads Conversion Tracking (gtag.js) */}
         <Script
-          src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA4_MEASUREMENT_ID}`}
           strategy="afterInteractive"
         />
-        <Script id="google-ads-gtag" strategy="afterInteractive">
+        <Script id="google-gtag-config" strategy="afterInteractive">
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', '${GA_MEASUREMENT_ID}');
+            gtag('config', '${GA4_MEASUREMENT_ID}');
+            gtag('config', '${GA_ADS_ID}');
           `}
         </Script>
       </head>

@@ -12,6 +12,8 @@ function generateVerificationCode(): string {
 }
 
 // POST: Submit a reflection for an article
+// Time is tracked by the live timer (track-time API), not by this route.
+// This route just saves the reflection and marks the article as completed.
 export async function POST(request: NextRequest) {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
@@ -44,14 +46,12 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: 'No active enrollment found' }, { status: 404 });
     }
 
-    // Get article details (title + estimated reading time)
+    // Get article title
     const { data: article } = await supabase
         .from('articles')
-        .select('title, estimated_minutes')
+        .select('title')
         .eq('id', articleId)
         .single();
-
-    const articleMinutes = Number(article?.estimated_minutes) || 0;
 
     // Upsert reflection (one per article per enrollment)
     const { data, error } = await supabase
@@ -83,52 +83,20 @@ export async function POST(request: NextRequest) {
             completed_at: new Date().toISOString(),
         }, { onConflict: 'user_id,enrollment_id,article_id' });
 
-    // ── Credit article's estimated reading time to enrollment hours ──
-    // Use service-role client to bypass RLS
-    const serviceClient = createServiceClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!
-    );
-
-    // Check if we already credited time for this article (to avoid double-crediting on re-submit)
-    const { data: existingLog } = await serviceClient
-        .from('hour_logs')
-        .select('id')
-        .eq('enrollment_id', enrollmentId)
-        .eq('user_id', user.id)
-        .eq('log_date', `article-${articleId}`)
-        .single();
-
-    let addedHours = 0;
-
-    if (!existingLog && articleMinutes > 0) {
-        // Credit the article's estimated time
-        addedHours = Math.round((articleMinutes / 60) * 100) / 100;
-
-        // Insert an hour log entry tagged to this article
-        await serviceClient
-            .from('hour_logs')
-            .insert({
-                enrollment_id: enrollmentId,
-                user_id: user.id,
-                log_date: `article-${articleId}`,
-                hours: addedHours,
-                minutes: articleMinutes,
-            });
-    }
-
-    // Update enrollment hours_completed
+    // Check if enrollment is now complete (hours are tracked by the live timer)
     const currentHours = Number(enrollment.hours_completed) || 0;
-    const newTotal = Math.round((currentHours + addedHours) * 100) / 100;
     const hoursRequired = Number(enrollment.hours_required) || 0;
-    const isNowComplete = newTotal >= hoursRequired && hoursRequired > 0;
+    const isNowComplete = currentHours >= hoursRequired && hoursRequired > 0;
 
-    if (isNowComplete) {
-        // Auto-complete enrollment + generate certificate
+    if (isNowComplete && enrollment.status === 'active') {
+        const serviceClient = createServiceClient(
+            process.env.NEXT_PUBLIC_SUPABASE_URL!,
+            process.env.SUPABASE_SERVICE_ROLE_KEY!
+        );
+
         await serviceClient
             .from('enrollments')
             .update({
-                hours_completed: newTotal,
                 status: 'completed',
                 completed_at: new Date().toISOString(),
             })
@@ -142,7 +110,7 @@ export async function POST(request: NextRequest) {
                 enrollment_id: enrollmentId,
                 verification_code: verificationCode,
                 issued_at: new Date().toISOString(),
-                hours_completed: newTotal,
+                hours_completed: currentHours,
             });
 
         return NextResponse.json({
@@ -150,22 +118,14 @@ export async function POST(request: NextRequest) {
             reflection: data,
             enrollmentCompleted: true,
             verificationCode,
-            totalHours: newTotal,
-            addedHours,
-        });
-    } else {
-        // Just update hours
-        await serviceClient
-            .from('enrollments')
-            .update({ hours_completed: newTotal })
-            .eq('id', enrollmentId);
-
-        return NextResponse.json({
-            success: true,
-            reflection: data,
-            enrollmentCompleted: false,
-            totalHours: newTotal,
-            addedHours,
+            totalHours: currentHours,
         });
     }
+
+    return NextResponse.json({
+        success: true,
+        reflection: data,
+        enrollmentCompleted: false,
+        totalHours: currentHours,
+    });
 }

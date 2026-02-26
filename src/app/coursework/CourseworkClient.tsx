@@ -186,7 +186,6 @@ export default function CourseworkClient({
     // Select article
     const openArticle = (article: Article) => {
         if (isTimerRunning) syncTime();
-        setIsTimerRunning(false);
         setSessionSeconds(0);
         setSelectedArticle(article);
         setReflectionStatus('');
@@ -194,6 +193,13 @@ export default function CourseworkClient({
         const existing = getArticleReflection(article.id);
         setReflectionText(existing?.response_text || '');
         setSidebarOpen(false);
+
+        // Auto-start the timer when an article is opened
+        if (!dailyLimitReached) {
+            setIsTimerRunning(true);
+            setIsIdle(false);
+            lastActivityRef.current = Date.now();
+        }
     };
 
     // Submit reflection
@@ -347,30 +353,77 @@ export default function CourseworkClient({
                         </div>
 
                         {/* Reflection Form */}
-                        <div className={styles.reflectionSection}>
-                            <h2>Reflection</h2>
-                            <p className={styles.reflectionHint}>
-                                Write a thoughtful response to the reflection prompt above (minimum 50 characters).
-                            </p>
-                            <textarea
-                                className={styles.reflectionInput}
-                                value={reflectionText}
-                                onChange={(e) => setReflectionText(e.target.value)}
-                                placeholder="Share your thoughts..."
-                                rows={6}
-                            />
-                            <div className={styles.reflectionFooter}>
-                                <span className={styles.charCount}>
-                                    {reflectionText.length} / 50 min characters
-                                </span>
-                                <button onClick={submitReflection} className="btn btn-cta">
-                                    Submit Reflection
-                                </button>
-                            </div>
-                            {reflectionStatus && (
-                                <p className={styles.reflectionMsg}>{reflectionStatus}</p>
-                            )}
-                        </div>
+                        {(() => {
+                            const requiredSeconds = (selectedArticle.estimated_minutes || 30) * 60;
+                            const timeRemaining = Math.max(0, requiredSeconds - sessionSeconds);
+                            const canReflect = timeRemaining === 0;
+                            const minsLeft = Math.ceil(timeRemaining / 60);
+
+                            return (
+                                <div className={styles.reflectionSection}>
+                                    <h2>Reflection</h2>
+                                    {!canReflect ? (
+                                        <div style={{
+                                            textAlign: 'center', padding: 'var(--space-6)',
+                                            background: 'var(--color-gray-50)', borderRadius: 'var(--radius-lg)',
+                                            border: '1px solid var(--color-gray-200)',
+                                        }}>
+                                            <p style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--color-navy)', marginBottom: 'var(--space-2)' }}>
+                                                🔒 Reflection Locked
+                                            </p>
+                                            <p style={{ color: 'var(--color-gray-600)', marginBottom: 'var(--space-3)' }}>
+                                                Complete the required reading time before writing your reflection.
+                                            </p>
+                                            <div style={{
+                                                display: 'inline-block', padding: 'var(--space-2) var(--space-5)',
+                                                background: 'var(--color-navy)', color: 'white',
+                                                borderRadius: 'var(--radius-full)', fontSize: '1.2rem', fontWeight: 700,
+                                                fontFamily: 'monospace',
+                                            }}>
+                                                {Math.floor(timeRemaining / 60)}:{(timeRemaining % 60).toString().padStart(2, '0')} remaining
+                                            </div>
+                                            <div style={{
+                                                marginTop: 'var(--space-3)', height: '6px',
+                                                background: 'var(--color-gray-200)', borderRadius: '3px', overflow: 'hidden',
+                                            }}>
+                                                <div style={{
+                                                    width: `${Math.min(100, (sessionSeconds / requiredSeconds) * 100)}%`,
+                                                    height: '100%', background: 'var(--color-blue)',
+                                                    borderRadius: '3px', transition: 'width 1s linear',
+                                                }} />
+                                            </div>
+                                            <p style={{ fontSize: 'var(--text-xs)', color: 'var(--color-gray-500)', marginTop: 'var(--space-2)' }}>
+                                                {minsLeft} minute{minsLeft !== 1 ? 's' : ''} of reading left • Timer is {isTimerRunning ? 'running ✓' : 'paused ⏸'}
+                                            </p>
+                                        </div>
+                                    ) : (
+                                        <>
+                                            <p className={styles.reflectionHint}>
+                                                Write a thoughtful response (minimum 50 characters). Your timer continues while you write.
+                                            </p>
+                                            <textarea
+                                                className={styles.reflectionInput}
+                                                value={reflectionText}
+                                                onChange={(e) => setReflectionText(e.target.value)}
+                                                placeholder="Share your thoughts..."
+                                                rows={6}
+                                            />
+                                            <div className={styles.reflectionFooter}>
+                                                <span className={styles.charCount}>
+                                                    {reflectionText.length} / 50 min characters
+                                                </span>
+                                                <button onClick={submitReflection} className="btn btn-cta">
+                                                    Submit Reflection
+                                                </button>
+                                            </div>
+                                            {reflectionStatus && (
+                                                <p className={styles.reflectionMsg}>{reflectionStatus}</p>
+                                            )}
+                                        </>
+                                    )}
+                                </div>
+                            );
+                        })()}
                     </div>
                 ) : (
                     <div className={styles.placeholder}>

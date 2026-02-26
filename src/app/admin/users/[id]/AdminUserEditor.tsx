@@ -463,82 +463,115 @@ export default function AdminUserEditor({ profile: initial, enrollments: initial
                                     <th>Status</th>
                                     <th>Hrs Required</th>
                                     <th>Hrs Completed</th>
+                                    <th>Progress</th>
                                     <th>Paid</th>
                                     <th>Start</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {enrollments.map((e) => (
-                                    <tr key={e.id}>
-                                        <td>
-                                            <span style={{
-                                                display: 'inline-block', padding: '2px 10px', borderRadius: '9999px',
-                                                fontSize: '11px', fontWeight: 700,
-                                                background: statusBg(e.status), color: statusColor(e.status),
-                                            }}>
-                                                {e.status}
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <input type="number" min={1} defaultValue={e.hours_required}
-                                                onBlur={(ev) => {
-                                                    const v = Number(ev.target.value);
-                                                    if (v !== e.hours_required && v > 0) handleUpdateEnrollment(e.id, { hoursRequired: v });
-                                                }}
-                                                style={{ width: '65px', padding: '4px 6px', border: '1px solid var(--color-gray-300)', borderRadius: 'var(--radius-md)', textAlign: 'center', fontFamily: 'var(--font-body)' }}
-                                            />
-                                        </td>
-                                        <td>
-                                            <div style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>
-                                                <input type="number" min={0} step={1}
-                                                    key={`hrs-${e.id}-${e.hours_completed}`}
-                                                    defaultValue={Math.floor(e.hours_completed)}
-                                                    id={`hrs-${e.id}`}
-                                                    onBlur={() => {
-                                                        const h = Number((document.getElementById(`hrs-${e.id}`) as HTMLInputElement).value) || 0;
-                                                        const m = Number((document.getElementById(`min-${e.id}`) as HTMLInputElement).value) || 0;
-                                                        const combined = Math.round((h + m / 60) * 100) / 100;
-                                                        if (combined !== e.hours_completed) handleUpdateEnrollment(e.id, { hoursCompleted: combined });
+                                {enrollments.map((e) => {
+                                    const pct = e.hours_required > 0 ? Math.min(100, Math.round((e.hours_completed / e.hours_required) * 100)) : 0;
+                                    const remaining = Math.max(0, e.hours_required - e.hours_completed);
+                                    const remainingH = Math.floor(remaining);
+                                    const remainingM = Math.round((remaining % 1) * 60);
+                                    return (
+                                        <tr key={e.id}>
+                                            <td>
+                                                <span style={{
+                                                    display: 'inline-block', padding: '2px 10px', borderRadius: '9999px',
+                                                    fontSize: '11px', fontWeight: 700,
+                                                    background: statusBg(e.status), color: statusColor(e.status),
+                                                }}>
+                                                    {e.status}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <input type="number" min={1} defaultValue={e.hours_required}
+                                                    key={`req-${e.id}-${e.hours_required}`}
+                                                    onBlur={(ev) => {
+                                                        const v = Number(ev.target.value);
+                                                        if (v !== e.hours_required && v > 0) handleUpdateEnrollment(e.id, { hoursRequired: v });
                                                     }}
-                                                    style={{ width: '50px', padding: '4px 4px', border: '1px solid var(--color-gray-300)', borderRadius: 'var(--radius-md)', textAlign: 'center', fontFamily: 'var(--font-body)', fontSize: '13px' }}
+                                                    style={{ width: '65px', padding: '4px 6px', border: '1px solid var(--color-gray-300)', borderRadius: 'var(--radius-md)', textAlign: 'center', fontFamily: 'var(--font-body)' }}
                                                 />
-                                                <span style={{ fontSize: '11px', color: 'var(--color-gray-500)' }}>h</span>
-                                                <input type="number" min={0} max={59} step={1}
-                                                    key={`min-${e.id}-${e.hours_completed}`}
-                                                    defaultValue={Math.round((e.hours_completed % 1) * 60)}
-                                                    id={`min-${e.id}`}
-                                                    onBlur={() => {
-                                                        const h = Number((document.getElementById(`hrs-${e.id}`) as HTMLInputElement).value) || 0;
-                                                        const m = Number((document.getElementById(`min-${e.id}`) as HTMLInputElement).value) || 0;
-                                                        const combined = Math.round((h + m / 60) * 100) / 100;
-                                                        if (combined !== e.hours_completed) handleUpdateEnrollment(e.id, { hoursCompleted: combined });
-                                                    }}
-                                                    style={{ width: '45px', padding: '4px 4px', border: '1px solid var(--color-gray-300)', borderRadius: 'var(--radius-md)', textAlign: 'center', fontFamily: 'var(--font-body)', fontSize: '13px' }}
-                                                />
-                                                <span style={{ fontSize: '11px', color: 'var(--color-gray-500)' }}>m</span>
-                                            </div>
-                                        </td>
-                                        <td>${Number(e.amount_paid || 0).toFixed(2)}</td>
-                                        <td style={{ fontSize: '12px' }}>{new Date(e.start_date).toLocaleDateString()}</td>
-                                        <td>
-                                            <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
-                                                {e.status === 'active' && (
-                                                    <>
-                                                        <ActionBtn onClick={() => handleUpdateEnrollment(e.id, { status: 'suspended' })} label="⏸ Suspend" color="#f59e0b" small />
-                                                        <ActionBtn onClick={() => handleForceComplete(e.id)} label="✅ Complete" color="#059669" small disabled={busy === `fc-${e.id}`} />
-                                                    </>
-                                                )}
-                                                {e.status === 'suspended' && (
-                                                    <ActionBtn onClick={() => handleUpdateEnrollment(e.id, { status: 'active' })} label="▶ Resume" color="#059669" small />
-                                                )}
-                                                <ActionBtn onClick={() => handleResetHours(e.id)} label="🔄 Reset" color="#6366f1" small disabled={busy === `rh-${e.id}`} />
-                                                <ActionBtn onClick={() => handleRefund(e.id)} label="💰 Refund" color="#9333ea" small disabled={busy === `rf-${e.id}`} />
-                                                <ActionBtn onClick={() => handleDeleteEnrollment(e.id)} label="🗑️ Delete" color="#dc2626" small disabled={busy === `de-${e.id}`} />
-                                            </div>
-                                        </td>
-                                    </tr>
-                                ))}
+                                            </td>
+                                            <td>
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>
+                                                    <input type="number" min={0} step={1}
+                                                        key={`hrs-${e.id}-${e.hours_completed}`}
+                                                        defaultValue={Math.floor(e.hours_completed)}
+                                                        id={`hrs-${e.id}`}
+                                                        onBlur={() => {
+                                                            const h = Number((document.getElementById(`hrs-${e.id}`) as HTMLInputElement).value) || 0;
+                                                            const m = Number((document.getElementById(`min-${e.id}`) as HTMLInputElement).value) || 0;
+                                                            const combined = Math.round((h + m / 60) * 100) / 100;
+                                                            if (combined !== e.hours_completed) handleUpdateEnrollment(e.id, { hoursCompleted: combined });
+                                                        }}
+                                                        style={{ width: '50px', padding: '4px 4px', border: '1px solid var(--color-gray-300)', borderRadius: 'var(--radius-md)', textAlign: 'center', fontFamily: 'var(--font-body)', fontSize: '13px' }}
+                                                    />
+                                                    <span style={{ fontSize: '11px', color: 'var(--color-gray-500)' }}>h</span>
+                                                    <input type="number" min={0} max={59} step={1}
+                                                        key={`min-${e.id}-${e.hours_completed}`}
+                                                        defaultValue={Math.round((e.hours_completed % 1) * 60)}
+                                                        id={`min-${e.id}`}
+                                                        onBlur={() => {
+                                                            const h = Number((document.getElementById(`hrs-${e.id}`) as HTMLInputElement).value) || 0;
+                                                            const m = Number((document.getElementById(`min-${e.id}`) as HTMLInputElement).value) || 0;
+                                                            const combined = Math.round((h + m / 60) * 100) / 100;
+                                                            if (combined !== e.hours_completed) handleUpdateEnrollment(e.id, { hoursCompleted: combined });
+                                                        }}
+                                                        style={{ width: '45px', padding: '4px 4px', border: '1px solid var(--color-gray-300)', borderRadius: 'var(--radius-md)', textAlign: 'center', fontFamily: 'var(--font-body)', fontSize: '13px' }}
+                                                    />
+                                                    <span style={{ fontSize: '11px', color: 'var(--color-gray-500)' }}>m</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div style={{ minWidth: '120px' }}>
+                                                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', marginBottom: '3px' }}>
+                                                        <span style={{ fontWeight: 700, color: pct >= 100 ? '#059669' : 'var(--color-navy)' }}>{pct}%</span>
+                                                        <span style={{ color: 'var(--color-gray-500)' }}>
+                                                            {remainingH}h {remainingM}m left
+                                                        </span>
+                                                    </div>
+                                                    <div style={{
+                                                        width: '100%', height: '8px', background: 'var(--color-gray-200)',
+                                                        borderRadius: '4px', overflow: 'hidden',
+                                                    }}>
+                                                        <div style={{
+                                                            width: `${pct}%`, height: '100%',
+                                                            background: pct >= 100
+                                                                ? 'linear-gradient(90deg, #059669, #10b981)'
+                                                                : pct >= 50
+                                                                    ? 'linear-gradient(90deg, #3b82f6, #60a5fa)'
+                                                                    : 'linear-gradient(90deg, #f59e0b, #fbbf24)',
+                                                            borderRadius: '4px',
+                                                            transition: 'width 0.3s ease',
+                                                        }} />
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>${Number(e.amount_paid || 0).toFixed(2)}</td>
+                                            <td style={{ fontSize: '12px' }}>{new Date(e.start_date).toLocaleDateString()}</td>
+                                            <td>
+                                                <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
+                                                    {e.status === 'active' && (
+                                                        <>
+                                                            <ActionBtn onClick={() => handleUpdateEnrollment(e.id, { status: 'suspended' })} label="⏸ Suspend" color="#f59e0b" small />
+                                                            <ActionBtn onClick={() => handleForceComplete(e.id)} label="✅ Complete" color="#059669" small disabled={busy === `fc-${e.id}`} />
+                                                        </>
+                                                    )}
+                                                    {e.status === 'suspended' && (
+                                                        <ActionBtn onClick={() => handleUpdateEnrollment(e.id, { status: 'active' })} label="▶ Resume" color="#059669" small />
+                                                    )}
+                                                    <ActionBtn onClick={() => handleResetHours(e.id)} label="🔄 Reset" color="#6366f1" small disabled={busy === `rh-${e.id}`} />
+                                                    <ActionBtn onClick={() => handleRefund(e.id)} label="💰 Refund" color="#9333ea" small disabled={busy === `rf-${e.id}`} />
+                                                    <ActionBtn onClick={() => handleDeleteEnrollment(e.id)} label="🗑️ Delete" color="#dc2626" small disabled={busy === `de-${e.id}`} />
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    );
+                                })}
                             </tbody>
                         </table>
                     </div>

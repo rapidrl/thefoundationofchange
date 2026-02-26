@@ -1,8 +1,12 @@
 import { createClient } from '@/lib/supabase/server';
+import { createClient as createServiceClient } from '@supabase/supabase-js';
 import { getStripe } from '@/lib/stripe';
 import Link from 'next/link';
 import GoogleAdsConversion from '@/components/GoogleAdsConversion';
 import type { Metadata } from 'next';
+
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export const metadata: Metadata = {
     title: 'Enrollment Confirmed — The Foundation of Change',
@@ -26,21 +30,87 @@ export default async function EnrollmentSuccessPage({ searchParams }: PageProps)
         transactionId: string;
     } | null = null;
 
-    // Try to retrieve session details from Stripe
-    if (session_id) {
+    let enrollmentCreated = false;
+
+    // Try to retrieve session details from Stripe AND create enrollment
+    if (session_id && user) {
         try {
             const session = await getStripe().checkout.sessions.retrieve(session_id);
-            sessionData = {
-                tierLabel: session.metadata?.tierLabel || 'Community Service Program',
-                hours: session.metadata?.max_hours || session.metadata?.hours || '—',
-                amountPaid: session.amount_total
-                    ? `$${(session.amount_total / 100).toFixed(2)}`
-                    : '—',
-                amountRaw: session.amount_total ? session.amount_total / 100 : 0,
-                transactionId: (session.payment_intent as string) || session.id,
-            };
-        } catch {
-            // Session retrieval failed — show generic success
+
+            // Only process paid sessions
+            if (session.payment_status === 'paid') {
+                const metadata = session.metadata;
+                const userId = metadata?.user_id || metadata?.userId || user.id;
+                const maxHours = parseInt(metadata?.max_hours || metadata?.hours || '0', 10);
+                const amountPaid = (session.amount_total || 0) / 100;
+                const paymentIntent = typeof session.payment_intent === 'string'
+                    ? session.payment_intent
+                    : (session.payment_intent as { id?: string })?.id || null;
+
+                sessionData = {
+                    tierLabel: metadata?.tierLabel || 'Community Service Program',
+                    hours: metadata?.max_hours || metadata?.hours || '—',
+                    amountPaid: session.amount_total
+                        ? `$${(session.amount_total / 100).toFixed(2)}`
+                        : '—',
+                    amountRaw: amountPaid,
+                    transactionId: paymentIntent || session.id,
+                };
+
+                // Create enrollment if it doesn't already exist
+                // This replaces the webhook — guaranteed to run since the success page is on Vercel
+                if (maxHours > 0) {
+                    const serviceClient = createServiceClient(
+                        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+                        process.env.SUPABASE_SERVICE_ROLE_KEY!
+                    );
+
+                    // Check if enrollment already exists for this payment
+                    const { data: existing } = await serviceClient
+                        .from('enrollments')
+                        .select('id')
+                        .eq('user_id', userId)
+                        .eq('stripe_payment_id', paymentIntent || '')
+                        .single();
+
+                    if (!existing) {
+                        // Also check if there's already an active enrollment (avoid duplicates)
+                        const { data: activeEnrollment } = await serviceClient
+                            .from('enrollments')
+                            .select('id')
+                            .eq('user_id', userId)
+                            .eq('status', 'active')
+                            .single();
+
+                        if (!activeEnrollment) {
+                            const { error } = await serviceClient
+                                .from('enrollments')
+                                .insert({
+                                    user_id: userId,
+                                    hours_required: maxHours,
+                                    hours_completed: 0,
+                                    status: 'active',
+                                    amount_paid: amountPaid,
+                                    stripe_payment_id: paymentIntent,
+                                    start_date: new Date().toISOString().split('T')[0],
+                                });
+
+                            if (!error) {
+                                enrollmentCreated = true;
+                                console.log(`✅ Enrollment created on success page: user=${userId}, hours=${maxHours}, paid=$${amountPaid}`);
+                            } else {
+                                console.error('❌ Failed to create enrollment on success page:', error);
+                            }
+                        } else {
+                            console.log(`ℹ️ User ${userId} already has active enrollment ${activeEnrollment.id}`);
+                        }
+                    } else {
+                        console.log(`ℹ️ Enrollment already exists for payment ${paymentIntent}`);
+                    }
+                }
+            }
+        } catch (err) {
+            console.error('Failed to retrieve Stripe session:', err);
         }
     }
 

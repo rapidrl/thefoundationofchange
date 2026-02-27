@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import TimezoneDetector from "@/components/TimezoneDetector";
@@ -97,6 +98,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <Header />
         <main>{children}</main>
         <Footer />
+        <SpeedInsights />
       </body>
     </html>
   );

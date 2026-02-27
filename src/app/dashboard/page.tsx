@@ -237,7 +237,7 @@ export default async function DashboardPage() {
                                         return hourLogs.map((log) => {
                                             const h = Number(log.hours) || 0;
                                             const m = Number(log.minutes) || 0;
-                                            runningTotal += h + m / 60;
+                                            runningTotal += h;
                                             return (
                                                 <tr key={log.id}>
                                                     <td>{new Date(log.log_date + 'T00:00:00').toLocaleDateString()}</td>

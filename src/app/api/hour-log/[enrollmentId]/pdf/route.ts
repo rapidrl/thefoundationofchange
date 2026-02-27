@@ -14,23 +14,34 @@ export async function GET(
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // Get enrollment
+    // Get enrollment (without user_id filter so admins can access)
     const { data: enrollment } = await supabase
         .from('enrollments')
         .select('*')
         .eq('id', enrollmentId)
-        .eq('user_id', user.id)
         .single();
 
     if (!enrollment) {
         return NextResponse.json({ error: 'Enrollment not found' }, { status: 404 });
     }
 
-    // Get profile
+    // Verify ownership OR admin role
+    if (enrollment.user_id !== user.id) {
+        const { data: adminProfile } = await supabase
+            .from('profiles')
+            .select('role')
+            .eq('id', user.id)
+            .single();
+        if (adminProfile?.role !== 'admin') {
+            return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+        }
+    }
+
+    // Get participant's profile (not the logged-in user's) for PDF fields
     const { data: profile } = await supabase
         .from('profiles')
         .select('full_name, email, city, state, address, zip_code')
-        .eq('id', user.id)
+        .eq('id', enrollment.user_id)
         .single();
 
     // Get hour logs

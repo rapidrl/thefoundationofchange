@@ -49,12 +49,15 @@ export async function POST(request: NextRequest) {
     const today = getTodayInTimezone(profile?.timezone);
     const { data: todayLog } = await serviceClient
         .from('hour_logs')
-        .select('hours')
+        .select('id, hours, minutes')
         .eq('enrollment_id', enrollmentId)
         .eq('log_date', today)
-        .single();
+        .maybeSingle();
 
-    const currentDailyHours = todayLog?.hours || 0;
+    // Reconstruct decimal hours from hours:minutes format (e.g., 1h 27m = 1.45)
+    const storedHours = Number(todayLog?.hours) || 0;
+    const storedMinutes = Number(todayLog?.minutes) || 0;
+    const currentDailyHours = storedHours + storedMinutes / 60;
     const hoursToAdd = secondsToAdd / 3600;
     const MAX_DAILY_HOURS = 8;
 
@@ -70,17 +73,32 @@ export async function POST(request: NextRequest) {
     const allowedHours = Math.min(hoursToAdd, MAX_DAILY_HOURS - currentDailyHours);
     const allowedSeconds = Math.round(allowedHours * 3600);
 
-    // Upsert daily hour log (service client)
-    const newDailyHours = Math.round((currentDailyHours + allowedHours) * 100) / 100;
-    await serviceClient
-        .from('hour_logs')
-        .upsert({
-            enrollment_id: enrollmentId,
-            user_id: user.id,
-            log_date: today,
-            hours: newDailyHours,
-            minutes: Math.round(newDailyHours * 60),
-        }, { onConflict: 'enrollment_id,log_date' });
+    // Update or insert daily hour log (explicit to avoid upsert issues)
+    // Store time as whole hours + remainder minutes (0-59)
+    // e.g., 1.45 decimal hours = 1h 27m -> hours=1, minutes=27
+    const totalDecimalHours = Math.round((currentDailyHours + allowedHours) * 100) / 100;
+    const totalMinutes = Math.round(totalDecimalHours * 60);
+    const wholeHours = Math.floor(totalMinutes / 60);
+    const remainderMinutes = totalMinutes % 60;
+
+    if (todayLog?.id) {
+        // UPDATE existing record
+        await serviceClient
+            .from('hour_logs')
+            .update({ hours: wholeHours, minutes: remainderMinutes })
+            .eq('id', todayLog.id);
+    } else {
+        // INSERT new record
+        await serviceClient
+            .from('hour_logs')
+            .insert({
+                enrollment_id: enrollmentId,
+                user_id: user.id,
+                log_date: today,
+                hours: wholeHours,
+                minutes: remainderMinutes,
+            });
+    }
 
     // Update course progress - accumulate time (service client)
     const { data: existingProgress } = await serviceClient
@@ -136,10 +154,10 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
         success: true,
         secondsLogged: allowedSeconds,
-        dailyHours: newDailyHours,
+        dailyHours: totalDecimalHours,
         totalHours: newTotal,
         hoursRequired: enrollment.hours_required,
         isCompleted,
-        dailyLimitReached: newDailyHours >= MAX_DAILY_HOURS,
+        dailyLimitReached: totalDecimalHours >= MAX_DAILY_HOURS,
     });
 }

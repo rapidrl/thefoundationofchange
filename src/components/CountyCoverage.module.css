@@ -1,0 +1,195 @@
+/* ── County Coverage Section ── */
+
+.section {
+    padding: 4rem 0 3rem;
+    background: linear-gradient(180deg, #f8fafc 0%, #eef2ff 100%);
+}
+
+.title {
+    text-align: center;
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 0.75rem;
+    line-height: 1.3;
+}
+
+.subtitle {
+    text-align: center;
+    max-width: 720px;
+    margin: 0 auto 1.5rem;
+    color: #475569;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.checkInline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    background: #22c55e;
+    color: #fff;
+    border-radius: 50%;
+    font-size: 11px;
+    font-weight: 700;
+    vertical-align: middle;
+    margin: 0 2px;
+}
+
+/* Search */
+.searchWrap {
+    max-width: 420px;
+    margin: 0 auto 1.5rem;
+    position: relative;
+}
+
+.searchInput {
+    width: 100%;
+    padding: 0.75rem 1.25rem;
+    padding-right: 2.5rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    color: #0f172a;
+    background: #fff;
+    transition: border-color 0.2s;
+    outline: none;
+}
+
+.searchInput:focus {
+    border-color: #22c55e;
+    box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.15);
+}
+
+.searchInput::placeholder {
+    color: #94a3b8;
+}
+
+.clearBtn {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    font-size: 1rem;
+    color: #94a3b8;
+    cursor: pointer;
+    padding: 4px;
+    line-height: 1;
+}
+
+.clearBtn:hover {
+    color: #475569;
+}
+
+/* Grid */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 0;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    overflow: hidden;
+    max-height: 400px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 #f1f5f9;
+}
+
+.grid::-webkit-scrollbar {
+    width: 6px;
+}
+
+.grid::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+
+.grid::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 3px;
+}
+
+/* County item */
+.countyItem {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0.6rem 1rem;
+    border-bottom: 1px solid #f1f5f9;
+    transition: background 0.15s;
+}
+
+.countyItem:hover {
+    background: #f0fdf4;
+}
+
+.checkmark {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    background: #22c55e;
+    color: #fff;
+    border-radius: 50%;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.countyName {
+    font-size: 0.88rem;
+    color: #1e293b;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* No results */
+.noResults {
+    text-align: center;
+    padding: 2rem 0;
+    color: #64748b;
+    font-style: italic;
+}
+
+/* Footer text */
+.footerText {
+    text-align: center;
+    max-width: 700px;
+    margin: 1.5rem auto 0;
+    color: #475569;
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .title {
+        font-size: 1.35rem;
+    }
+
+    .grid {
+        grid-template-columns: 1fr 1fr;
+        max-height: 350px;
+    }
+
+    .countyName {
+        font-size: 0.82rem;
+    }
+
+    .countyItem {
+        padding: 0.5rem 0.75rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+}

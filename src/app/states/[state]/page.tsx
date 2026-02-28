@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getStateBySlug, states } from '../stateData';
 import { stateSeoDataMap } from '../stateSeoData';
+import { countyData } from '../countyData';
+import CountyCoverage from '@/components/CountyCoverage';
 import styles from './page.module.css';
 
 interface Props {
@@ -396,6 +398,15 @@ export default function StatePage({ params }: Props) {
                     </div>
                 </div>
             </section>
+
+            {/* ======= COUNTY COVERAGE (SEO) ======= */}
+            {countyData[stateSlug] && (
+                <CountyCoverage
+                    stateName={name}
+                    stateAbbr={abbr}
+                    counties={countyData[stateSlug]}
+                />
+            )}
 
             {/* ======= FINAL CTA (localized) ======= */}
             <section className={styles.finalCta}>

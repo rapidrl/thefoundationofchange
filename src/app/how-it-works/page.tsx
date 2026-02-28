@@ -6,10 +6,36 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
     title: 'How Online Community Service Works — Step-by-Step Process',
     description: 'Learn how The Foundation of Change delivers, verifies, and documents online community service for courts, schools, and probation requirements. 5-step process from enrollment to certificate.',
+    alternates: {
+        canonical: 'https://thefoundationofchange.org/how-it-works',
+    },
     openGraph: {
         title: 'How Online Community Service Works | The Foundation of Change',
         description: 'Enroll, complete structured coursework, log your time, get reviewed, and receive your verified certificate. Self-paced and court-accepted.',
     },
+};
+
+const howToSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: 'How to Complete Online Community Service',
+    description: 'A 5-step process to complete court-approved community service hours online through The Foundation of Change.',
+    step: [
+        { '@type': 'HowToStep', position: 1, name: 'Enrollment', text: 'Participants enroll in the online community service program and gain immediate access to the platform.' },
+        { '@type': 'HowToStep', position: 2, name: 'Structured Activities', text: 'Participants complete guided educational and service-based activities designed to meet community service standards.' },
+        { '@type': 'HowToStep', position: 3, name: 'Time & Reflection Logging', text: 'Participants log time spent and submit reflections for each session. All submissions are reviewed.' },
+        { '@type': 'HowToStep', position: 4, name: 'Review & Verification', text: 'All submissions are reviewed for accuracy, completeness, and compliance with program standards.' },
+        { '@type': 'HowToStep', position: 5, name: 'Documentation Issued', text: 'Once requirements are met, official documentation is issued for submission to the requesting institution.' },
+    ],
+};
+
+const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://thefoundationofchange.org/' },
+        { '@type': 'ListItem', position: 2, name: 'How It Works' },
+    ],
 };
 
 const steps = [
@@ -102,6 +128,16 @@ export default function HowItWorksPage() {
                     </div>
                 </div>
             </section>
+
+            {/* JSON-LD Structured Data */}
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }}
+            />
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+            />
         </>
     );
 }

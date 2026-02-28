@@ -6,10 +6,22 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
     title: 'About The Foundation of Change — 501(c)(3) Nonprofit',
     description: 'The Foundation of Change is a 501(c)(3) nonprofit providing court-approved community service nationwide with verified hours, licensed content, and official certificates.',
+    alternates: {
+        canonical: 'https://thefoundationofchange.org/about-us',
+    },
     openGraph: {
         title: 'About The Foundation of Change | 501(c)(3) Nonprofit',
         description: 'Our mission is making community service accessible, meaningful, and verifiable. Licensed content, tamper-proof tracking, and certificates accepted by courts nationwide.',
     },
+};
+
+const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://thefoundationofchange.org/' },
+        { '@type': 'ListItem', position: 2, name: 'About Us' },
+    ],
 };
 
 export default function AboutPage() {
@@ -109,6 +121,11 @@ export default function AboutPage() {
                     </p>
                 </div>
             </section>
+
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+            />
         </>
     );
 }

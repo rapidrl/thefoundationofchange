@@ -1,0 +1,1532 @@
+{
+  "content_matrix": {
+    "version": "1.0",
+    "total_articles": 74,
+    "pillars": [
+      {
+        "pillar_id": 1,
+        "pillar_name": "Court-Ordered Community Service & Compliance",
+        "pillar_description": "Practical guidance for individuals navigating court-mandated community service requirements, covering verification, compliance, and program selection.",
+        "target_audience": "Defendants, probationers, defense attorneys, probation officers",
+        "articles": [
+          {
+            "id": "P1-01",
+            "title": "How to Find Verified Online Court-Ordered Community Service Programs",
+            "article_angle": "Step-by-step guide for defendants to identify legitimate, court-accepted online community service programs, including red flags for scam platforms and a checklist for verifying 501(c)(3) status before enrolling.",
+            "primary_keyword": "verified online court-ordered community service programs",
+            "long_tail_keywords": [
+              "how to find court-approved online community service",
+              "legitimate online community service for court requirements",
+              "court-accepted virtual community service programs near me",
+              "is online community service valid for court orders",
+              "list of approved online community service providers"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "awareness",
+            "estimated_word_count": 1800,
+            "status": "written",
+            "output_file": "P1-01_how-to-find-verified-online-court-ordered-community-service-programs.md",
+            "generated_at": "2026-02-27T00:26:55.622290",
+            "word_count": 1025,
+            "template_used": "legal_brief_template.md",
+            "wp_status": "draft",
+            "wp_post_id": 492
+          },
+          {
+            "id": "P1-02",
+            "title": "The Legal Difference Between Traditional and Online Community Service",
+            "article_angle": "Compare the legal standing of in-person versus digital community service hours, explaining how courts evaluate each format, which jurisdictions accept online hours, and what documentation differs between the two.",
+            "primary_keyword": "traditional vs online community service legal difference",
+            "long_tail_keywords": [
+              "is online community service the same as in-person legally",
+              "do courts accept online volunteer hours",
+              "legal validity of virtual community service hours",
+              "difference between in-person and online court-ordered service",
+              "can I substitute online community service for in-person hours"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "awareness",
+            "estimated_word_count": 1600,
+            "status": "written",
+            "output_file": "P1-02_the-legal-difference-between-traditional-and-online-community-service.md",
+            "generated_at": "2026-02-27T13:05:31.380146",
+            "word_count": 941,
+            "template_used": "data_report_template.md",
+            "wp_status": "draft",
+            "wp_post_id": 493
+          },
+          {
+            "id": "P1-03",
+            "title": "Can I Do Court-Ordered Community Service from Home? State-by-State Guide",
+            "article_angle": "Jurisdiction-specific breakdown of which states and counties permit at-home community service completion, including links to relevant statutes and tips for petitioning courts in restrictive jurisdictions.",
+            "primary_keyword": "court-ordered community service from home state guide",
+            "long_tail_keywords": [
+              "can I do community service from home for court",
+              "states that allow online community service for court",
+              "work from home community service court order",
+              "at-home community service options by state",
+              "remote community service for probation requirements"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "consideration",
+            "estimated_word_count": 2500,
+            "status": "written",
+            "output_file": "P1-03_can-i-do-court-ordered-community-service-from-home-state-by-state-guide.md",
+            "generated_at": "2026-02-27T13:05:38.151715",
+            "word_count": 1090,
+            "template_used": "legal_brief_template.md",
+            "wp_status": "draft",
+            "wp_post_id": 494
+          },
+          {
+            "id": "P1-04",
+            "title": "How Probation Officers Verify 501(c)(3) Nonprofit Hours",
+            "article_angle": "Insider look at the verification process probation officers use—covering IRS EIN lookups, contacting nonprofits, cross-referencing timesheets, and what triggers a deeper audit of submitted hours.",
+            "primary_keyword": "how probation officers verify community service hours",
+            "long_tail_keywords": [
+              "probation officer community service verification process",
+              "how do courts verify 501c3 nonprofit volunteer hours",
+              "what do probation officers check on community service forms",
+              "can probation officers call to verify volunteer hours",
+              "501c3 verification for court-ordered community service"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "consideration",
+            "estimated_word_count": 1500,
+            "status": "written",
+            "output_file": "P1-04_how-probation-officers-verify-501c3-nonprofit-hours.md",
+            "generated_at": "2026-02-27T13:05:45.720352",
+            "word_count": 1316,
+            "template_used": "legal_brief_template.md",
+            "wp_status": "draft",
+            "wp_post_id": 495
+          },
+          {
+            "id": "P1-05",
+            "title": "Common Reasons Courts Reject Community Service Timesheets",
+            "article_angle": "Analyze the most frequent errors and oversights that lead to rejected timesheets—missing supervisor signatures, unapproved organizations, vague activity descriptions—and how to avoid each one.",
+            "primary_keyword": "reasons courts reject community service timesheets",
+            "long_tail_keywords": [
+              "community service timesheet rejected by court what to do",
+              "why was my community service not accepted by the court",
+              "common mistakes on court-ordered community service logs",
+              "how to fix rejected community service hours",
+              "court community service documentation errors"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "consideration",
+            "estimated_word_count": 1400,
+            "status": "written",
+            "output_file": "P1-05_common-reasons-courts-reject-community-service-timesheets.md",
+            "generated_at": "2026-02-27T13:05:52.941965",
+            "word_count": 873,
+            "template_used": "data_report_template.md",
+            "wp_status": "draft",
+            "wp_post_id": 496
+          },
+          {
+            "id": "P1-06",
+            "title": "Best Practices for Tracking and Logging Court-Ordered Hours",
+            "article_angle": "Practical toolkit article covering templates, apps, and manual methods for maintaining an airtight log of community service hours that will withstand court scrutiny.",
+            "primary_keyword": "tracking court-ordered community service hours",
+            "long_tail_keywords": [
+              "best way to track community service hours for court",
+              "community service hour log template for probation",
+              "apps to track court-ordered volunteer hours",
+              "how to document community service hours for court",
+              "court-ordered community service tracking spreadsheet"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "consideration",
+            "estimated_word_count": 1600,
+            "status": "written",
+            "output_file": "P1-06_best-practices-for-tracking-and-logging-court-ordered-hours.md",
+            "generated_at": "2026-02-27T13:06:00.736403",
+            "word_count": 1358,
+            "template_used": "legal_brief_template.md",
+            "wp_status": "draft",
+            "wp_post_id": 497
+          },
+          {
+            "id": "P1-07",
+            "title": "Fast Tracking Community Service Hours for Non-Violent Offenses",
+            "article_angle": "Strategies for completing community service efficiently within tight deadlines, including high-hour-yield programs, weekend intensives, and online options that allow flexible scheduling.",
+            "primary_keyword": "fast track community service hours non-violent offense",
+            "long_tail_keywords": [
+              "how to finish community service hours quickly",
+              "fastest way to complete court-ordered community service",
+              "complete community service hours in one weekend",
+              "accelerated community service programs for misdemeanors",
+              "quick online community service for court"
+            ],
+            "search_intent": "transactional",
+            "funnel_stage": "decision",
+            "estimated_word_count": 1500,
+            "status": "written",
+            "output_file": "P1-07_fast-tracking-community-service-hours-for-non-violent-offenses.md",
+            "generated_at": "2026-02-27T13:06:08.570010",
+            "word_count": 1136,
+            "template_used": "methodology_guide_template.md",
+            "wp_status": "draft",
+            "wp_post_id": 498
+          },
+          {
+            "id": "P1-08",
+            "title": "The Role of Timesheet Verification Letters in Criminal Court",
+            "article_angle": "Explain what a Timesheet Verification Letter is, who issues it, how it differs from a completion certificate, and why it carries more weight in court proceedings.",
+            "primary_keyword": "timesheet verification letter criminal court",
+            "long_tail_keywords": [
+              "what is a community service verification letter for court",
+              "how to get a verification letter for community service hours",
+              "community service completion letter vs verification letter",
+              "court-accepted community service proof documentation",
+              "timesheet verification letter template for probation"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "consideration",
+            "estimated_word_count": 1300,
+            "status": "written",
+            "output_file": "P1-08_the-role-of-timesheet-verification-letters-in-criminal-court.md",
+            "generated_at": "2026-02-27T13:06:15.665711",
+            "word_count": 1011,
+            "template_used": "data_report_template.md",
+            "wp_status": "draft",
+            "wp_post_id": 499
+          },
+          {
+            "id": "P1-09",
+            "title": "Online Community Service Options for Disabled Individuals",
+            "article_angle": "Highlight ADA-compliant online community service programs, accommodations courts must provide, and how individuals with physical or cognitive disabilities can fulfill their hours accessibly.",
+            "primary_keyword": "online community service for disabled individuals court-ordered",
+            "long_tail_keywords": [
+              "ADA compliant community service programs for court",
+              "community service options for physically disabled offenders",
+              "accessible online volunteer hours for court order",
+              "disability accommodations for court-ordered community service",
+              "can disabled people do community service online for court"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "awareness",
+            "estimated_word_count": 1700,
+            "status": "written",
+            "output_file": "P1-09_online-community-service-options-for-disabled-individuals.md",
+            "generated_at": "2026-02-27T13:06:23.642123",
+            "word_count": 1207,
+            "template_used": "methodology_guide_template.md",
+            "wp_status": "draft",
+            "wp_post_id": 500
+          },
+          {
+            "id": "P1-10",
+            "title": "Community Service Reciprocity: Completing Out-of-State Hours",
+            "article_angle": "Navigate the complex rules around completing community service in a different state than where the offense occurred, including interstate compact agreements and how to petition for reciprocity.",
+            "primary_keyword": "community service out-of-state reciprocity court order",
+            "long_tail_keywords": [
+              "can I do community service in another state for court",
+              "out-of-state community service hours accepted by court",
+              "interstate community service transfer probation",
+              "completing court-ordered volunteer hours in different state",
+              "how to transfer community service across state lines"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "consideration",
+            "estimated_word_count": 1600,
+            "status": "written",
+            "output_file": "P1-10_community-service-reciprocity-completing-out-of-state-hours.md",
+            "generated_at": "2026-02-27T13:06:32.602774",
+            "word_count": 1243,
+            "template_used": "legal_brief_template.md",
+            "wp_status": "draft",
+            "wp_post_id": 501
+          },
+          {
+            "id": "P1-11",
+            "title": "Are Court-Ordered Donations the Same as Community Service?",
+            "article_angle": "Clarify the legal distinction between monetary donations and service hours, when courts allow one to substitute for the other, and the tax implications of each.",
+            "primary_keyword": "court-ordered donations vs community service",
+            "long_tail_keywords": [
+              "can I donate money instead of community service hours",
+              "court-ordered charitable donation instead of volunteer work",
+              "difference between community service and court donations",
+              "paying to avoid community service court order",
+              "are charitable contributions accepted instead of service hours"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "awareness",
+            "estimated_word_count": 1300,
+            "status": "written",
+            "output_file": "P1-11_are-court-ordered-donations-the-same-as-community-service.md",
+            "generated_at": "2026-02-27T13:06:44.067017",
+            "word_count": 1026,
+            "template_used": "legal_brief_template.md",
+            "wp_status": "draft",
+            "wp_post_id": 502
+          },
+          {
+            "id": "P1-12",
+            "title": "How to Convert Community Service Hours into Fine Reductions",
+            "article_angle": "Explain the mechanism courts use to credit community service hours against fines, the hourly rate equivalencies by jurisdiction, and how to formally petition for a conversion.",
+            "primary_keyword": "convert community service hours to fine reduction",
+            "long_tail_keywords": [
+              "community service instead of paying fines court",
+              "how many community service hours equal a fine reduction",
+              "can community service reduce my court fines",
+              "petition to convert volunteer hours to fine credit",
+              "community service hourly rate for fine reduction by state"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "consideration",
+            "estimated_word_count": 1500,
+            "status": "written",
+            "output_file": "P1-12_how-to-convert-community-service-hours-into-fine-reductions.md",
+            "generated_at": "2026-02-27T13:12:07.961811",
+            "word_count": 1334,
+            "template_used": "legal_brief_template.md",
+            "wp_status": "draft",
+            "wp_post_id": 503
+          },
+          {
+            "id": "P1-13",
+            "title": "Community Service Requirements for First-Time DUI Offenses",
+            "article_angle": "Jurisdiction-specific overview of community service mandates for first-time DUI/DWI offenders, typical hour ranges, approved program types, and how DUI-specific programs differ from general service.",
+            "primary_keyword": "community service requirements first-time DUI offense",
+            "long_tail_keywords": [
+              "how many community service hours for first DUI",
+              "first-time DUI community service options",
+              "DUI community service programs online",
+              "court-ordered volunteer hours for DWI first offense",
+              "what kind of community service for DUI conviction"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "awareness",
+            "estimated_word_count": 1800,
+            "status": "written",
+            "output_file": "P1-13_community-service-requirements-for-first-time-dui-offenses.md",
+            "generated_at": "2026-02-27T13:12:16.111109",
+            "word_count": 1063,
+            "template_used": "methodology_guide_template.md",
+            "wp_status": "draft",
+            "wp_post_id": 504
+          },
+          {
+            "id": "P1-14",
+            "title": "Completing Mandated Community Service While Working Full-Time",
+            "article_angle": "Time management strategies for employed defendants, including evening/weekend programs, online options that fit around shift work, and how to communicate scheduling constraints to probation officers.",
+            "primary_keyword": "community service while working full-time",
+            "long_tail_keywords": [
+              "how to do community service with a full-time job",
+              "weekend community service programs for court",
+              "evening community service options for working adults",
+              "online community service flexible schedule court order",
+              "balancing work and court-ordered community service"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "consideration",
+            "estimated_word_count": 1500,
+            "status": "written",
+            "output_file": "P1-14_completing-mandated-community-service-while-working-full-time.md",
+            "generated_at": "2026-02-27T13:12:23.886418",
+            "word_count": 1391,
+            "template_used": "legal_brief_template.md",
+            "wp_status": "draft",
+            "wp_post_id": 505
+          },
+          {
+            "id": "P1-15",
+            "title": "Virtual Volunteer Opportunities for Court Compliance",
+            "article_angle": "Curated list of legitimate virtual volunteer programs that courts commonly accept, organized by category (education, environment, social services) with verification details for each.",
+            "primary_keyword": "virtual volunteer opportunities court compliance",
+            "long_tail_keywords": [
+              "virtual volunteering accepted for court-ordered service",
+              "online volunteer work for probation compliance",
+              "court-approved remote volunteer opportunities",
+              "virtual community service ideas for court requirements",
+              "list of online volunteer programs courts accept"
+            ],
+            "search_intent": "transactional",
+            "funnel_stage": "decision",
+            "estimated_word_count": 2000,
+            "status": "written",
+            "output_file": "P1-15_virtual-volunteer-opportunities-for-court-compliance.md",
+            "generated_at": "2026-02-27T13:12:31.122068",
+            "word_count": 919,
+            "template_used": "methodology_guide_template.md",
+            "wp_status": "draft",
+            "wp_post_id": 506
+          },
+          {
+            "id": "P1-16",
+            "title": "How Courts Audit Online Community Service Certificates",
+            "article_angle": "Reveal the auditing methods courts and probation departments use to validate online completion certificates, including digital watermark checks, database cross-referencing, and follow-up calls.",
+            "primary_keyword": "how courts audit online community service certificates",
+            "long_tail_keywords": [
+              "are online community service certificates verified by courts",
+              "do courts check community service completion certificates",
+              "online community service certificate audit process",
+              "fake community service certificate caught by court",
+              "how do judges verify online volunteer completion"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "consideration",
+            "estimated_word_count": 1400,
+            "status": "written",
+            "output_file": "P1-16_how-courts-audit-online-community-service-certificates.md",
+            "generated_at": "2026-02-27T13:12:38.393407",
+            "word_count": 1094,
+            "template_used": "legal_brief_template.md",
+            "wp_status": "draft",
+            "wp_post_id": 507
+          },
+          {
+            "id": "P1-17",
+            "title": "The Impact of Incomplete Community Service on Probation Terms",
+            "article_angle": "Explain the legal consequences of failing to complete mandated hours—probation revocation, extended terms, warrant issuance—and what options exist for requesting extensions.",
+            "primary_keyword": "incomplete community service probation consequences",
+            "long_tail_keywords": [
+              "what happens if I don't finish community service on time",
+              "probation violation for not completing community service",
+              "can I get an extension on court-ordered community service",
+              "consequences of incomplete community service hours",
+              "will I go to jail for not finishing community service"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "awareness",
+            "estimated_word_count": 1500,
+            "status": "written",
+            "output_file": "P1-17_the-impact-of-incomplete-community-service-on-probation-terms.md",
+            "generated_at": "2026-02-27T13:12:46.053450",
+            "word_count": 1131,
+            "template_used": "legal_brief_template.md",
+            "wp_status": "draft",
+            "wp_post_id": 508
+          },
+          {
+            "id": "P1-18",
+            "title": "Community Service Guidelines for Federal vs. State Courts",
+            "article_angle": "Compare and contrast how federal courts handle community service sentencing versus state courts, including differences in approved organizations, supervision requirements, and reporting standards.",
+            "primary_keyword": "community service federal vs state court guidelines",
+            "long_tail_keywords": [
+              "federal court community service requirements",
+              "difference between federal and state community service",
+              "federal probation community service rules",
+              "state court vs federal court volunteer hour requirements",
+              "community service sentencing guidelines federal offenses"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "awareness",
+            "estimated_word_count": 1700,
+            "status": "written",
+            "output_file": "P1-18_community-service-guidelines-for-federal-vs-state-courts.md",
+            "generated_at": "2026-02-27T13:12:53.658520",
+            "word_count": 1025,
+            "template_used": "legal_brief_template.md",
+            "wp_status": "draft",
+            "wp_post_id": 509
+          },
+          {
+            "id": "P1-19",
+            "title": "How to Effectively Communicate with Your Probation Officer About Service Hours",
+            "article_angle": "Communication tips and scripts for maintaining a positive relationship with your PO, including how to report progress, request accommodations, and handle disputes about logged hours.",
+            "primary_keyword": "communicate with probation officer about community service",
+            "long_tail_keywords": [
+              "how to talk to your probation officer about service hours",
+              "probation officer not accepting my community service",
+              "tips for working with probation officer on volunteer hours",
+              "how to update probation officer on community service progress",
+              "what to say to PO about community service completion"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "consideration",
+            "estimated_word_count": 1400,
+            "status": "written",
+            "output_file": "P1-19_how-to-effectively-communicate-with-your-probation-officer-about-service-hours.md",
+            "generated_at": "2026-02-27T13:13:00.987649",
+            "word_count": 1171,
+            "template_used": "legal_brief_template.md",
+            "wp_status": "draft",
+            "wp_post_id": 510
+          },
+          {
+            "id": "P1-20",
+            "title": "Online Community Service for Traffic Ticket Dismissal",
+            "article_angle": "Guide to using online community service or defensive driving courses to dismiss traffic tickets, covering eligibility by violation type, state-specific rules, and how to submit proof to traffic court.",
+            "primary_keyword": "online community service traffic ticket dismissal",
+            "long_tail_keywords": [
+              "can I do community service to dismiss a traffic ticket",
+              "online community service for speeding ticket",
+              "traffic court community service instead of fine",
+              "volunteer hours to dismiss traffic violation",
+              "how to get traffic ticket dismissed with community service"
+            ],
+            "search_intent": "transactional",
+            "funnel_stage": "decision",
+            "estimated_word_count": 1600,
+            "status": "written",
+            "output_file": "P1-20_online-community-service-for-traffic-ticket-dismissal.md",
+            "generated_at": "2026-02-27T13:13:09.254688",
+            "word_count": 1523,
+            "template_used": "legal_brief_template.md",
+            "wp_status": "draft",
+            "wp_post_id": 511
+          }
+        ]
+      },
+      {
+        "pillar_id": 2,
+        "pillar_name": "Restorative Justice & Structural Rehabilitation",
+        "pillar_description": "Educational content on restorative justice philosophy, its impact on recidivism, and how community service fits within modern rehabilitation frameworks.",
+        "target_audience": "Court administrators, judges, policy advocates, academics, defendants seeking understanding",
+        "articles": [
+          {
+            "id": "P2-01",
+            "title": "What Is the Restorative Justice Model in Modern Probation?",
+            "article_angle": "Foundational explainer defining restorative justice, its core principles (accountability, repair, reintegration), and how probation departments are integrating the model into sentencing alternatives.",
+            "primary_keyword": "restorative justice model modern probation",
+            "long_tail_keywords": [
+              "what is restorative justice in the criminal justice system",
+              "restorative justice probation programs explained",
+              "how does restorative justice work in court",
+              "restorative justice principles for probation departments",
+              "examples of restorative justice in modern sentencing"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "awareness",
+            "estimated_word_count": 2000,
+            "status": "written",
+            "output_file": "P2-01_what-is-the-restorative-justice-model-in-modern-probation.md",
+            "generated_at": "2026-02-27T13:13:22.186753",
+            "word_count": 1144,
+            "template_used": "methodology_guide_template.md",
+            "wp_status": "draft",
+            "wp_post_id": 512
+          },
+          {
+            "id": "P2-02",
+            "title": "How Restorative Justice Reduces Recidivism Rates vs. Punitive Models",
+            "article_angle": "Data-driven comparison of recidivism outcomes between restorative justice programs and traditional incarceration/punitive probation, citing peer-reviewed studies and DOJ statistics.",
+            "primary_keyword": "restorative justice reduces recidivism rates",
+            "long_tail_keywords": [
+              "restorative justice vs incarceration recidivism statistics",
+              "does restorative justice lower reoffending rates",
+              "recidivism data restorative justice programs",
+              "punitive vs restorative justice outcomes comparison",
+              "studies on restorative justice and repeat offenses"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "awareness",
+            "estimated_word_count": 2200,
+            "status": "written",
+            "output_file": "P2-02_how-restorative-justice-reduces-recidivism-rates-vs-punitive-models.md",
+            "generated_at": "2026-02-27T13:13:33.951272",
+            "word_count": 974,
+            "template_used": "data_report_template.md",
+            "wp_status": "draft",
+            "wp_post_id": 513
+          },
+          {
+            "id": "P2-03",
+            "title": "The Psychological Impact of Community Giving on First-Time Offenders",
+            "article_angle": "Explore research on how structured community service activates prosocial identity shifts, reduces shame spirals, and builds self-efficacy in first-time offenders.",
+            "primary_keyword": "psychological impact community service first-time offenders",
+            "long_tail_keywords": [
+              "how community service affects offender mental health",
+              "psychological benefits of volunteering for court",
+              "does community service help rehabilitate offenders",
+              "self-esteem and community service criminal justice",
+              "mental health impact of court-ordered volunteer work"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "awareness",
+            "estimated_word_count": 1800,
+            "status": "written",
+            "output_file": "P2-03_the-psychological-impact-of-community-giving-on-first-time-offenders.md",
+            "generated_at": "2026-02-27T13:13:45.199642",
+            "word_count": 1116,
+            "template_used": "legal_brief_template.md",
+            "wp_status": "draft",
+            "wp_post_id": 514
+          },
+          {
+            "id": "P2-04",
+            "title": "Restorative Justice vs. Retributive Justice: A Cost-Benefit Analysis",
+            "article_angle": "Economic and social comparison of the two models, calculating costs per offender, community outcomes, victim satisfaction rates, and taxpayer savings.",
+            "primary_keyword": "restorative vs retributive justice cost-benefit analysis",
+            "long_tail_keywords": [
+              "cost comparison restorative and retributive justice",
+              "is restorative justice cheaper than incarceration",
+              "economic benefits of restorative justice programs",
+              "retributive vs restorative justice which is more effective",
+              "taxpayer cost savings restorative justice model"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "awareness",
+            "estimated_word_count": 2200,
+            "status": "written",
+            "output_file": "P2-04_restorative-justice-vs-retributive-justice-a-cost-benefit-analysis.md",
+            "generated_at": "2026-02-27T13:13:56.891000",
+            "word_count": 855,
+            "template_used": "methodology_guide_template.md",
+            "wp_status": "draft",
+            "wp_post_id": 515
+          },
+          {
+            "id": "P2-05",
+            "title": "Service Learning as a Tool for Offender Rehabilitation",
+            "article_angle": "Explain how service learning—combining community work with reflective education—creates deeper rehabilitation outcomes than plain community service, with case studies from successful programs.",
+            "primary_keyword": "service learning offender rehabilitation tool",
+            "long_tail_keywords": [
+              "what is service learning in criminal justice",
+              "service learning vs community service for offenders",
+              "educational community service rehabilitation programs",
+              "how service learning helps rehabilitate offenders",
+              "reflective volunteer programs for court compliance"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "awareness",
+            "estimated_word_count": 1700,
+            "status": "written",
+            "output_file": "P2-05_service-learning-as-a-tool-for-offender-rehabilitation.md",
+            "generated_at": "2026-02-27T13:14:07.879262",
+            "word_count": 893,
+            "template_used": "data_report_template.md",
+            "wp_status": "draft",
+            "wp_post_id": 516
+          },
+          {
+            "id": "P2-06",
+            "title": "Implementing Restorative Practices in Local Municipal Courts",
+            "article_angle": "Practical playbook for municipal court administrators looking to pilot restorative justice programs, including stakeholder buy-in strategies, program design, and outcome measurement.",
+            "primary_keyword": "implementing restorative justice municipal courts",
+            "long_tail_keywords": [
+              "how to start restorative justice program in local court",
+              "restorative justice pilot program municipal court",
+              "restorative practices for misdemeanor courts",
+              "municipal court restorative justice implementation guide",
+              "small court restorative justice program design"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "consideration",
+            "estimated_word_count": 2000,
+            "status": "written",
+            "output_file": "P2-06_implementing-restorative-practices-in-local-municipal-courts.md",
+            "generated_at": "2026-02-27T13:14:18.933232",
+            "word_count": 1048,
+            "template_used": "data_report_template.md",
+            "wp_status": "draft",
+            "wp_post_id": 517
+          },
+          {
+            "id": "P2-07",
+            "title": "The Importance of Empathy Building in Criminal Rehabilitation",
+            "article_angle": "Examine how structured empathy-building exercises within community service and restorative programs create neurological and behavioral changes that support long-term desistance from crime.",
+            "primary_keyword": "empathy building criminal rehabilitation",
+            "long_tail_keywords": [
+              "how empathy reduces criminal behavior",
+              "empathy training programs for offenders",
+              "role of empathy in offender rehabilitation",
+              "building empathy through community service court order",
+              "empathy exercises for criminal justice programs"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "awareness",
+            "estimated_word_count": 1600,
+            "status": "written",
+            "output_file": "P2-07_the-importance-of-empathy-building-in-criminal-rehabilitation.md",
+            "generated_at": "2026-02-27T13:14:29.862860",
+            "word_count": 1053,
+            "template_used": "legal_brief_template.md",
+            "wp_status": "draft",
+            "wp_post_id": 518
+          },
+          {
+            "id": "P2-08",
+            "title": "How Nonprofit Organizations Facilitate Restorative Justice",
+            "article_angle": "Profile the role nonprofits play as intermediaries between courts and communities, managing victim-offender dialogues, tracking service completion, and reporting outcomes to judges.",
+            "primary_keyword": "nonprofit organizations restorative justice facilitation",
+            "long_tail_keywords": [
+              "nonprofits that run restorative justice programs",
+              "role of 501c3 organizations in criminal justice reform",
+              "how nonprofits partner with courts for restorative justice",
+              "nonprofit facilitated restorative justice programs",
+              "community organizations supporting court rehabilitation"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "consideration",
+            "estimated_word_count": 1700,
+            "status": "written",
+            "output_file": "P2-08_how-nonprofit-organizations-facilitate-restorative-justice.md",
+            "generated_at": "2026-02-27T13:14:43.090924",
+            "word_count": 1381,
+            "template_used": "methodology_guide_template.md",
+            "wp_status": "draft",
+            "wp_post_id": 519
+          },
+          {
+            "id": "P2-09",
+            "title": "Measuring the Community Impact of Court-Mandated Volunteer Work",
+            "article_angle": "Frameworks and metrics for quantifying the social ROI of court-mandated community service, including hours donated, economic value produced, and community perception shifts.",
+            "primary_keyword": "measuring community impact court-mandated volunteer work",
+            "long_tail_keywords": [
+              "how to measure community service impact on communities",
+              "social ROI of court-ordered volunteer programs",
+              "community benefit of mandated community service",
+              "quantifying volunteer hour impact criminal justice",
+              "metrics for court-ordered community service effectiveness"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "consideration",
+            "estimated_word_count": 1800,
+            "status": "written",
+            "output_file": "P2-09_measuring-the-community-impact-of-court-mandated-volunteer-work.md",
+            "generated_at": "2026-02-27T13:14:54.900767",
+            "word_count": 1307,
+            "template_used": "legal_brief_template.md",
+            "wp_status": "draft",
+            "wp_post_id": 520
+          },
+          {
+            "id": "P2-10",
+            "title": "The History and Evolution of Restorative Justice in the US",
+            "article_angle": "Timeline tracing restorative justice from indigenous practices through the Mennonite movement of the 1970s to modern-day legislative adoption and digital program delivery.",
+            "primary_keyword": "history of restorative justice United States",
+            "long_tail_keywords": [
+              "when did restorative justice start in the US",
+              "evolution of restorative justice in America",
+              "restorative justice history timeline",
+              "origins of restorative justice criminal system",
+              "how restorative justice developed in US courts"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "awareness",
+            "estimated_word_count": 2200,
+            "status": "written",
+            "output_file": "P2-10_the-history-and-evolution-of-restorative-justice-in-the-us.md",
+            "generated_at": "2026-02-27T13:15:06.697814",
+            "word_count": 1224,
+            "template_used": "legal_brief_template.md",
+            "wp_status": "draft",
+            "wp_post_id": 521
+          },
+          {
+            "id": "P2-11",
+            "title": "Restorative Justice Programs for Non-Violent Property Crimes",
+            "article_angle": "Focus on how restorative justice applies specifically to theft, vandalism, and property damage cases—victim-offender mediation, restitution agreements, and community service alternatives.",
+            "primary_keyword": "restorative justice non-violent property crimes",
+            "long_tail_keywords": [
+              "restorative justice for shoplifting charges",
+              "community service for property damage court order",
+              "restorative justice theft and vandalism programs",
+              "victim-offender mediation property crime",
+              "alternatives to jail for non-violent property offenses"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "awareness",
+            "estimated_word_count": 1600,
+            "status": "written",
+            "output_file": "P2-11_restorative-justice-programs-for-non-violent-property-crimes.md",
+            "generated_at": "2026-02-27T13:15:17.162174",
+            "word_count": 889,
+            "template_used": "legal_brief_template.md",
+            "wp_status": "draft",
+            "wp_post_id": 522
+          },
+          {
+            "id": "P2-12",
+            "title": "The Role of Victim-Offender Mediation in Service Learning",
+            "article_angle": "Describe how victim-offender mediation sessions can be integrated into service learning curricula, creating a feedback loop between community impact awareness and volunteer action.",
+            "primary_keyword": "victim-offender mediation service learning",
+            "long_tail_keywords": [
+              "what is victim-offender mediation in court",
+              "victim-offender dialogue restorative justice programs",
+              "how mediation works with community service orders",
+              "integrating mediation into service learning programs",
+              "victim impact panels and community service"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "awareness",
+            "estimated_word_count": 1600,
+            "status": "written",
+            "output_file": "P2-12_the-role-of-victim-offender-mediation-in-service-learning.md",
+            "generated_at": "2026-02-27T13:16:10.177754",
+            "word_count": 1041,
+            "template_used": "data_report_template.md",
+            "wp_status": "draft",
+            "wp_post_id": 523
+          },
+          {
+            "id": "P2-13",
+            "title": "How Community Integration Prevents Repeat Offenses",
+            "article_angle": "Explore the social bonding theory behind community integration, showing how meaningful volunteer connections, mentorship, and civic participation reduce the likelihood of reoffending.",
+            "primary_keyword": "community integration prevents repeat offenses",
+            "long_tail_keywords": [
+              "how community involvement reduces reoffending",
+              "social bonds and recidivism prevention",
+              "community engagement programs for ex-offenders",
+              "volunteer work and lower recidivism rates",
+              "civic participation after criminal conviction"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "awareness",
+            "estimated_word_count": 1700,
+            "status": "written",
+            "output_file": "P2-13_how-community-integration-prevents-repeat-offenses.md",
+            "generated_at": "2026-02-27T13:16:17.733566",
+            "word_count": 943,
+            "template_used": "methodology_guide_template.md",
+            "wp_status": "draft",
+            "wp_post_id": 524
+          },
+          {
+            "id": "P2-14",
+            "title": "Evaluating the Long-Term Success of Restorative Probation Programs",
+            "article_angle": "Review longitudinal studies and program evaluations that track offenders 3-10 years post-completion, analyzing sustained behavioral change and community outcomes.",
+            "primary_keyword": "long-term success restorative probation programs",
+            "long_tail_keywords": [
+              "do restorative justice programs work long-term",
+              "longitudinal studies restorative justice outcomes",
+              "long-term recidivism rates restorative probation",
+              "evaluating restorative justice program success",
+              "10-year outcomes restorative justice participants"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "consideration",
+            "estimated_word_count": 2000,
+            "status": "written",
+            "output_file": "P2-14_evaluating-the-long-term-success-of-restorative-probation-programs.md",
+            "generated_at": "2026-02-27T13:16:25.057020",
+            "word_count": 939,
+            "template_used": "legal_brief_template.md",
+            "wp_status": "draft",
+            "wp_post_id": 525
+          },
+          {
+            "id": "P2-15",
+            "title": "The Economic Benefits of Restorative Justice to Local Communities",
+            "article_angle": "Quantify how restorative justice programs save local governments money through reduced incarceration costs, increased tax revenue from employed former offenders, and lower law enforcement expenses.",
+            "primary_keyword": "economic benefits restorative justice local communities",
+            "long_tail_keywords": [
+              "how restorative justice saves taxpayer money",
+              "cost savings restorative justice vs incarceration",
+              "economic impact of community service programs",
+              "local government savings restorative justice",
+              "financial benefits of alternative sentencing programs"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "awareness",
+            "estimated_word_count": 1800,
+            "status": "written",
+            "output_file": "P2-15_the-economic-benefits-of-restorative-justice-to-local-communities.md",
+            "generated_at": "2026-02-27T13:16:32.086796",
+            "word_count": 1125,
+            "template_used": "legal_brief_template.md",
+            "wp_status": "draft",
+            "wp_post_id": 526
+          },
+          {
+            "id": "P2-16",
+            "title": "Shifting Court Paradigms: From Punishment to Community Healing",
+            "article_angle": "Thought leadership piece on the philosophical and practical shift happening in US courts from purely punitive sentencing toward community-centered healing approaches.",
+            "primary_keyword": "court paradigm shift punishment to community healing",
+            "long_tail_keywords": [
+              "courts moving from punishment to rehabilitation",
+              "community healing approach criminal justice",
+              "shifting from punitive to restorative sentencing",
+              "modern court reform community-based justice",
+              "alternatives to punitive sentencing in courts"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "awareness",
+            "estimated_word_count": 1800,
+            "status": "written",
+            "output_file": "P2-16_shifting-court-paradigms-from-punishment-to-community-healing.md",
+            "generated_at": "2026-02-27T13:16:41.105939",
+            "word_count": 1573,
+            "template_used": "legal_brief_template.md",
+            "wp_status": "draft",
+            "wp_post_id": 527
+          },
+          {
+            "id": "P2-17",
+            "title": "The Ethics of Mandatory Volunteerism in the Justice System",
+            "article_angle": "Balanced exploration of the philosophical tension between mandatory and voluntary service, examining whether coerced volunteering undermines the spirit of community service or achieves net-positive outcomes.",
+            "primary_keyword": "ethics mandatory volunteerism justice system",
+            "long_tail_keywords": [
+              "is forced community service ethical",
+              "mandatory volunteerism moral debate criminal justice",
+              "court-ordered volunteering ethical concerns",
+              "does mandated community service count as real volunteering",
+              "ethics of compelling offenders to do community service"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "awareness",
+            "estimated_word_count": 1800,
+            "status": "written",
+            "output_file": "P2-17_the-ethics-of-mandatory-volunteerism-in-the-justice-system.md",
+            "generated_at": "2026-02-27T14:35:21.102175",
+            "word_count": 1248,
+            "template_used": "methodology_guide_template.md",
+            "wp_status": "draft",
+            "wp_post_id": 528
+          },
+          {
+            "id": "P2-18",
+            "title": "Restorative Justice Frameworks for Misdemeanor Offenses",
+            "article_angle": "Targeted guide for misdemeanor-level cases showing how restorative frameworks can be applied proportionally, with specific protocols for common misdemeanors like petty theft, disorderly conduct, and simple assault.",
+            "primary_keyword": "restorative justice frameworks misdemeanor offenses",
+            "long_tail_keywords": [
+              "restorative justice for misdemeanor charges",
+              "alternative sentencing misdemeanor offenses",
+              "restorative programs for petty theft convictions",
+              "misdemeanor diversion restorative justice",
+              "community service alternatives for misdemeanor court"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "consideration",
+            "estimated_word_count": 1700,
+            "status": "written",
+            "output_file": "P2-18_restorative-justice-frameworks-for-misdemeanor-offenses.md",
+            "generated_at": "2026-02-27T14:35:29.658115",
+            "word_count": 1360,
+            "template_used": "legal_brief_template.md",
+            "wp_status": "draft",
+            "wp_post_id": 529
+          },
+          {
+            "id": "P2-19",
+            "title": "How Judges Determine If an Offender Is a Candidate for Restorative Programs",
+            "article_angle": "Detail the judicial decision-making criteria—offense severity, criminal history, victim willingness, offender attitude—that judges weigh when considering restorative alternatives.",
+            "primary_keyword": "how judges determine restorative justice candidacy",
+            "long_tail_keywords": [
+              "who qualifies for restorative justice programs",
+              "judicial criteria for restorative justice sentencing",
+              "how to get restorative justice instead of jail",
+              "factors judges consider for alternative sentencing",
+              "eligibility requirements for restorative justice programs"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "consideration",
+            "estimated_word_count": 1600,
+            "status": "written",
+            "output_file": "P2-19_how-judges-determine-if-an-offender-is-a-candidate-for-restorative-programs.md",
+            "generated_at": "2026-02-27T14:55:19.587185",
+            "word_count": 1028,
+            "template_used": "data_report_template.md",
+            "wp_status": "draft",
+            "wp_post_id": 530
+          },
+          {
+            "id": "P2-20",
+            "title": "The Future of Restorative Justice in an Increasingly Digital World",
+            "article_angle": "Forward-looking analysis of how virtual platforms, AI-driven matching, and online mediation are expanding restorative justice access, alongside the risks of digital depersonalization.",
+            "primary_keyword": "future of restorative justice digital world",
+            "long_tail_keywords": [
+              "online restorative justice programs future trends",
+              "digital restorative justice platforms",
+              "technology and restorative justice evolution",
+              "virtual victim-offender mediation platforms",
+              "how technology is changing restorative justice"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "awareness",
+            "estimated_word_count": 1800,
+            "status": "unwritten"
+          }
+        ]
+      },
+      {
+        "pillar_id": 3,
+        "pillar_name": "Cognitive Behavioral Therapy (CBT) & Decision Making",
+        "pillar_description": "Content exploring the integration of CBT principles into community service and justice system programs to support lasting behavioral change.",
+        "target_audience": "Court program administrators, counselors, probation officers, defendants in CBT-integrated programs",
+        "articles": [
+          {
+            "id": "P3-01",
+            "title": "Integrating Cognitive Behavioral Therapy (CBT) into Community Service",
+            "article_angle": "Blueprint for how CBT modules can be embedded within community service programs, creating a dual-track model that addresses both compliance and cognitive restructuring.",
+            "primary_keyword": "integrating CBT into community service programs",
+            "long_tail_keywords": [
+              "CBT combined with community service court order",
+              "cognitive behavioral therapy in volunteer programs",
+              "how to add CBT to court-ordered community service",
+              "CBT-enhanced community service rehabilitation",
+              "community service with cognitive behavioral components"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "awareness",
+            "estimated_word_count": 1800,
+            "status": "unwritten"
+          },
+          {
+            "id": "P3-02",
+            "title": "How CBT Models Rewire Decision-Making for At-Risk Adults",
+            "article_angle": "Neuroscience-informed explanation of how CBT techniques create new neural pathways for decision-making, with specific applications to criminal justice populations.",
+            "primary_keyword": "CBT rewire decision-making at-risk adults",
+            "long_tail_keywords": [
+              "how CBT changes criminal thinking patterns",
+              "cognitive behavioral therapy decision making adults",
+              "CBT and brain rewiring for offenders",
+              "does CBT help at-risk adults make better decisions",
+              "neuroscience of CBT in criminal rehabilitation"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "awareness",
+            "estimated_word_count": 1800,
+            "status": "unwritten"
+          },
+          {
+            "id": "P3-03",
+            "title": "The Science Behind Cognitive Behavioral Interventions in Justice",
+            "article_angle": "Literature review of randomized controlled trials and meta-analyses on CBT in criminal justice settings, summarizing effect sizes, moderating factors, and implementation quality.",
+            "primary_keyword": "science cognitive behavioral interventions criminal justice",
+            "long_tail_keywords": [
+              "research on CBT in criminal justice system",
+              "CBT effectiveness studies criminal offenders",
+              "evidence-based cognitive behavioral programs for courts",
+              "meta-analysis CBT recidivism reduction",
+              "scientific evidence for CBT in probation programs"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "awareness",
+            "estimated_word_count": 2200,
+            "status": "unwritten"
+          },
+          {
+            "id": "P3-04",
+            "title": "CBT Worksheets and Modules for Court-Ordered Programs",
+            "article_angle": "Practical resource highlighting the types of CBT worksheets—thought records, behavioral experiments, values clarification—commonly used in court-ordered educational programs.",
+            "primary_keyword": "CBT worksheets court-ordered programs",
+            "long_tail_keywords": [
+              "cognitive behavioral therapy worksheets for offenders",
+              "free CBT worksheets court-mandated programs",
+              "CBT modules for court-ordered rehabilitation",
+              "thought record worksheets criminal justice",
+              "printable CBT exercises for probation programs"
+            ],
+            "search_intent": "transactional",
+            "funnel_stage": "consideration",
+            "estimated_word_count": 1600,
+            "status": "unwritten"
+          },
+          {
+            "id": "P3-05",
+            "title": "Why Traditional Probation Fails Without Cognitive Behavioral Elements",
+            "article_angle": "Argue that compliance-only probation models lack the psychological intervention needed for true behavior change, citing failure rates and contrasting with CBT-enhanced models.",
+            "primary_keyword": "traditional probation fails without CBT",
+            "long_tail_keywords": [
+              "why probation alone doesn't reduce reoffending",
+              "probation failure rates without treatment",
+              "limitations of standard probation programs",
+              "adding cognitive behavioral therapy to probation",
+              "why surveillance probation doesn't work"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "awareness",
+            "estimated_word_count": 1700,
+            "status": "unwritten"
+          },
+          {
+            "id": "P3-06",
+            "title": "Online Learning Modules vs. In-Person CBT Counseling",
+            "article_angle": "Balanced comparison of online CBT course delivery versus face-to-face therapy in justice settings, examining efficacy, cost, accessibility, and participant engagement rates.",
+            "primary_keyword": "online CBT modules vs in-person counseling justice",
+            "long_tail_keywords": [
+              "is online CBT as effective as in-person for court",
+              "online vs in-person cognitive behavioral therapy offenders",
+              "court-ordered CBT online program options",
+              "virtual CBT counseling for probation participants",
+              "comparing online and in-person CBT court programs"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "consideration",
+            "estimated_word_count": 1700,
+            "status": "unwritten"
+          },
+          {
+            "id": "P3-07",
+            "title": "Identifying Cognitive Distortions in First-Time Offenders",
+            "article_angle": "Guide for practitioners on recognizing common cognitive distortions (minimization, blame-shifting, entitlement thinking) in first-time offenders and how to address them in service-learning contexts.",
+            "primary_keyword": "cognitive distortions first-time offenders",
+            "long_tail_keywords": [
+              "common thinking errors in criminal offenders",
+              "cognitive distortions criminal justice examples",
+              "identifying criminal thinking patterns first offense",
+              "thinking errors that lead to criminal behavior",
+              "how to address cognitive distortions in offenders"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "awareness",
+            "estimated_word_count": 1600,
+            "status": "unwritten"
+          },
+          {
+            "id": "P3-08",
+            "title": "How Service Learning Acts as Practical CBT Exposure Therapy",
+            "article_angle": "Draw parallels between CBT exposure therapy principles and the experiential learning that happens during community service, showing how real-world volunteering challenges maladaptive beliefs.",
+            "primary_keyword": "service learning CBT exposure therapy",
+            "long_tail_keywords": [
+              "community service as exposure therapy for offenders",
+              "experiential learning CBT criminal justice",
+              "how volunteering changes criminal thinking",
+              "practical CBT through community volunteer work",
+              "service learning behavioral change mechanism"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "awareness",
+            "estimated_word_count": 1600,
+            "status": "unwritten"
+          },
+          {
+            "id": "P3-09",
+            "title": "The Role of Self-Reflection Essays in Court-Ordered Rehabilitation",
+            "article_angle": "Explain why many court programs require reflective writing, how essays facilitate metacognition and cognitive restructuring, and best practices for structuring prompts that produce genuine insight.",
+            "primary_keyword": "self-reflection essays court-ordered rehabilitation",
+            "long_tail_keywords": [
+              "court-ordered reflection essay requirements",
+              "how to write a self-reflection essay for court",
+              "why courts require reflective writing community service",
+              "reflective essay prompts for court-mandated programs",
+              "benefits of journaling in criminal rehabilitation"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "consideration",
+            "estimated_word_count": 1500,
+            "status": "unwritten"
+          },
+          {
+            "id": "P3-10",
+            "title": "Building Emotional Intelligence Through Mandated Volunteerism",
+            "article_angle": "Explore how structured volunteer experiences develop emotional intelligence competencies—self-awareness, empathy, emotional regulation—in court-mandated populations.",
+            "primary_keyword": "emotional intelligence mandated volunteerism",
+            "long_tail_keywords": [
+              "how volunteering builds emotional intelligence offenders",
+              "emotional intelligence training criminal justice",
+              "developing empathy through court-ordered service",
+              "EQ skills from mandated community service",
+              "emotional regulation through volunteer work"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "awareness",
+            "estimated_word_count": 1600,
+            "status": "unwritten"
+          },
+          {
+            "id": "P3-11",
+            "title": "CBT Techniques for Anger Management and Impulse Control",
+            "article_angle": "Detailed overview of specific CBT techniques—cognitive restructuring, relaxation training, problem-solving therapy—used in court-mandated anger management and impulse control programs.",
+            "primary_keyword": "CBT techniques anger management impulse control",
+            "long_tail_keywords": [
+              "cognitive behavioral therapy for anger management court",
+              "CBT impulse control techniques for offenders",
+              "court-ordered anger management CBT program",
+              "CBT strategies to control impulsive behavior",
+              "anger management worksheets CBT criminal justice"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "consideration",
+            "estimated_word_count": 1700,
+            "status": "unwritten"
+          },
+          {
+            "id": "P3-12",
+            "title": "How Accountability Mechanisms in CBT Reduce Parole Violations",
+            "article_angle": "Show how built-in CBT accountability structures—behavioral contracts, self-monitoring logs, progress reviews—create internal motivation that reduces technical parole violations.",
+            "primary_keyword": "CBT accountability mechanisms reduce parole violations",
+            "long_tail_keywords": [
+              "how CBT reduces parole and probation violations",
+              "behavioral accountability criminal justice CBT",
+              "CBT self-monitoring for parolees",
+              "reducing probation violations with cognitive therapy",
+              "accountability tools CBT court programs"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "consideration",
+            "estimated_word_count": 1600,
+            "status": "unwritten"
+          },
+          {
+            "id": "P3-13",
+            "title": "The Psychological Link Between Community Service and Self-Worth",
+            "article_angle": "Examine psychological research on how performing community service rebuilds self-concept and self-worth in individuals who have been stigmatized by the criminal justice system.",
+            "primary_keyword": "community service self-worth psychology",
+            "long_tail_keywords": [
+              "does community service improve self-esteem offenders",
+              "psychological benefits of community service court",
+              "how volunteering rebuilds self-worth after conviction",
+              "community service and identity transformation",
+              "self-concept change through mandated volunteering"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "awareness",
+            "estimated_word_count": 1600,
+            "status": "unwritten"
+          },
+          {
+            "id": "P3-14",
+            "title": "Evaluating the Effectiveness of Short-Term CBT in Municipal Courts",
+            "article_angle": "Review outcomes of brief (4-12 session) CBT interventions in municipal court settings, discussing what works, what doesn't, and optimal session counts.",
+            "primary_keyword": "short-term CBT effectiveness municipal courts",
+            "long_tail_keywords": [
+              "does short-term CBT work for court-ordered programs",
+              "brief CBT interventions municipal court outcomes",
+              "how many CBT sessions needed for court programs",
+              "effectiveness of 8-week CBT criminal justice",
+              "short-term cognitive therapy results court offenders"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "consideration",
+            "estimated_word_count": 1700,
+            "status": "unwritten"
+          },
+          {
+            "id": "P3-15",
+            "title": "Overcoming Criminal Thinking Patterns Through Structured Education",
+            "article_angle": "Describe how structured educational curricula—not just therapy—can address criminal thinking patterns including entitlement, victim stance, power orientation, and lack of empathy.",
+            "primary_keyword": "overcoming criminal thinking patterns structured education",
+            "long_tail_keywords": [
+              "criminal thinking patterns education programs",
+              "structured courses to change criminal mindset",
+              "educational programs for offender thinking errors",
+              "how education addresses criminal thinking",
+              "changing antisocial thinking through learning"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "awareness",
+            "estimated_word_count": 1700,
+            "status": "unwritten"
+          },
+          {
+            "id": "P3-16",
+            "title": "The Transition from Extrinsic Compliance to Intrinsic Motivation",
+            "article_angle": "Explore self-determination theory as it applies to court-mandated programs, detailing how programs can shift participants from doing hours because they have to to genuine internal motivation.",
+            "primary_keyword": "extrinsic compliance to intrinsic motivation court programs",
+            "long_tail_keywords": [
+              "motivating offenders beyond court compliance",
+              "intrinsic motivation in mandated programs",
+              "self-determination theory criminal justice",
+              "how court programs build internal motivation",
+              "moving from forced to genuine volunteering"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "awareness",
+            "estimated_word_count": 1600,
+            "status": "unwritten"
+          },
+          {
+            "id": "P3-17",
+            "title": "CBT Models for Substance-Abuse Related Community Service",
+            "article_angle": "Detail how CBT is adapted for substance-abuse offenders in community service programs, covering relapse prevention, trigger identification, and coping skills development.",
+            "primary_keyword": "CBT models substance abuse community service",
+            "long_tail_keywords": [
+              "CBT for substance abuse court-ordered programs",
+              "cognitive behavioral therapy drug offense community service",
+              "substance abuse relapse prevention CBT court",
+              "CBT coping skills for drug-related offenses",
+              "court-mandated substance abuse CBT modules"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "consideration",
+            "estimated_word_count": 1800,
+            "status": "unwritten"
+          },
+          {
+            "id": "P3-18",
+            "title": "Training Probation Officers to Recognize Cognitive Behavioral Growth",
+            "article_angle": "Guide for agencies on equipping POs with the skills to identify genuine cognitive and behavioral change in their caseloads, beyond mere compliance metrics.",
+            "primary_keyword": "training probation officers cognitive behavioral growth",
+            "long_tail_keywords": [
+              "probation officer CBT training program",
+              "how probation officers assess behavioral change",
+              "teaching POs cognitive behavioral skills recognition",
+              "probation officer training behavioral indicators",
+              "recognizing genuine offender change probation"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "consideration",
+            "estimated_word_count": 1700,
+            "status": "unwritten"
+          },
+          {
+            "id": "P3-19",
+            "title": "The Intersection of Mindfulness and CBT in the Justice System",
+            "article_angle": "Explore how mindfulness-based cognitive therapy (MBCT) is being piloted in justice settings, combining present-moment awareness with traditional CBT restructuring.",
+            "primary_keyword": "mindfulness and CBT justice system",
+            "long_tail_keywords": [
+              "mindfulness-based cognitive therapy criminal justice",
+              "meditation programs for court-ordered rehabilitation",
+              "MBCT for offenders and probationers",
+              "mindfulness techniques in court programs",
+              "combining mindfulness and CBT for offenders"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "awareness",
+            "estimated_word_count": 1600,
+            "status": "unwritten"
+          },
+          {
+            "id": "P3-20",
+            "title": "Structuring Online Exams to Measure Cognitive Behavioral Retention",
+            "article_angle": "Technical guide for program designers on creating online assessments that genuinely measure CBT concept retention—question design, anti-cheating measures, and scoring rubrics.",
+            "primary_keyword": "online exams measure CBT retention court programs",
+            "long_tail_keywords": [
+              "how to test CBT learning in online court programs",
+              "designing assessments for court-ordered CBT courses",
+              "online exam best practices cognitive behavioral programs",
+              "measuring CBT knowledge retention offenders",
+              "assessment tools for court-mandated CBT education"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "consideration",
+            "estimated_word_count": 1500,
+            "status": "unwritten"
+          }
+        ]
+      },
+      {
+        "pillar_id": 4,
+        "pillar_name": "Juvenile Justice & Youth Diversion",
+        "pillar_description": "Content focused on juvenile-specific community service, diversion programs, and restorative approaches tailored for youth offenders.",
+        "target_audience": "Parents, juvenile defense attorneys, school administrators, youth court judges, juvenile probation officers",
+        "articles": [
+          {
+            "id": "P4-01",
+            "title": "Effective Community Service Models for Juvenile Diversion Programs",
+            "article_angle": "Survey of the most effective juvenile diversion community service models nationwide, comparing outcomes across mentorship-based, skills-based, and direct-service approaches.",
+            "primary_keyword": "community service models juvenile diversion programs",
+            "long_tail_keywords": [
+              "best juvenile diversion community service programs",
+              "effective community service for teen offenders",
+              "juvenile diversion program models that work",
+              "community service alternatives for juvenile court",
+              "youth diversion volunteer program examples"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "awareness",
+            "estimated_word_count": 2000,
+            "status": "unwritten"
+          },
+          {
+            "id": "P4-02",
+            "title": "How Online Service Learning Protects At-Risk Youth Safety",
+            "article_angle": "Address safety concerns around youth community service by explaining how online service-learning programs eliminate physical risks while maintaining meaningful engagement.",
+            "primary_keyword": "online service learning at-risk youth safety",
+            "long_tail_keywords": [
+              "safe online community service options for minors",
+              "virtual volunteer programs for at-risk teens",
+              "youth safety in online court-ordered programs",
+              "protecting juvenile offenders in community service",
+              "online service learning safety protocols youth"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "consideration",
+            "estimated_word_count": 1600,
+            "status": "unwritten"
+          },
+          {
+            "id": "P4-03",
+            "title": "Restorative Justice Applications for Juvenile Delinquency",
+            "article_angle": "Explain how restorative justice principles are adapted for juveniles—family group conferencing, youth circles, and community panels—with evidence of their impact on teen reoffending.",
+            "primary_keyword": "restorative justice juvenile delinquency applications",
+            "long_tail_keywords": [
+              "restorative justice programs for juvenile offenders",
+              "teen restorative justice alternatives to detention",
+              "family group conferencing juvenile court",
+              "youth circles restorative justice programs",
+              "restorative practices for teenage delinquency"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "awareness",
+            "estimated_word_count": 1800,
+            "status": "unwritten"
+          },
+          {
+            "id": "P4-04",
+            "title": "The Impact of CBT on Adolescent Brain Development and Decision Making",
+            "article_angle": "Neurodevelopmental perspective on why CBT is particularly effective for adolescents, whose prefrontal cortex is still developing, and how structured interventions can shape lasting cognitive habits.",
+            "primary_keyword": "CBT adolescent brain development decision making",
+            "long_tail_keywords": [
+              "how CBT affects teenage brain development",
+              "cognitive behavioral therapy for adolescent offenders",
+              "teenage decision making and CBT intervention",
+              "brain development and CBT for juvenile justice",
+              "why CBT works for teen criminal behavior"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "awareness",
+            "estimated_word_count": 1800,
+            "status": "unwritten"
+          },
+          {
+            "id": "P4-05",
+            "title": "Youth Community Service: Building Resumes vs. Serving Sentences",
+            "article_angle": "Reframe mandated youth community service as a resume-building and skill-development opportunity rather than punishment, with tips for turning court-ordered hours into career advantages.",
+            "primary_keyword": "youth community service building resumes serving sentences",
+            "long_tail_keywords": [
+              "turning court-ordered community service into resume builder",
+              "how teens can use community service for college apps",
+              "positive spin on juvenile community service for career",
+              "community service resume skills for youth offenders",
+              "juvenile court service hours on college application"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "consideration",
+            "estimated_word_count": 1500,
+            "status": "unwritten"
+          },
+          {
+            "id": "P4-06",
+            "title": "Partnering with School Districts for Juvenile Court Compliance",
+            "article_angle": "Guide for school administrators and juvenile courts on creating partnership agreements that allow students to fulfill community service during or adjacent to school hours.",
+            "primary_keyword": "school districts juvenile court compliance partnership",
+            "long_tail_keywords": [
+              "school-based community service juvenile court",
+              "school district juvenile justice partnership programs",
+              "how schools help students complete court-ordered service",
+              "integrating community service into school for court",
+              "school and juvenile probation collaboration"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "consideration",
+            "estimated_word_count": 1700,
+            "status": "unwritten"
+          },
+          {
+            "id": "P4-07",
+            "title": "Privacy and Safety Protocols for Online Juvenile Community Service",
+            "article_angle": "Detail COPPA compliance, data protection measures, and safety protocols that online juvenile community service programs must implement to protect minors.",
+            "primary_keyword": "privacy safety protocols online juvenile community service",
+            "long_tail_keywords": [
+              "COPPA compliance juvenile community service online",
+              "data privacy protections for minors in court programs",
+              "online safety requirements for juvenile court programs",
+              "protecting minor privacy in virtual community service",
+              "juvenile online program safety standards"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "consideration",
+            "estimated_word_count": 1600,
+            "status": "unwritten"
+          },
+          {
+            "id": "P4-08",
+            "title": "The Role of Mentorship in Teen Restorative Justice Programs",
+            "article_angle": "Highlight how adult mentorship components within restorative justice amplify positive outcomes for teen offenders, with guidelines for recruiting and training mentors.",
+            "primary_keyword": "mentorship teen restorative justice programs",
+            "long_tail_keywords": [
+              "mentoring programs for juvenile offenders",
+              "adult mentors in teen restorative justice",
+              "how mentorship reduces teen recidivism",
+              "mentor training for youth justice programs",
+              "role of mentors in juvenile diversion"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "awareness",
+            "estimated_word_count": 1700,
+            "status": "unwritten"
+          },
+          {
+            "id": "P4-09",
+            "title": "Preventing the School-to-Prison Pipeline Through Service Learning",
+            "article_angle": "Examine how school-based service-learning programs intervene at critical junctures to divert at-risk youth from the school-to-prison pipeline into productive civic engagement.",
+            "primary_keyword": "preventing school-to-prison pipeline service learning",
+            "long_tail_keywords": [
+              "service learning to stop school-to-prison pipeline",
+              "community service programs preventing juvenile incarceration",
+              "school-based diversion programs for at-risk students",
+              "alternatives to suspension that prevent prison pipeline",
+              "how service learning keeps kids out of juvenile court"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "awareness",
+            "estimated_word_count": 2000,
+            "status": "unwritten"
+          },
+          {
+            "id": "P4-10",
+            "title": "Analyzing Recidivism Rates in Youth Diversion Programs",
+            "article_angle": "Data analysis of national and regional recidivism statistics for youth diversion programs, comparing community service-based models to standard juvenile probation.",
+            "primary_keyword": "recidivism rates youth diversion programs",
+            "long_tail_keywords": [
+              "juvenile diversion program recidivism statistics",
+              "do youth diversion programs reduce reoffending",
+              "teen recidivism rates community service vs probation",
+              "juvenile recidivism data alternative sentencing",
+              "effectiveness of youth diversion on repeat offenses"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "awareness",
+            "estimated_word_count": 1800,
+            "status": "unwritten"
+          },
+          {
+            "id": "P4-11",
+            "title": "Mandated Volunteerism for Underage Drinking or Minor in Possession",
+            "article_angle": "Specific guide for parents and teens on community service requirements following MIP or underage drinking charges, including typical hour counts and approved program types.",
+            "primary_keyword": "mandated community service underage drinking minor in possession",
+            "long_tail_keywords": [
+              "community service for MIP charge teenager",
+              "underage drinking community service requirements",
+              "minor in possession volunteer hours court order",
+              "how many community service hours for underage drinking",
+              "MIP first offense community service options"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "consideration",
+            "estimated_word_count": 1500,
+            "status": "unwritten"
+          },
+          {
+            "id": "P4-12",
+            "title": "How Community Service Fosters Civic Engagement in Teens",
+            "article_angle": "Explore the longitudinal research showing that even mandated community service can ignite lasting civic engagement habits in teens, including voting, volunteering, and community leadership.",
+            "primary_keyword": "community service civic engagement teens",
+            "long_tail_keywords": [
+              "does community service make teens more civically engaged",
+              "mandated volunteering and civic participation youth",
+              "how community service builds teen civic identity",
+              "long-term civic engagement from juvenile community service",
+              "teen volunteering and future civic participation"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "awareness",
+            "estimated_word_count": 1600,
+            "status": "unwritten"
+          },
+          {
+            "id": "P4-13",
+            "title": "Strategies for Motivating Mandated Youth Volunteers",
+            "article_angle": "Practical playbook for program coordinators on overcoming teen resistance, building buy-in, and using gamification and peer dynamics to increase engagement.",
+            "primary_keyword": "motivating mandated youth volunteers strategies",
+            "long_tail_keywords": [
+              "how to motivate teens in court-ordered community service",
+              "engaging reluctant youth in mandated volunteering",
+              "gamification in juvenile community service programs",
+              "overcoming teen resistance to court-ordered service",
+              "strategies to keep youth engaged in volunteer programs"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "consideration",
+            "estimated_word_count": 1600,
+            "status": "unwritten"
+          },
+          {
+            "id": "P4-14",
+            "title": "The Difference Between Adult Probation and Youth Diversion Service",
+            "article_angle": "Side-by-side comparison of adult probation community service requirements versus youth diversion service, covering legal protections, record sealing, and program structure differences.",
+            "primary_keyword": "adult probation vs youth diversion community service",
+            "long_tail_keywords": [
+              "difference between adult and juvenile community service",
+              "youth diversion vs adult probation requirements",
+              "juvenile community service rules vs adult rules",
+              "how juvenile diversion differs from adult probation",
+              "teen court-ordered service vs adult court service"
+            ],
+            "search_intent": "informational",
+            "funnel_stage": "awareness",
+            "estimated_word_count": 1500,
+            "status": "unwritten"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { states } from "./states/stateData";
 import styles from "./page.module.css";
 
 const jsonLd = [
@@ -240,26 +241,16 @@ export default function Home() {
             Our community service programs are accepted by courts and probation offices across the country.
           </p>
           <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 'var(--space-2)' }}>
-            {[
-              'california', 'texas', 'florida', 'new-york', 'illinois', 'pennsylvania',
-              'ohio', 'georgia', 'michigan', 'north-carolina', 'new-jersey', 'virginia',
-              'washington', 'arizona', 'massachusetts', 'colorado', 'tennessee', 'indiana',
-              'missouri', 'maryland',
-            ].map((slug) => (
-              <Link key={slug} href={`/states/${slug}`} style={{
+            {states.map((s) => (
+              <Link key={s.slug} href={`/states/${s.slug}`} style={{
                 padding: 'var(--space-2) var(--space-4)', background: 'var(--color-gray-50)',
                 borderRadius: 'var(--radius-full)', border: '1px solid var(--color-gray-200)',
                 fontSize: 'var(--text-sm)', fontWeight: 500, color: 'var(--color-navy)',
-                textDecoration: 'none', textTransform: 'capitalize',
+                textDecoration: 'none',
               }}>
-                {slug.replace(/-/g, ' ')}
+                {s.name}
               </Link>
             ))}
-          </div>
-          <div style={{ textAlign: 'center', marginTop: 'var(--space-4)' }}>
-            <Link href="/states" style={{ color: 'var(--color-blue)', fontWeight: 600, fontSize: 'var(--text-sm)' }}>
-              View all 50 states →
-            </Link>
           </div>
         </div>
       </section>

@@ -42,6 +42,15 @@ export const metadata: Metadata = {
       "Complete your court-approved community service 100% online. Verified by a 501(c)(3) nonprofit — accepted by courts, probation, and schools in all 50 states.",
     images: [{ url: '/logo.png', width: 600, height: 600, alt: 'The Foundation of Change Logo' }],
   },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Court-Approved Online Community Service | The Foundation of Change',
+    description: 'Complete court-approved community service hours 100% online. 501(c)(3) nonprofit accepted in all 50 states.',
+    images: ['/logo.png'],
+  },
+  alternates: {
+    canonical: 'https://thefoundationofchange.org',
+  },
   icons: {
     icon: "/logo.png",
     apple: "/logo.png",

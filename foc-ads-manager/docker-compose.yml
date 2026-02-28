@@ -1,0 +1,10 @@
+services:
+  foc-ads-agent:
+    build: .
+    container_name: foc-ads-agent
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - ./db:/app/foc-ads-manager/db
+    command: [ "python", "main.py", "--schedule" ]

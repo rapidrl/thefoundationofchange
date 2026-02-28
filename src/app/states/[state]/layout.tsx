@@ -39,6 +39,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         title: `Online Community Service Hours in ${stateData.name} | The Foundation of Change`,
         description: `Complete court-approved community service hours online in ${stateData.name}. 501(c)(3) nonprofit program accepted by ${stateData.name} courts and probation departments. ${descriptionSuffix}`,
         keywords,
+        alternates: {
+            canonical: `https://thefoundationofchange.org/states/${stateSlug}`,
+        },
         openGraph: {
             title: `Complete Community Service Hours in ${stateData.name} — 100% Online | ${metaHook}`,
             description: `A verified 501(c)(3) nonprofit program accepted by ${stateData.name} courts and probation officers. ${descriptionSuffix}`,

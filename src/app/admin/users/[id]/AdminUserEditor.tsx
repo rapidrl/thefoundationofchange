@@ -643,7 +643,7 @@ export default function AdminUserEditor({ profile: initial, enrollments: initial
                                 {hourLogs.map((log) => (
                                     <tr key={log.id}>
                                         <td>{new Date(log.log_date + 'T00:00:00').toLocaleDateString()}</td>
-                                        <td><strong>{Number(log.hours).toFixed(1)}h</strong></td>
+                                        <td><strong>{Number(log.hours)}h {Number(log.minutes)}m</strong></td>
                                         <td style={{ fontSize: '11px', fontFamily: 'monospace' }}>{log.enrollment_id.slice(0, 8)}</td>
                                         <td>
                                             <ActionBtn onClick={() => handleDeleteHourLog(log.id)} label="🗑️" color="#dc2626" small disabled={busy === `dl-${log.id}`} />
